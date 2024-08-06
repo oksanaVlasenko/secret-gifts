@@ -7,7 +7,7 @@
       />
 
       <div class="login-form">
-        <h3>Welcome Back</h3>
+        <h3>CRM APP</h3>
 
         <n-space vertical>
           <n-form 
@@ -60,6 +60,7 @@
           </n-button>
 
           <n-button 
+            v-if="showGoogle"
             size="medium"
             ghost 
             color="#091540"
@@ -87,6 +88,8 @@
     setup() {
       const formRef = ref(null)
 
+      const showGoogle = ref(false)
+      
       return {
         formRef,
         formValue: ref({
@@ -96,7 +99,8 @@
 
         switchStyle: {
           marginBottom: '2px'
-        }
+        },
+        showGoogle
       }
     },
 
@@ -141,9 +145,9 @@
     width: 230px;
   }
 
-  .custom-space {
+  /* .custom-space {
     gap: 24px 12px !important;
-  }
+  } */
 
 /* Make the wrapper height auto on smaller screens to avoid overflow */
 @media (max-width: 768px) {

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const bcrypt = require("bcrypt")
 
 const userSchema = mongoose.Schema(
   {
@@ -6,19 +7,45 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, "Please, enter a user name"]
     },
-    phone: {
-      type: String,
-      required: [true, "Please, enter a phone"]
-    },
+
     email: {
       type: String,
-      required: false
+      required: [true, "Please, enter an email"],
+      unique: true
+    },
+
+    phone: {
+      type: String
+    },
+
+    password: {
+      type: String,
+      required: [true, "Password is required"],
+      select: false
+    },
+
+    token: {
+      type: String,
+      default: null
     }
   },
   {
     timestamps: true
   }
 )
+
+usersSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next()
+
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt)
+
+  next()
+})
+
+usersSchema.methods.checkPassword = (candidate, hash) => {
+  return bcrypt.compare(candidate, hash)
+}
 
 const User = mongoose.model('user', userSchema)
 

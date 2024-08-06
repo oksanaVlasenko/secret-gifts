@@ -1,12 +1,17 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 const User = require('./models/userSchema')
+
 const app = express()
 
 const port = 3000
 const bodyParser = require('body-parser')
 
-app.use(bodyParser.json());
+app.use(cors())
+app.use(express.json())
+
+app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.get('/', (req, res) => {
