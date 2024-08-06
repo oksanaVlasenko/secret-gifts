@@ -4,8 +4,38 @@ import { RouterView } from 'vue-router'
 </script>
 
 <template>
-  <RouterView />
+  <n-config-provider :theme-overrides="themeOverrides">
+    <RouterView />
+  </n-config-provider>
 </template>
+
+<script lang="ts">
+  import type { GlobalThemeOverrides } from 'naive-ui'
+  import { NConfigProvider } from 'naive-ui'
+  import { defineComponent } from 'vue'
+
+  const themeOverrides: GlobalThemeOverrides = {
+    common: {
+      primaryColor: "#3e41471f",
+      primaryColorHover: "#0081afff"
+    },
+    // Button: {
+    //   textColor: '#FF0000'
+    // },
+    Input: {
+      inputFocus: '#3e41471f',
+      // inputColor: '#091540',
+      // primaryColor: "#18a058",
+      // primaryColorHover: "#36ad6a"
+    }
+  }
+
+  export default defineComponent({
+    components: {
+      NConfigProvider
+    }
+  })
+</script>
 
 <style scoped>
 header {
