@@ -8,6 +8,10 @@
     "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"]  // Maps the `@` to `src` folder
-    }
+    },
+    "resolveJsonModule": true, // Allows importing JSON files
+    "esModuleInterop": true,   // Ensures proper imports
+    "module": "esnext",        // Ensures compatibility with dynamic imports
+    "moduleResolution": "node"
   }
 }

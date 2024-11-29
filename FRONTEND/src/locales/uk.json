@@ -1,0 +1,14 @@
+{
+  "login": {
+    "title": "Раді бачити Вас знов",
+    "email": "Електронна пошта",
+    "emailPlaceholder": "Введіть електронну пошту",
+    "password": "Пароль",
+    "passwordPlaceholder": "Введіть пароль",
+    "rememberMe": "Запам'ятати мене",
+    "forgotPassword": "Забули пароль?",
+    "signIn": "Увійти",
+    "signUp": "Зареєструватися",
+    "noAccount": "Немає акаунту?"
+  }
+}

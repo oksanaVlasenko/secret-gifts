@@ -1,10 +1,14 @@
 import { useState } from 'react'
+import { useI18n } from '@/i18n-context'
 
 import Input from '@/components/input/Input'
-import '@/styles/components/login.scss'
 import CheckboxSwitch from '@/components/checkbox/Checkbox'
 
+import '@/styles/components/login.scss'
+
 const Login: React.FC = () => {
+  const { t } = useI18n()
+
   const [email, setEmail] = useState<string | number | null | undefined>('')
   const [emailErrors, setEmailError] = useState<boolean>(false)
   const [password, setPassword] = useState<string | number | null | undefined>('')
@@ -21,7 +25,6 @@ const Login: React.FC = () => {
   }
 
   const handleEmailErrors = (existEmailError: boolean | null) => {
-    console.log(existEmailError, ' email error')
     setEmailError(Boolean(existEmailError))
   }
 
@@ -31,12 +34,12 @@ const Login: React.FC = () => {
 
   return (
     <div className='login'>
-      <h2 className='text-lg'>Nice to see you again</h2>
+      <h2 className='text-lg'>{t("login.title")}</h2>
 
       <Input 
         value={email}
-        label='E-mail'
-        placeholder='Enter an email'
+        label={t('login.email')}
+        placeholder={t('login.emailPlaceholder')}
         type='email'
         onChange={handlerEmailChanged}
         onEmailValid={handleEmailErrors}
@@ -44,8 +47,8 @@ const Login: React.FC = () => {
 
       <Input 
         value={password}
-        label='Password'
-        placeholder='Enter a password'
+        label={t('login.password')}
+        placeholder={t('login.passwordPlaceholder')}
         type='password'
         onChange={handlerPasswordChanged}
       />
@@ -53,25 +56,30 @@ const Login: React.FC = () => {
       <div className='remind-block'>
         <CheckboxSwitch 
           checked={rememberMe}
-          labelText='Remember me'
+          labelText={t('login.rememberMe')}
           onChange={handlerRememberMe}
         />
 
-        <p className='text-link'>Forgot password?</p>
+        <p className='text-link'>
+          {t('login.forgotPassword')}
+        </p>
       </div>
 
       <button 
         type="button" 
         className={`btn-filled-red sign-in-btn ${!isFilled ? 'disabled' : ''}`}
       >
-        Sign in
+        {t('login.signIn')}
       </button>
 
       <div className="line"></div>
 
       <p className='text-paragragh'>
-        Don't have an account?  
-        <span className='text-link ml-2'>Sign up</span>
+        {t('login.noAccount')} 
+        
+        <span className='text-link ml-2'>
+          {t('login.signUp')}
+        </span>
       </p>
     </div> 
   )
