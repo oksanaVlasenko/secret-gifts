@@ -85,7 +85,7 @@ app.post('/api', (req, res) => {
 })
 
 mongoose
-  .connect('mongodb+srv://Admin:9KG6yjhXgrFIjsgq@cluster0.qmeypi6.mongodb.net/crm-api?retryWrites=true&w=majority&appName=Cluster0')
+  .connect('mongodb+srv://ksenia:dDavTnWJqRTX8Hy8@cluster0.0w9nk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')
   .then(() => {
     console.log('Connected to Mongodb')
 

@@ -1,0 +1,51 @@
+//@use '@/styles/variables.scss' as *;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Встановлення ширини і висоти на весь екран */
+  width: 100vw;
+  height: 100vh;
+
+  /* Загальний фон */
+  background: $white-smoke; /* світло-сірий */
+  color: $t-bright--dark; /* стандартний колір тексту */
+  
+  /* Для забезпечення спадковості */
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+}
+
+.logo {
+  @apply m-8;
+
+  width: 3rem;
+  display: flex;
+  flex-direction: row;
+
+}
+
+.logo-icon {
+  @apply w-12 h-12;
+
+  color: $penn-red;
+  //margin-left: 1rem;
+}
+
+.btn-filled-red {
+  @apply text-[$white-smoke] bg-[#9B0D0F] hover:bg-[#7A0B0D] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2;
+
+  &.disabled {
+    @apply cursor-not-allowed opacity-50;
+  }
+}
