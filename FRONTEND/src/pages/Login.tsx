@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import { useI18n } from '@/i18n-context'
+import { Link } from 'react-router-dom'
 
 import Input from '@/components/input/Input'
 import CheckboxSwitch from '@/components/checkbox/Checkbox'
 
-import '@/styles/components/login.scss'
+import '@/styles/pages/login.scss'
 
 const Login: React.FC = () => {
   const { t } = useI18n()
@@ -77,9 +78,12 @@ const Login: React.FC = () => {
       <p className='text-paragragh'>
         {t('login.noAccount')} 
         
-        <span className='text-link ml-2'>
+        <Link to="/signup" className='text-link ml-2'>
           {t('login.signUp')}
-        </span>
+        </Link>
+        {/* <span className='text-link ml-2'>
+          
+        </span> */}
       </p>
     </div> 
   )

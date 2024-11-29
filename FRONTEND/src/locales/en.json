@@ -10,5 +10,8 @@
     "signIn": "Sign in",
     "signUp": "Sign up",
     "noAccount": "Don't have an account?"
+  },
+  "signup": {
+    "title": "Sign up to get started"
   }
 }
