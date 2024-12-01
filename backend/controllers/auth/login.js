@@ -1,10 +1,10 @@
 const { AppError, catchAsync, signToken } = require('../../utils')
-const { Users } = require('../../models')
+const { User } = require('../../models')
 
 exports.login = catchAsync(async (req, res) => {
     const { email, password } = req.body
 
-    const user = await Users.findOne({ email }).select('+password')
+    const user = await User.findOne({ email }).select('+password')
     
     const passwordIsValid = await user.checkPassword(password, user.password)
   
@@ -17,9 +17,9 @@ exports.login = catchAsync(async (req, res) => {
     await user.save()
 
     res.status(200).json({
-      user: {
-        name: user.name,
-      },
+      name: user.name,
+      id: user._id,
+      email: user.email,
       token
     })
   })

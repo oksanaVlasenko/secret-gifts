@@ -3,6 +3,20 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const User = require('./models/userSchema')
 
+const dotenv = require('dotenv');
+
+dotenv.config({ path: './.env' });
+
+const {
+	authRouter,
+	// noticesRouter,
+	// petsRouter,
+	// swaggerRouter,
+	// usersRouter,
+	// friendsRouter,
+	// newsRouter,
+} = require('./routes');
+
 const app = express()
 
 const port = 3000
@@ -13,6 +27,8 @@ app.use(express.json())
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use('/auth', authRouter);
 
 app.get('/', (req, res) => {
   res.send('Hellp api')
@@ -83,6 +99,8 @@ app.post('/api', (req, res) => {
   console.log(req.body)
   res.status(200).json({ result: req.body.text });
 })
+
+module.exports = app;
 
 mongoose
   .connect('mongodb+srv://ksenia:dDavTnWJqRTX8Hy8@cluster0.0w9nk.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0')

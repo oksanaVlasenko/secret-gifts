@@ -6,6 +6,12 @@ import Input from '@/components/input/Input'
 import CheckboxSwitch from '@/components/checkbox/Checkbox'
 
 import '@/styles/pages/login.scss'
+import axios from 'axios'
+
+type User = {
+  email: string | number | null | undefined;
+  password: string | number | null | undefined
+}
 
 const Login: React.FC = () => {
   const { t } = useI18n()
@@ -31,6 +37,25 @@ const Login: React.FC = () => {
 
   const handlerRememberMe = (value: boolean) => {
     setRememberMe(value)
+  }
+
+  const handerSignIn = () => {
+    const user: User = {
+      email: String(email).toLowerCase(),
+      password: password
+    }
+
+    axios.post('http://localhost:3000/auth/login', user)
+      .then((res) => {
+        console.log(res, 'res')
+      })
+      .catch((err) => {
+        console.error('Error:', err);
+
+        // if (err.status === 409) {
+        //   //setRegisterError(t('signup.existUser'))
+        // }
+      });
   }
 
   return (
@@ -69,6 +94,7 @@ const Login: React.FC = () => {
       <button 
         type="button" 
         className={`btn-filled-red sign-in-btn ${!isFilled ? 'disabled' : ''}`}
+        onClick={handerSignIn}
       >
         {t('login.signIn')}
       </button>

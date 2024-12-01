@@ -18,7 +18,8 @@
     "name": "Name",
     "namePlaceholder": "Enter a name",
     "haveAccount": "Already have an account?",
-    "login": "Log in"
+    "login": "Log in",
+    "existUser": "User with this email already exists"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

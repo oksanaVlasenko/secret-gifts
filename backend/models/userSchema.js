@@ -34,18 +34,18 @@ const userSchema = mongoose.Schema(
   }
 )
 
-// usersSchema.pre("save", async function (next) {
-//   if (!this.isModified("password")) return next()
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next()
 
-//   const salt = await bcrypt.genSalt(10);
-//   this.password = await bcrypt.hash(this.password, salt)
+  const salt = await bcrypt.genSalt(10);
+  this.password = await bcrypt.hash(this.password, salt)
 
-//   next()
-// })
+  next()
+})
 
-// usersSchema.methods.checkPassword = (candidate, hash) => {
-//   return bcrypt.compare(candidate, hash)
-// }
+userSchema.methods.checkPassword = (candidate, hash) => {
+  return bcrypt.compare(candidate, hash)
+}
 
 const User = mongoose.model('user', userSchema)
 

@@ -6,6 +6,13 @@ import Input from '@/components/input/Input'
 import '@/styles/pages/signup.scss'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import axios from 'axios'
+
+type User = {
+  name: string | number | null | undefined;
+  email: string | number | null | undefined;
+  password: string | number | null | undefined
+}
 
 const SighUp = () => {
   const { t } = useI18n()
@@ -14,8 +21,9 @@ const SighUp = () => {
   const [emailErrors, setEmailError] = useState<boolean>(false)
   const [name, setName] = useState<string | number | null | undefined>('')
   const [password, setPassword] = useState<string | number | null | undefined>('')
+  const [registerError, setRegisterError] = useState<string | number | null | undefined>('')
 
-  const isFilled = !!email && !emailErrors && !!password && !!name
+  const isFilled = !!email && !emailErrors && !!password && !!name && !registerError
 
   const handlerEmailChanged = (value: string | number | null | undefined) => {
     setEmail(value)
@@ -31,6 +39,26 @@ const SighUp = () => {
 
   const handlerPasswordChanged = (value: string | number | null | undefined) => {
     setPassword(value)
+  }
+
+  const handerSignUp = () => {
+    const user: User = {
+      name: name,
+      email: String(email).toLowerCase(),
+      password: password
+    }
+
+    axios.post('http://localhost:3000/auth/register', user)
+      .then((res) => {
+        console.log(res, 'res')
+      })
+      .catch((err) => {
+        console.error('Error:', err);
+
+        if (err.status === 409) {
+          setRegisterError(t('signup.existUser'))
+        }
+      });
   }
 
   return (
@@ -49,6 +77,7 @@ const SighUp = () => {
         value={email}
         label={`${t('login.email')}`}
         placeholder={`${t('login.emailPlaceholder')}`}
+        errorText={registerError}
         type='email'
         onChange={handlerEmailChanged}
         onEmailValid={handleEmailErrors}
@@ -65,6 +94,7 @@ const SighUp = () => {
       <button 
         type="button" 
         className={`btn-filled-red sign-up-btn ${!isFilled ? 'disabled' : ''}`}
+        onClick={handerSignUp}
       >
         {t('signup.signUp')}
       </button>
