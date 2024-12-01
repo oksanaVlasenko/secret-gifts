@@ -81,9 +81,6 @@ const Login: React.FC = () => {
         <Link to="/signup" className='text-link ml-2'>
           {t('login.signUp')}
         </Link>
-        {/* <span className='text-link ml-2'>
-          
-        </span> */}
       </p>
     </div> 
   )

@@ -1,6 +1,8 @@
 
 import './input.scss'
 
+import { useI18n } from '@/i18n-context'
+
 import { useState } from 'react'
 import { debounce } from 'throttle-debounce'
 
@@ -37,6 +39,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   onEmailValid
 }) => {
+  const { t } = useI18n()
 
   const ageInputId = useId()
 
@@ -57,7 +60,7 @@ const Input: React.FC<InputProps> = ({
 
   const validateEmailInput = debounce(300, () => {
     if (type === 'email' && value && !/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(String(value))) {
-      setEmailError('Invalid email format');
+      setEmailError(t('system.invalidEmail'));
     } else {
       setEmailError('');
     }

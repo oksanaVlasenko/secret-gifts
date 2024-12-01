@@ -1,0 +1,57 @@
+
+.input-phone-container .react-international-phone-input-container,
+.input-phone-container .react-international-phone-input {
+  width: 100%; 
+}
+
+.input-phone-container .react-international-phone-input-container {
+  margin-top: 0.4rem;
+}
+
+.react-international-phone-country-selector {
+  @apply w-auto sm:w-8;
+}
+
+.react-international-phone-country-selector-button__button-content {
+  @apply p-2 sm:p-4;
+}
+
+.react-international-phone-country-selector-button {
+  @apply border-gray-300 focus:border-[#3A412C] rounded-md text-[#3A412C];
+}
+
+.react-international-phone-input-container .react-international-phone-input {
+  @apply border-gray-300 focus:border-[#3A412C] rounded-md text-[#3A412C] pl-2 sm:pl-8;
+}
+
+.react-international-phone-flag-emoji {
+  @apply w-4 h-4;
+}
+
+.react-international-phone-country-selector-dropdown::-webkit-scrollbar {
+  width: 8px; 
+}
+
+.react-international-phone-country-selector-dropdown::-webkit-scrollbar-thumb {
+  background-color: $black-olive;
+  border-radius: 4px; 
+}
+
+.react-international-phone-country-selector-dropdown::-webkit-scrollbar-track {
+  background-color: $white-smoke; 
+}
+
+.react-international-phone-country-selector-dropdown {
+  border: none;
+  outline: none;
+  color: $black-olive;
+}
+
+.react-international-phone-country-selector-dropdown__list-item:hover {
+  background: $white-smoke;
+  
+}
+
+.label {
+  @apply text-[#6B8063] text-xs mb-2;
+}

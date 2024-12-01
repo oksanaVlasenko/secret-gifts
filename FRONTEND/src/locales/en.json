@@ -12,6 +12,16 @@
     "noAccount": "Don't have an account?"
   },
   "signup": {
-    "title": "Sign up to get started"
+    "title": "Sign up to get started",
+    "phone": "Phone",
+    "signUp": "Sign up",
+    "name": "Name",
+    "namePlaceholder": "Enter a name",
+    "haveAccount": "Already have an account?",
+    "login": "Log in"
+  },
+  "system": {
+    "invalidPhone": "Invalid phone number",
+    "invalidEmail": "Invalid email format"
   }
 }
