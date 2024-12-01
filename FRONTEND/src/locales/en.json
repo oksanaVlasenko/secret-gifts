@@ -9,7 +9,8 @@
     "forgotPassword": "Forgot password?",
     "signIn": "Sign in",
     "signUp": "Sign up",
-    "noAccount": "Don't have an account?"
+    "noAccount": "Don't have an account?",
+    "userNotFound": "User not found"
   },
   "signup": {
     "title": "Sign up to get started",
@@ -20,6 +21,10 @@
     "haveAccount": "Already have an account?",
     "login": "Log in",
     "existUser": "User with this email already exists"
+  },
+  "userAccount": {
+    "myProfile": "My Profile",
+    "logOut": "Log out"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

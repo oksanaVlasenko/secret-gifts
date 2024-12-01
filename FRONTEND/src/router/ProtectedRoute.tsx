@@ -7,6 +7,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute = ({ isAuthenticated, children }: ProtectedRouteProps): JSX.Element => {
+  console.log(isAuthenticated, ' is auth')
   if (!isAuthenticated) {
     return <Navigate to="/login" />;
   }

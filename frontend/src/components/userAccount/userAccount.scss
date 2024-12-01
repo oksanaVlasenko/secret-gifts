@@ -1,0 +1,30 @@
+.user-account {
+  @apply relative;
+
+  .icon-container {
+    @apply flex flex-row items-center;
+
+    .user-icon {
+      @apply w-8 h-8 shrink-0;
+
+      color: $penn-red;
+    }
+
+    .chevron-icon {
+      @apply w-4 h-4 shrink-0;
+      color: $penn-red;
+    }
+  }
+
+  .account-options {
+    @apply absolute right-0 bg-[#FEF7FE] w-auto sm:w-40 shadow-md rounded-md;
+
+    .option {
+      @apply flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 cursor-pointer text-[#3A412C] text-xs sm:text-sm;
+    }
+
+    .list-icon {
+      @apply w-4 h-4 mr-2 shrink-0 text-[#3A412C];
+    }
+  }
+}

@@ -8,6 +8,12 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '@/store';
+import { setUser } from '@/store/user/userSlice';
+import { saveToken } from '@/utils/authToken'
+import { useNavigate } from 'react-router-dom';
+
 type User = {
   name: string | number | null | undefined;
   email: string | number | null | undefined;
@@ -17,16 +23,22 @@ type User = {
 const SighUp = () => {
   const { t } = useI18n()
 
+  const navigate = useNavigate();
+
+  const dispatch: AppDispatch = useDispatch();
+
   const [email, setEmail] = useState<string | number | null | undefined>('')
   const [emailErrors, setEmailError] = useState<boolean>(false)
   const [name, setName] = useState<string | number | null | undefined>('')
   const [password, setPassword] = useState<string | number | null | undefined>('')
   const [registerError, setRegisterError] = useState<string | number | null | undefined>('')
+  const [loading, setLoading] = useState<boolean>(false)
 
   const isFilled = !!email && !emailErrors && !!password && !!name && !registerError
 
   const handlerEmailChanged = (value: string | number | null | undefined) => {
     setEmail(value)
+    setRegisterError('')
   }
 
   const handlerNameChanged = (value: string | number | null | undefined) => {
@@ -42,6 +54,8 @@ const SighUp = () => {
   }
 
   const handerSignUp = () => {
+    setLoading(true)
+
     const user: User = {
       name: name,
       email: String(email).toLowerCase(),
@@ -50,7 +64,19 @@ const SighUp = () => {
 
     axios.post('http://localhost:3000/auth/register', user)
       .then((res) => {
-        console.log(res, 'res')
+        saveToken(res.data.token, true)
+
+        dispatch(setUser({ 
+          id: res.data.id, 
+          name: res.data.name, 
+          email: res.data.email, 
+          token: res.data.token, 
+          isAuthenticated: true,
+          loading: true 
+        }));
+
+        setLoading(false)
+        navigate('/');
       })
       .catch((err) => {
         console.error('Error:', err);
@@ -58,7 +84,9 @@ const SighUp = () => {
         if (err.status === 409) {
           setRegisterError(t('signup.existUser'))
         }
-      });
+
+        setLoading(false)
+      })
   }
 
   return (
@@ -93,7 +121,7 @@ const SighUp = () => {
 
       <button 
         type="button" 
-        className={`btn-filled-red sign-up-btn ${!isFilled ? 'disabled' : ''}`}
+        className={`btn-filled-red sign-up-btn ${loading ? 'pending-animation' : ''} ${!isFilled ? 'disabled' : ''}`}
         onClick={handerSignUp}
       >
         {t('signup.signUp')}

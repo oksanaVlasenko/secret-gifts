@@ -1,3 +1,4 @@
+import UserAccount from "@/components/userAccount/userAccount";
 import { GiftIcon } from "@heroicons/react/16/solid";
 import { ReactNode } from "react";
 
@@ -10,6 +11,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     <div>
       <div className='logo'>
         <GiftIcon className='logo-icon'/>
+
+        <UserAccount />
       </div>
       
       <main>

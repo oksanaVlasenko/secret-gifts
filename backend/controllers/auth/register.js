@@ -13,9 +13,9 @@ exports.register = catchAsync(async (req, res) => {
     await newUser.save()
 
   res.status(201).json({
-    user: {
-      name: newUser.name,
-    },
+    name: newUser.name,
+    id: newUser._id,
+    email: newUser.email,
     token,
     isNewUser: true
   })
