@@ -12,7 +12,7 @@ const {
 	// noticesRouter,
 	// petsRouter,
 	// swaggerRouter,
-	// usersRouter,
+	userRouter,
 	// friendsRouter,
 	// newsRouter,
 } = require('./routes');
@@ -29,6 +29,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
 app.use('/auth', authRouter);
+app.use('/user', userRouter)
 
 app.get('/', (req, res) => {
   res.send('Hellp api')

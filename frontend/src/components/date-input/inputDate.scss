@@ -1,0 +1,84 @@
+.input-date {
+  @apply flex flex-col relative w-full;
+
+  .label {
+    @apply text-[#6B8063] text-xs mb-2;
+  }
+
+  .react-date-picker__wrapper {
+    @apply w-full px-4 py-1 border bg-white text-[#3A412C] border-gray-300 rounded-md text-sm placeholder-[#6B8063] placeholder-opacity-50 focus:outline-none focus:border-[#3A412C];  
+    
+  }
+
+  .react-calendar {
+    @apply z-50;
+  }
+
+  .react-calendar__month-view__days__day,
+  .react-calendar__year-view__months__month,
+  .react-calendar__navigation {
+    @apply text-[#3A412C];
+  }
+
+  .react-calendar__month-view__days__day--neighboringMonth {
+    @apply text-[#6B8063] opacity-80;
+  }
+
+  .react-calendar__month-view__days__day--weekend {
+    @apply text-[#D49A7A];
+  }
+
+  .react-calendar__month-view__weekdays {
+    @apply text-[#6B8063];
+  }
+
+  .react-calendar__tile--now {
+    @apply bg-[#6B8063] text-white;
+  }
+
+  .react-calendar__tile--active {
+    @apply bg-[#D49A7A] text-white;
+  }
+
+  .react-date-picker__button__icon {
+    stroke: #6B8063;
+  }
+
+  .react-date-picker__button:active svg,
+  .react-date-picker__button:active:hover svg,
+  .react-date-picker__button:hover svg,
+  .react-date-picker__button__icon:active,
+  .react-date-picker__button__icon:focus,
+  .react-date-picker__button__icon:hover {
+    stroke: #3A412C !important;
+  }
+
+  .react-date-picker__inputGroup__input {
+    @apply focus:outline-none;
+  }
+
+  .react-calendar__tile--hasActive,
+  .react-calendar__tile--hasActive:hover,
+  .react-calendar__tile--now:hover,
+  .react-calendar__tile--active:hover {
+    background: #6B8063 !important;
+    opacity: 0.8;
+  }
+
+  .react-date-picker__calendar {
+    z-index: 200;
+    width: 100%;
+  }
+}
+
+.error {
+  @apply text-red-500 border-red-500 focus:border-red-600;
+  
+  .input-container {
+    @apply text-red-500 border-red-500 focus:border-red-600;
+  }
+
+  .icon {
+    @apply text-red-600 -translate-y-1/2;
+  }
+}

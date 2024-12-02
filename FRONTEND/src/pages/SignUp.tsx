@@ -11,7 +11,7 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store';
 import { setUser } from '@/store/user/userSlice';
-import { saveToken } from '@/utils/authToken'
+import { saveTokenAndId } from '@/utils/authToken'
 import { useNavigate } from 'react-router-dom';
 
 type User = {
@@ -64,7 +64,7 @@ const SighUp = () => {
 
     axios.post('http://localhost:3000/auth/register', user)
       .then((res) => {
-        saveToken(res.data.token, true)
+        saveTokenAndId(res.data.token, res.data.id, true)
 
         dispatch(setUser({ 
           id: res.data.id, 

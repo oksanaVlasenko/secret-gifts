@@ -14,7 +14,7 @@ import { useDispatch } from 'react-redux';
 import { AppDispatch } from '@/store';
 import { logout } from '@/store/user/userSlice';
 import { useNavigate } from "react-router-dom";
-import { clearToken } from '@/utils/authToken'
+import { clearTokenAndId } from '@/utils/authToken'
 
 const UserAccount: React.FC = () => {
   const { t } = useI18n()
@@ -42,7 +42,7 @@ const UserAccount: React.FC = () => {
   }
 
   const handlerLogout = () => {
-    clearToken()
+    clearTokenAndId()
 
     dispatch(logout())
 

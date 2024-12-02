@@ -12,7 +12,7 @@ import CheckboxSwitch from '@/components/checkbox/Checkbox'
 import '@/styles/pages/login.scss'
 import axios, { AxiosError }  from 'axios'
 
-import { saveToken } from '@/utils/authToken'
+import { saveTokenAndId } from '@/utils/authToken'
 import { useNavigate } from 'react-router-dom';
 
 type User = {
@@ -65,7 +65,8 @@ const Login: React.FC = () => {
       const res = await axios.post('http://localhost:3000/auth/login', user);
       console.log(res.data, 'res');
   
-      saveToken(res.data.token, rememberMe);
+      saveTokenAndId(res.data.token, res.data.id, rememberMe);
+
       dispatch(setUser({ 
         id: res.data.id, 
         name: res.data.name, 

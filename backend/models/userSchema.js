@@ -18,6 +18,18 @@ const userSchema = mongoose.Schema(
       type: String
     },
 
+    birthday: {
+      type: String
+    },
+
+    avatarURL: {
+      type: String
+    },
+
+    coverURL: {
+      type: String
+    },
+
     password: {
       type: String,
       required: [true, "Password is required"],
