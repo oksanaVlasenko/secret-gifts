@@ -11,15 +11,11 @@ exports.checkUpdateData = catchAsync(async (req, res, next) => {
 
   const userExists = await User.findOne({ email });
 
-  console.log(userExists, ' userExists ');
-
   if (userExists && userExists._id.toString() !== req.user._id.toString()) {
     throw new AppError(409, 'User with this email already exists');
   }
 
   if (!checkDate(birthday)) throw new AppError(400, "The birthday couldn't be in future")
-
-  //req.body = value
 
   next()
 })

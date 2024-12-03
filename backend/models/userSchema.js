@@ -26,7 +26,15 @@ const userSchema = mongoose.Schema(
       type: String
     },
 
+    avatarId: {
+      type: String
+    },
+
     coverURL: {
+      type: String
+    },
+
+    coverId: {
       type: String
     },
 

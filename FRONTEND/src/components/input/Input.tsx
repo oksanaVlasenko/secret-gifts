@@ -21,6 +21,7 @@ interface InputProps {
   minLength?: number | null,
   min?: number | null,
   max?: number | null,
+  accept?: string | null,
   onChange: (value: string | number | null | undefined) => void,
   onEmailValid?: (existEmailError: boolean | null) => void
 }
@@ -36,6 +37,7 @@ const Input: React.FC<InputProps> = ({
   minLength,
   min,
   max,
+  accept,
   onChange,
   onEmailValid
 }) => {
@@ -94,6 +96,7 @@ const Input: React.FC<InputProps> = ({
         minLength={minLength ?? 0}
         max={max ?? 100000}
         min={min ?? 0}
+        accept={accept ?? ''}
         onChange={handleChange}
         onBlur={validateEmailInput}
       />

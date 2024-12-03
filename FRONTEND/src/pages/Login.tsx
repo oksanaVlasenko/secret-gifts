@@ -63,7 +63,6 @@ const Login: React.FC = () => {
 
     try {
       const res = await axios.post('http://localhost:3000/auth/login', user);
-      console.log(res.data, 'res');
   
       saveTokenAndId(res.data.token, res.data.id, rememberMe);
 
