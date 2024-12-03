@@ -30,7 +30,7 @@ i18next
   .init({
     fallbackLng: 'en', 
     detection: {
-      order: ['navigator', 'localStorage', 'htmlTag', 'path', 'subdomain'],
+      order: ['localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
       caches: ['localStorage'], 
       lookupQuerystring: 'lang', 
       lookupLocalStorage: 'language', 

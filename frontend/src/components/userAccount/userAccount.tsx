@@ -27,9 +27,9 @@ const UserAccount: React.FC = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleMouseEnter = () => {
-    setIsOpen(true);
-  };
+  // const handleMouseEnter = () => {
+  //   setIsOpen(true);
+  // };
 
   const ref = useOutsideClick(() => {
     setIsOpen(false)
@@ -53,7 +53,6 @@ const UserAccount: React.FC = () => {
     <div ref={ref} className="user-account">
       <div 
         className="icon-container"
-        onMouseEnter={handleMouseEnter} 
         onClick={toggleDropdown}
       >
         <UserIcon className="user-icon"/>
