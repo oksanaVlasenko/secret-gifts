@@ -1,5 +1,5 @@
 .my-profile {
-  @apply relative mx-auto rounded-md shadow-lg w-[90%] max-w-full overflow-hidden box-border;
+  @apply relative mx-auto rounded-md shadow-lg w-[90%] lg:w-[80%] max-w-full overflow-hidden box-border mb-16;
 
   h2 {
     @apply text-left my-4 ml-8 text-3xl sm:text-4xl;
@@ -54,8 +54,6 @@
     }
   }
 
-  
-
   .form-block {
     @apply p-6 lg:pl-60 w-full;
 
@@ -63,7 +61,7 @@
       @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
 
       .item {
-        @apply mb-4 w-full lg:w-80;
+        @apply mb-4 w-full lg:w-72;
   
         .label {
           @apply text-[#6B8063] text-xs mb-2;
@@ -111,3 +109,16 @@
     }
   }
 }
+
+// .my-profile::-webkit-scrollbar {
+//   width: 4px; 
+// }
+
+// .my-profile::-webkit-scrollbar-thumb {
+//   background-color: $black-olive;
+//   border-radius: 2px; 
+// }
+
+// .my-profile::-webkit-scrollbar-track {
+//   background-color: $white-smoke; 
+// }

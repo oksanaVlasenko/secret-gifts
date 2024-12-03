@@ -258,7 +258,7 @@ const MyProfile: React.FC = () => {
         onFileChange={handleFileChange}
       />
 
-      <PasswordChange />
+      <PasswordChange token={token} email={userData.email} />
     </div>
   )
 }

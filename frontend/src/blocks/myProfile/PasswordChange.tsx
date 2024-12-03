@@ -1,20 +1,57 @@
 import Input from '@/components/input/Input'
 import { useI18n } from '@/i18n-context'
+import axios from 'axios'
 import { useState } from 'react'
 
-const PasswordChange: React.FC = () => {
+const PasswordChange: React.FC<{token: string | null, email: string | number | null | undefined}> = ({token, email}) => {
   const { t } = useI18n()
 
   const [oldPassword, setOldPassword] = useState<string | number | null | undefined>('')
   const [newPassword, setNewPassword] = useState<string | number | null | undefined>('')
   const [confirmedPassword, setConfirmedPassword] = useState<string | number | null | undefined>('')
+  const [loading, setLoading] = useState<boolean>(false)
+  const [oldPasswordError, setOldPasswordError] = useState<string | number | null | undefined>('')
 
   const notEquil = newPassword && confirmedPassword && String(newPassword) !== String(confirmedPassword)
 
   const oldAndNewEquil = oldPassword && newPassword && String(oldPassword).toLowerCase() === String(newPassword).toLowerCase()
 
-  const disabledChange = notEquil || !oldPassword || !newPassword || !confirmedPassword || oldAndNewEquil
+  const disabledChange = notEquil || !oldPassword || !newPassword || !confirmedPassword || oldAndNewEquil || oldPasswordError
   
+  const updatePassword = async () => {
+    setLoading(true)
+
+    const data = {
+      password: oldPassword,
+      newPassword: newPassword,
+      email: email
+    }
+
+    await axios({
+      method: 'patch',
+      url: 'http://localhost:3000/user/password',
+      data: data,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+      .then(() => {
+        setOldPassword('')
+        setNewPassword('')
+        setConfirmedPassword('')
+      })
+      .catch((error) => {
+        console.error('Error:', error.response?.data || error.message)
+
+        if (error.response?.status === 401) {
+          setOldPasswordError(t('myProfile.passwordNotValid'))
+        }
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  };
+
   return (
     <>
       <div className="profile-header sm:ml-52">
@@ -30,8 +67,8 @@ const PasswordChange: React.FC = () => {
         </div>
 
         <button 
-          className={`btn-outline-red mt-4 sm:mt-0 ${disabledChange ? 'disabled' : ''}`} 
-          // ${flags.updating ? 'pending-animation' : ''} 
+          className={`btn-outline-red mt-4 sm:mt-0 ${loading ? 'pending-animation' : ''} ${disabledChange ? 'disabled' : ''}`} 
+          onClick={updatePassword}
         >
           {t('myProfile.change')}
         </button>
@@ -39,18 +76,22 @@ const PasswordChange: React.FC = () => {
 
       <div className="form-block">
         <div className='grid-template-three'>
-          <div className="mb-4 sm:w-1/2 w-full lg:w-80 gap-8">
+          <div className="mb-4 sm:w-1/2 w-full lg:w-72 gap-8">
             <Input 
               value={oldPassword}
               label={t('myProfile.currentPassword')}
               placeholder={t('login.passwordPlaceholder')}
               type='password'
-              onChange={setOldPassword}
+              errorText={oldPasswordError}
+              onChange={(v) => {
+                setOldPassword(v)
+                setOldPasswordError('')
+              }}
             />
           </div>
 
           <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-            <div className="mb-4 w-full lg:w-80">
+            <div className="mb-4 w-full lg:w-72">
               <Input 
                 value={newPassword}
                 label={t('myProfile.newPassword')}
@@ -67,7 +108,7 @@ const PasswordChange: React.FC = () => {
               />
             </div>
 
-            <div className="mb-4 w-full lg:w-80">
+            <div className="mb-4 w-full lg:w-72">
               <Input 
                 value={confirmedPassword}
                 label={t('myProfile.confirmNewPassword')}
@@ -81,7 +122,6 @@ const PasswordChange: React.FC = () => {
           </div>
         </div>
       </div>
-      
     </>
   )
 }

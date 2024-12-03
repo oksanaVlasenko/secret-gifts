@@ -26,5 +26,6 @@ exports.protect = catchAsync(async (req, res, next) => {
   
   req.user = currentUser;
   req.token = token;
+  req.email = currentUser.email
   next();
 });

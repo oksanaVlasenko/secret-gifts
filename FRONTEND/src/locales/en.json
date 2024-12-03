@@ -40,7 +40,8 @@
     "newPassword": "New password",
     "confirmNewPassword": "Confirm new password",
     "passwordsDoNotMatch": "Passwords do not match",
-    "passwordSameAsOld": "The new password cannot be the same as the old password"
+    "passwordSameAsOld": "The new password cannot be the same as the old password",
+    "passwordNotValid": "Invalid password"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

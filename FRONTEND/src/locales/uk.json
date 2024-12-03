@@ -40,7 +40,8 @@
     "newPassword": "Новий пароль",
     "confirmNewPassword": "Підтвердіть новий пароль",
     "passwordsDoNotMatch": "Паролі не співпадають",
-    "passwordSameAsOld": "Новий пароль не може бути таким самим, як старий"
+    "passwordSameAsOld": "Новий пароль не може бути таким самим, як старий",
+    "passwordNotValid": "Недійсний пароль"
   },
   "system": {
     "invalidPhone": "Недійсний номер телефону",

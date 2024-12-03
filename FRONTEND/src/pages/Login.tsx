@@ -84,6 +84,8 @@ const Login: React.FC = () => {
           setLoginError(t('login.userNotFound'));
         }
       } 
+
+      setLoading(false);
     }
   }
 
