@@ -57,7 +57,7 @@
   
 
   .form-block {
-    @apply p-6 sm:pl-48 w-full;
+    @apply p-6 lg:pl-60 w-full;
 
     .grid-template {
       @apply grid grid-cols-1 sm:grid-cols-2 gap-4;
@@ -77,10 +77,21 @@
             content: '';
             z-index: 0; 
           }
+
+          &.disabled {
+            @apply cursor-not-allowed opacity-50;
+          }
   
           .icon-avatar-upload {
             @apply w-4 h-4 text-[#3A412C];
             z-index: 1;
+          }
+
+          .icon-avatar-delete {
+            @apply w-4 h-4 text-[#9B0D0F];
+            z-index: 1;
+
+            
           }
         }
   
@@ -91,6 +102,12 @@
       }
     }
 
-    
+    .grid-template-three {
+      @apply grid grid-cols-1 gap-4;
+
+      .item {
+        @apply mb-4 w-full lg:w-60;
+      }
+    }
   }
 }

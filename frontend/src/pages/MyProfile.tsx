@@ -11,6 +11,7 @@ import axios from 'axios'
 import CoverImage from '@/blocks/myProfile/CoverImage'
 import ProfileHeader from '@/blocks/myProfile/ProfileHeader'
 import Form from '@/blocks/myProfile/Form'
+import PasswordChange from '@/blocks/myProfile/PasswordChange';
 
 const MyProfile: React.FC = () => {
   const { t } = useI18n()
@@ -256,6 +257,8 @@ const MyProfile: React.FC = () => {
         onDeleteAvatar={deleteAvatar}
         onFileChange={handleFileChange}
       />
+
+      <PasswordChange />
     </div>
   )
 }

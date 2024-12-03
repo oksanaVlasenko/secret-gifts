@@ -32,7 +32,15 @@
     "save": "Save",
     "photoLabel": "Change photo",
     "delete": "Delete",
-    "birthdayLabel": "Birthday date"
+    "birthdayLabel": "Birthday date",
+    "password": "Password",
+    "updatePassword": "Change your password",
+    "change": "Change",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm new password",
+    "passwordsDoNotMatch": "Passwords do not match",
+    "passwordSameAsOld": "The new password cannot be the same as the old password"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

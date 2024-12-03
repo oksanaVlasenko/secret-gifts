@@ -4,7 +4,7 @@ import Input from "@/components/input/Input"
 import InputPhone from "@/components/phone-input/InputPhone"
 
 import { useI18n } from '@/i18n-context'
-import { CameraIcon } from "@heroicons/react/16/solid"
+import { CameraIcon, TrashIcon } from "@heroicons/react/16/solid"
 
 import { User, UserError, Value, Flags } from '@/types/myProfile.types';
 
@@ -78,15 +78,27 @@ const Form: React.FC<FormProps> = ({
               onFileSelect={onFileChange}
             />
 
-            <button 
+            <div className={`upload-avatar-bg ${flags.updating ? 'disabled' : ''}`}>
+              <TrashIcon 
+                className='icon-avatar-upload'
+                onClick={onDeleteAvatar}
+              />
+            </div>  
+            
+            {/* <TrashIcon 
+              className="icon-bg-upload"
+              onClick={onDeleteAvatar}
+            /> */}
+            {/* <button 
               className={
                 `btn-outline-red small mt-2 
                 ${flags.updating ? 'pending-animation' : ''}`
               }
               onClick={onDeleteAvatar}
             >
-              {t('myProfile.delete')}
-            </button>
+              <TrashIcon 
+              />
+            </button> */}
           </div>
         </div>
 

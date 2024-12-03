@@ -32,7 +32,15 @@
     "save": "Зберегти",
     "photoLabel": "Змінити фото",
     "delete": "Видалити",
-    "birthdayLabel": "Дата народження"
+    "birthdayLabel": "Дата народження",
+    "password": "Пароль",
+    "updatePassword": "Змініть свій пароль",
+    "change": "Змінити",
+    "currentPassword": "Поточний пароль",
+    "newPassword": "Новий пароль",
+    "confirmNewPassword": "Підтвердіть новий пароль",
+    "passwordsDoNotMatch": "Паролі не співпадають",
+    "passwordSameAsOld": "Новий пароль не може бути таким самим, як старий"
   },
   "system": {
     "invalidPhone": "Недійсний номер телефону",
