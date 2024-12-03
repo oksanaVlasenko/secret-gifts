@@ -26,6 +26,14 @@
     "myProfile": "My Profile",
     "logOut": "Log out"
   },
+  "myProfile": {
+    "profile": "Profile",
+    "updateDetails": "Update your photo and personal details",
+    "save": "Save",
+    "photoLabel": "Change photo",
+    "delete": "Delete",
+    "birthdayLabel": "Birthday date"
+  },
   "system": {
     "invalidPhone": "Invalid phone number",
     "invalidEmail": "Invalid email format"

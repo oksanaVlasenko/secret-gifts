@@ -14,14 +14,16 @@ const countries = defaultCountries.filter((country) => {
 interface InputPhoneProps {
   label?: string,
   value: string,
-  onPhoneChange: (value: string, valid: boolean) => void
+  onPhoneChange: (value: string) => void,
+  onPhoneError: (error: boolean) => void
 }
 
 
 const InputPhone: React.FC<InputPhoneProps> = ({
   label,
   value,
-  onPhoneChange
+  onPhoneChange,
+  onPhoneError
 }) => {
   const { t } = useI18n()
 
@@ -48,7 +50,8 @@ const InputPhone: React.FC<InputPhoneProps> = ({
 
     setPhoneError(!isValid ? t('system.invalidPhone') : '')
 
-    onPhoneChange(value, !isValid)
+    onPhoneChange(value)
+    onPhoneError(!isValid)
   };
 
   return (

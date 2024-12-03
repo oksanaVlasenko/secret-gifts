@@ -26,6 +26,14 @@
     "myProfile": "Мій профіль",
     "logOut": "Вийти"
   },
+  "myProfile": {
+    "profile": "Профіль",
+    "updateDetails": "Оновіть своє фото та особисті дані",
+    "save": "Зберегти",
+    "photoLabel": "Змінити фото",
+    "delete": "Видалити",
+    "birthdayLabel": "Дата народження"
+  },
   "system": {
     "invalidPhone": "Недійсний номер телефону",
     "invalidEmail": "Невірний формат електронної пошти"

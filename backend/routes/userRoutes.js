@@ -11,5 +11,7 @@ userRouter.patch('/', authMdwr.protect, usersMdwr.checkUpdateData, usersCtrl.upd
 userRouter.patch('/avatar', authMdwr.protect, uploadTmp.single('avatar'), usersMdwr.updateImage, usersMdwr.checkUpdateData, usersCtrl.updateAvatar)
 userRouter.delete('/avatar', authMdwr.protect, usersMdwr.deleteImage, usersMdwr.checkUpdateData, usersCtrl.updateAvatar)
 userRouter.patch('/cover', authMdwr.protect, uploadTmp.single('cover'), usersMdwr.updateCoverImage, usersMdwr.checkUpdateData, usersCtrl.updateAvatar)
+userRouter.delete('/cover', authMdwr.protect, usersMdwr.deleteCoverImage, usersMdwr.checkUpdateData, usersCtrl.updateAvatar)
+
 
 module.exports = userRouter

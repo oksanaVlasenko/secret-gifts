@@ -63,8 +63,26 @@ const deleteImage = async (req, res, next) => {
   }
 }
 
+const deleteCoverImage = async (req, res, next) => {
+  try {
+    const { coverId: oldID } = req.user;
+
+    if (oldID) {
+      await deleteOnCloudinary(oldID);
+    }
+
+    req.body.coverURL = null;
+    req.body.coverId = null;
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+}
+
 module.exports = {
     updateImage,
     deleteImage,
-    updateCoverImage
+    updateCoverImage,
+    deleteCoverImage
 }

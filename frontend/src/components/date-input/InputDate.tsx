@@ -11,7 +11,7 @@ type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 interface InputDateProps {
   value: Value | null;
-  onChange: (value: Value | null, errors: boolean) => void;
+  onChange: (value: Value | null, errors?: boolean) => void;
   label?: string
 }
 
