@@ -2,13 +2,14 @@ const express = require('express')
 const mongoose = require('mongoose')
 const cors = require('cors')
 const User = require('./models/userSchema')
-
+const helmet = require('helmet');
 const dotenv = require('dotenv');
 
 dotenv.config({ path: './.env' });
 
 const {
 	authRouter,
+  productRouter,
 	// noticesRouter,
 	// petsRouter,
 	// swaggerRouter,
@@ -24,12 +25,24 @@ const bodyParser = require('body-parser')
 
 app.use(cors())
 app.use(express.json())
+app.use(helmet());
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use((req, res, next) => {
+  console.log('Request received', req.url);  // виводимо URL запиту
+  next();  // передаємо управління наступному мідлвару
+});
+
 app.use('/auth', authRouter);
-app.use('/user', userRouter)
+app.use('/user', userRouter);
+//app.use('/product', productRouter)
+
+app.use('/product', (req, res, next) => {
+  console.log('Product route hit');
+  next();
+}, productRouter);
 
 app.get('/', (req, res) => {
   res.send('Hellp api')
