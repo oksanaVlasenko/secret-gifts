@@ -241,7 +241,7 @@ const MyProfile: React.FC = () => {
         name={userData.name}
       >
         <button 
-          className={`btn-outline-red mt-4 sm:mt-0 ${flags.updating ? 'pending-animation' : ''} ${disabledSave ? 'disabled' : ''}`}
+          className={`btn-outline-red ml-0 mt-4 sm:mt-0 ${flags.updating ? 'pending-animation' : ''} ${disabledSave ? 'disabled' : ''}`}
           onClick={updateUser}
         >
           {t('myProfile.save')}

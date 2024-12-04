@@ -17,7 +17,7 @@
   }
 
   .account-options {
-    @apply absolute right-0 bg-[#FEF7FE] w-auto sm:w-40 shadow-md rounded-md z-50;
+    @apply absolute right-0 mt-2 bg-[#FEF7FE] w-auto sm:w-32 shadow-md rounded-md z-50;
 
     .option {
       @apply flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 hover:rounded-md cursor-pointer text-[#3A412C] text-xs sm:text-sm;

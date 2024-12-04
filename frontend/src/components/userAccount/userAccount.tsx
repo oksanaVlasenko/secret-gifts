@@ -7,7 +7,7 @@ import {
 import './userAccount.scss'
 
 import { useI18n } from '@/i18n-context'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useOutsideClick } from '@/utils/useOutsideHook';
 
 import { useDispatch } from 'react-redux';
@@ -15,21 +15,42 @@ import { AppDispatch } from '@/store';
 import { logout } from '@/store/user/userSlice';
 import { useNavigate } from "react-router-dom";
 import { clearTokenAndId } from '@/utils/authToken'
+import { getToken } from '@/utils/authToken'
+import axios from "axios";
 
 const UserAccount: React.FC = () => {
   const { t } = useI18n()
+  const token = getToken()
   const navigate = useNavigate();
 
   const dispatch: AppDispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const [avatar, setAvatar] = useState<string | null>(null)
+  const [loading, setLoading] = useState<boolean>(true)
+
+  useEffect(() => {
+    fetchAvatarUrl()
+
+  }, [])
+  
+  const fetchAvatarUrl = async () => {
+    setLoading(true)
+
+    await axios.get('http://localhost:3000/user/', {
+      headers: {
+        Authorization: `Bearer ${token}`, 
+      },
+    })
+      .then((res) => {
+        setAvatar(res.data.user?.avatarURL ?? null)
+      })
+      .catch((err) => console.log(err))
+      .finally(() => setLoading(false))
+  }
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
-
-  // const handleMouseEnter = () => {
-  //   setIsOpen(true);
-  // };
 
   const ref = useOutsideClick(() => {
     setIsOpen(false)
@@ -55,7 +76,18 @@ const UserAccount: React.FC = () => {
         className="icon-container"
         onClick={toggleDropdown}
       >
-        <UserIcon className="user-icon"/>
+        {
+          loading ? (
+            <div className="loading-img pending-animation"></div>
+          ) : (
+            avatar ? (
+              <img src={avatar} alt="Avatar" className="avatar-img" />
+            ) : (
+              <UserIcon className="user-icon"/>
+            )
+          )
+        }
+        
         <ChevronDownIcon className="chevron-icon" />
       </div>
       

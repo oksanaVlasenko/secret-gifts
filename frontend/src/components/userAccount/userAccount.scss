@@ -5,19 +5,62 @@
     @apply flex flex-row items-center;
 
     .user-icon {
-      @apply w-8 h-8 shrink-0;
+      @apply w-10 h-10 shrink-0;
 
       color: $penn-red;
+    }
+
+    .avatar-img {
+      @apply w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 border-[#FEF7FE] object-cover shadow-lg;
     }
 
     .chevron-icon {
       @apply w-4 h-4 shrink-0;
       color: $penn-red;
     }
+
+    .loading-img {
+      @apply w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 border-[#FEF7FE] bg-[#FEF7FE] shadow-lg;
+
+      &.pending-animation {
+        position: relative;
+        color: transparent !important;
+        pointer-events: none;
+        opacity: 0.5;
+    
+        & span {
+          visibility: hidden;
+          opacity: 0;
+        }
+    
+        & svg {
+          visibility: hidden;
+          opacity: 0;
+        }
+    
+        &::after {
+          content: "";
+          position: absolute;
+          width: 16px;
+          height: 16px;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          margin: auto;
+          border: 2px solid transparent;
+          border-top-color: $penn-red;
+          border-left-color: $penn-red;
+          border-right-color: $penn-red;
+          border-radius: 50%;
+          animation: button-loading-spinner 1s linear infinite;
+        }
+      }
+    }
   }
 
   .account-options {
-    @apply absolute right-0 bg-[#FEF7FE] w-auto sm:w-40 shadow-md rounded-md z-50;
+    @apply absolute right-0 mt-2 bg-[#FEF7FE] w-auto sm:w-40 shadow-md rounded-md z-50;
 
     .option {
       @apply flex items-center space-x-2 px-4 py-2 hover:bg-gray-100 hover:rounded-md cursor-pointer text-[#3A412C] text-xs sm:text-sm;

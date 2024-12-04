@@ -67,7 +67,7 @@ const PasswordChange: React.FC<{token: string | null, email: string | number | n
         </div>
 
         <button 
-          className={`btn-outline-red mt-4 sm:mt-0 ${loading ? 'pending-animation' : ''} ${disabledChange ? 'disabled' : ''}`} 
+          className={`btn-outline-red ml-0 mt-4 sm:mt-0 ${loading ? 'pending-animation' : ''} ${disabledChange ? 'disabled' : ''}`} 
           onClick={updatePassword}
         >
           {t('myProfile.change')}
@@ -76,7 +76,8 @@ const PasswordChange: React.FC<{token: string | null, email: string | number | n
 
       <div className="form-block">
         <div className='grid-template-three'>
-          <div className="mb-4 sm:w-1/2 w-full lg:w-72 gap-8">
+          {/* w-full lg:w-72 */}
+          <div className="mb-4 sm:w-1/2 pr-2 md:pr-5 lg:pr-10">
             <Input 
               value={oldPassword}
               label={t('myProfile.currentPassword')}
@@ -90,8 +91,8 @@ const PasswordChange: React.FC<{token: string | null, email: string | number | n
             />
           </div>
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
-            <div className="mb-4 w-full lg:w-72">
+          <div className='grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-10 lg:gap-20'>
+            <div className="mb-4">
               <Input 
                 value={newPassword}
                 label={t('myProfile.newPassword')}
@@ -108,7 +109,8 @@ const PasswordChange: React.FC<{token: string | null, email: string | number | n
               />
             </div>
 
-            <div className="mb-4 w-full lg:w-72">
+            {/* w-full lg:w-72 */}
+            <div className="mb-4 ">
               <Input 
                 value={confirmedPassword}
                 label={t('myProfile.confirmNewPassword')}

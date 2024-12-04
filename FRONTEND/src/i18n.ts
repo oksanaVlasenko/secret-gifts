@@ -30,13 +30,13 @@ i18next
   .init({
     fallbackLng: 'en', 
     detection: {
-      order: ['localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
-      caches: ['localStorage'], 
-      lookupQuerystring: 'lang', 
-      lookupLocalStorage: 'language', 
-      lookupCookie: 'i18next',
+      order: ['localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'], 
+      caches: ['localStorage'],
+      lookupLocalStorage: 'language',
+      lookupQuerystring: 'lang',
+      lookupCookie: 'i18next', 
     },
-    lng: navigator.language.split('-')[0] || 'en',
+    lng: localStorage.getItem('language') || navigator.language.split('-')[0] || 'en',
     interpolation: {
       escapeValue: false, 
     },

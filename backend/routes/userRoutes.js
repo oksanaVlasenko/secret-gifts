@@ -9,6 +9,7 @@ const userRouter = express.Router()
 
 userRouter.get('/', authMdwr.protect, usersCtrl.getUser) 
 userRouter.patch('/', authMdwr.protect, usersMdwr.checkUpdateData, usersCtrl.updateUser)
+userRouter.get('/avatar', authMdwr.protect, usersCtrl.getUserAvatar)
 userRouter.patch('/avatar', authMdwr.protect, uploadTmp.single('avatar'), usersMdwr.updateImage, usersMdwr.checkUpdateData, usersCtrl.updateAvatar)
 userRouter.delete('/avatar', authMdwr.protect, usersMdwr.deleteImage, usersMdwr.checkUpdateData, usersCtrl.updateAvatar)
 userRouter.patch('/cover', authMdwr.protect, uploadTmp.single('cover'), usersMdwr.updateCoverImage, usersMdwr.checkUpdateData, usersCtrl.updateAvatar)
