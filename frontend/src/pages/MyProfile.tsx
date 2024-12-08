@@ -12,6 +12,7 @@ import CoverImage from '@/blocks/myProfile/CoverImage'
 import ProfileHeader from '@/blocks/myProfile/ProfileHeader'
 import Form from '@/blocks/myProfile/Form'
 import PasswordChange from '@/blocks/myProfile/PasswordChange';
+import { handleCatch } from '@/utils/handleCatch';
 
 const MyProfile: React.FC = () => {
   const { t } = useI18n()
@@ -106,7 +107,8 @@ const MyProfile: React.FC = () => {
         setCoverUrl(user?.coverURL ?? '')
       })
       .catch((err) => {
-        console.log(err, ' error')
+        console.log('erro block')
+        handleCatch(err)
       })
       .finally(() => handleFlagChange('loading', false))
     

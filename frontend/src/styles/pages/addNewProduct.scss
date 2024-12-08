@@ -1,3 +1,37 @@
 .new-product {
-  @apply relative mx-auto rounded-md shadow-lg w-[90%] lg:w-[80%] max-w-full overflow-hidden box-border mb-16; 
+  @apply relative mx-auto rounded-md shadow-lg w-full overflow-hidden box-border mb-16; 
+
+  h2 {
+    @apply text-left mb-4 mt-4 text-3xl sm:text-4xl ml-10;
+    color: $penn-red;
+  }
+
+  .search {
+    @apply w-full flex justify-around items-center;
+
+    .input-wrapper {
+      @apply w-1/2 md:w-3/4;
+    }
+
+    .btn-outline-red {
+      @apply py-2;
+      align-self: flex-start;
+    }
+
+    .tooltip {
+      @apply bg-[#D49A7A] text-[#FEF7FE];
+    }
+  }
+
+  .product-container {
+    @apply flex my-10 flex-col sm:flex-row sm:mx-14;
+
+    .product-data {
+      @apply w-full sm:ml-14;
+
+      .input-wrapper {
+        @apply w-full mb-8;
+      }
+    }
+  }
 }

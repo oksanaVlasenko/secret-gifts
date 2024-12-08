@@ -1,19 +1,62 @@
-import Input from '@/components/input/Input'
+//import Input from '@/components/input/Input'
 import '@/styles/pages/addNewProduct.scss'
 import axios from 'axios'
 import { useState } from 'react'
 import { getToken } from '@/utils/authToken'
+import Gallery from '@/components/gallery/Gallery'
+import SearchUrl from '@/blocks/product/SearchUrlBlock'
+import { useI18n } from '@/i18n-context'
 
+import { Product } from '@/types/product.types'
+import ProductData from '@/blocks/product/ProductData'
 // Make sure that your URL is valid
 const AddNewProduct: React.FC = () => {
+  const { t } = useI18n()
   const token = getToken()
 
   const [url, setUrl] = useState<string | number | null | undefined>('')
-  const [product, setProduct] = useState({
+  const [product, setProduct] = useState<Product>({
     title: '',
     price: '',
-    images: []
+    images: [],
+    description: ''
   })
+
+  const handleRemoveImage = (index: number) => {
+    //setImages((prev) => prev.filter((_, i) => i !== index));
+    const images = product.images.filter((_, i) => i !== index)
+
+    handleInputChange('images', images)
+  };
+
+  const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.files, ' e')
+    if (e.target.files) {
+      const file = e.target.files[0]; // Отримуємо перший файл
+
+      console.log(file, 'file')
+      // Якщо файл існує
+      if (file) {
+        // Створюємо URL для файла
+        const imageUrl = URL.createObjectURL(file);
+
+        // Додаємо URL в стан images
+        const images = [...product.images, imageUrl]
+        handleInputChange('images', images)
+      }
+    }
+    // const newImage = prompt('Введіть URL нового фото:');
+    // if (newImage) {
+    //   setImages((prev) => [...prev, newImage]);
+    // }
+  };
+
+  const handleInputChange = (field: string, value: string | number | null | undefined | string[] ) => {  
+    setProduct((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+  };
 
   const handleUrl = (e: string | number | null | undefined) => {
     setUrl(e)
@@ -33,51 +76,41 @@ const AddNewProduct: React.FC = () => {
       .then((res) => {
         console.log(res, ' res ')
 
-        setProduct({
+        setProduct(prevProduct => ({
+          ...prevProduct,
           title: res.data.title,
           price: res.data.price,
           images: res.data.images
-        })
+        }))
       })
       .catch((error) => console.error('Error:', error.response?.data || error.message))
   }
 
   return (
     <div className="new-product">
-      <h3 className="text-xl font-semibold text-[#3A412C]">
-        New product
-      </h3>
+      <h2>
+        {t('product.newProduct')}
+      </h2>
 
-      <Input 
-        value={url}
-        onChange={handleUrl}
+      <SearchUrl 
+        url={url}
+        onUrlChange={handleUrl}
+        onFetchData={testFetchDataFromUrl}
       />
 
-      <button 
-        className={`btn-outline-red ml-0 mt-4 sm:mt-0`}
-        onClick={testFetchDataFromUrl}
-      >
-        Fetch data
-      </button>
+      <div className='product-container'>
+        <Gallery 
+          images={product.images}
+          onAddImage={handleAddImage}
+          onDeleteImage={handleRemoveImage}
+        />
 
-      {
-        product.title && 
-          <h3 className='text-gray-900'>{product.title}</h3>
-      }
-
-      {
-        product.price && 
-          <p className='text-gray-900'>{product.price}</p>
-      }
-
-      {
-        product.images.length > 0 &&
-        (
-          product.images.map((img, ind) => (
-            <img key={ind} src={img} alt='photo' className='w-24 h-24'/>
-          ))
-        )
-      }
+        <ProductData 
+          product={product}
+          onInputChange={handleInputChange}
+        />
+      </div>
+      
     </div>
   )
 }

@@ -17,7 +17,7 @@ const FileInput: React.FC<FileInputProps> = ({ triggerElement, onFileSelect }) =
   };
 
   return (
-    <div>
+    <div className='file-input-container'>
       <div onClick={handleClick} style={{ cursor: 'pointer' }}>
         {triggerElement}
       </div>

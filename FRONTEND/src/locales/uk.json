@@ -43,8 +43,21 @@
     "passwordSameAsOld": "Новий пароль не може бути таким самим, як старий",
     "passwordNotValid": "Недійсний пароль"
   },
+  "product": {
+    "autofill": "Автозаповнення",
+    "autofillTooltip": "Автоматично заповнити дані продукту за посиланням.",
+    "urlPlaceholder": "Введіть посилання",
+    "newProduct": "Новий продукт",
+    "title": "Назва",
+    "titlePlaceholder": "Введіть назву",
+    "price": "Ціна",
+    "pricePlaceholder": "Введіть ціну",
+    "notes": "Примітки",
+    "notesPlaceholder": "Введіть примітку"
+  },
   "system": {
     "invalidPhone": "Недійсний номер телефону",
-    "invalidEmail": "Невірний формат електронної пошти"
+    "invalidEmail": "Невірний формат електронної пошти",
+    "invalidUrl": "Невірний формат посилання"
   }
 }

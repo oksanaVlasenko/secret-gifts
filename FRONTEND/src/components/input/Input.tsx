@@ -22,13 +22,14 @@ interface InputProps {
   min?: number | null,
   max?: number | null,
   accept?: string | null,
+  inputTitle?: boolean,
   onChange: (value: string | number | null | undefined) => void,
   onEmailValid?: (existEmailError: boolean | null) => void
 }
 
 const Input: React.FC<InputProps> = ({
   value,
-  label = 'Label Text',
+  label,
   errorText,
   type,
   disabled,
@@ -38,6 +39,7 @@ const Input: React.FC<InputProps> = ({
   min,
   max,
   accept,
+  inputTitle,
   onChange,
   onEmailValid
 }) => {
@@ -72,8 +74,9 @@ const Input: React.FC<InputProps> = ({
 
   return (
     <div className={`
-      input-wrapper
+      input-wrapper 
       ${errorText || emailError ? 'error' : ''}
+      ${inputTitle ? 'input-title' : ''}
     `}>
       {
         label && 

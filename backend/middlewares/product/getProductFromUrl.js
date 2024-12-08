@@ -101,7 +101,7 @@ exports.fetchProductFromUrl = async (req, res, next) => {
           const absoluteSrc = new URL(src, url).href;
           images.push(absoluteSrc);
         }
-        if (images.length >= 5) { // Зупиняємо перебір після перших 5
+        if (images.length >= 10) { // Зупиняємо перебір після перших 5
           return false; // Перериваємо each
         }
       });

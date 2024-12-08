@@ -16,6 +16,8 @@ import { logout } from '@/store/user/userSlice';
 import { useNavigate } from "react-router-dom";
 import { clearTokenAndId } from '@/utils/authToken'
 import { getToken } from '@/utils/authToken'
+import { handleCatch } from '@/utils/handleCatch';
+
 import axios from "axios";
 
 const UserAccount: React.FC = () => {
@@ -44,7 +46,7 @@ const UserAccount: React.FC = () => {
       .then((res) => {
         setAvatar(res.data.user?.avatarURL ?? null)
       })
-      .catch((err) => console.log(err))
+      .catch((err) => handleCatch(err))
       .finally(() => setLoading(false))
   }
 

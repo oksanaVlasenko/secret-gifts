@@ -43,8 +43,21 @@
     "passwordSameAsOld": "The new password cannot be the same as the old password",
     "passwordNotValid": "Invalid password"
   },
+  "product": {
+    "autofill": "Autofill",
+    "autofillTooltip": "Automatically populate product data from the link.",
+    "urlPlaceholder": "Enter the url",
+    "newProduct": "New product",
+    "title": "Title",
+    "titlePlaceholder": "Enter a title",
+    "price": "Price",
+    "pricePlaceholder": "Enter a price",
+    "notes": "Notes",
+    "notesPlaceholder": "Enter notes"
+  },
   "system": {
     "invalidPhone": "Invalid phone number",
-    "invalidEmail": "Invalid email format"
+    "invalidEmail": "Invalid email format",
+    "invalidUrl": "Invalid URL format"
   }
 }

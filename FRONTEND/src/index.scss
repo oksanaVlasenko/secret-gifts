@@ -92,6 +92,10 @@ body, html {
 .btn-outline-red {
   @apply text-[$white-smoke] border-2 border-[#9B0D0F] hover:border-[#7A0B0D] text-[#9B0D0F] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
 
+  &.with-icon {
+    @apply flex flex-row items-center;
+  }
+
   &.small {
     @apply py-1.5 px-4;
   }
@@ -135,6 +139,7 @@ body, html {
     }
   }
 }
+
 
 body::-webkit-scrollbar {
   width: 4px;
