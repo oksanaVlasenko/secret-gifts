@@ -26,11 +26,16 @@
   .product-container {
     @apply flex my-10 flex-col sm:flex-row sm:mx-14;
 
+    &.loader {
+      @apply justify-center items-center h-72;
+    }
+
     .product-data {
       @apply w-full sm:ml-14;
 
-      .input-wrapper {
-        @apply w-full mb-8;
+      .input-wrapper,
+      .textarea-wrapper {
+        @apply w-full mb-8 max-w-[calc(100%-2rem)] mx-auto;
       }
     }
   }

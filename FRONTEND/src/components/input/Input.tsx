@@ -9,6 +9,7 @@ import { debounce } from 'throttle-debounce'
 import { useId } from 'react'
 
 import { EyeSlashIcon, EyeIcon } from '@heroicons/react/20/solid'
+import CurrencySelect from '@/components/currency-select/CurrencySelect'
 
 interface InputProps {
   value: string | number | null | undefined,
@@ -23,8 +24,10 @@ interface InputProps {
   max?: number | null,
   accept?: string | null,
   inputTitle?: boolean,
+  currency?: string,
   onChange: (value: string | number | null | undefined) => void,
-  onEmailValid?: (existEmailError: boolean | null) => void
+  onEmailValid?: (existEmailError: boolean | null) => void,
+  onCurrencyChange?: (currency: string) => void
 }
 
 const Input: React.FC<InputProps> = ({
@@ -40,6 +43,8 @@ const Input: React.FC<InputProps> = ({
   max,
   accept,
   inputTitle,
+  currency,
+  onCurrencyChange,
   onChange,
   onEmailValid
 }) => {
@@ -47,14 +52,23 @@ const Input: React.FC<InputProps> = ({
 
   const ageInputId = useId()
 
-  const [currentType, setCurrentType] = useState<string | null>(type ?? 'text')
+  const [currentType, setCurrentType] = useState<string | null>(type === 'number' ? 'text' : type ?? 'text')
   const [emailError, setEmailError] = useState<string | null>('')
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = event.target.value;
     
-    onChange(newValue); 
-
+    if (type === 'number') {
+      if (/^\d*$/.test(newValue)) {
+        onChange(Number(newValue));
+      } else {
+        const numericString = newValue.replace(/\D+/g, "")
+        onChange(Number(numericString))
+      }
+    } else {
+      onChange(newValue); 
+    }
+    
     if (type === 'email') validateEmailInput()
   };
 
@@ -91,7 +105,7 @@ const Input: React.FC<InputProps> = ({
       <input 
         type={String(currentType)}
         id={ageInputId}
-        className='input-container'
+        className={`input-container ${currency ? 'currency' : ''}`}
         value={value ?? ''}
         disabled={Boolean(disabled)}
         placeholder={String(placeholder)}
@@ -104,6 +118,14 @@ const Input: React.FC<InputProps> = ({
         onBlur={validateEmailInput}
       />
 
+      {
+        currency && 
+        <CurrencySelect 
+          value={currency}
+          onSelect={onCurrencyChange}
+        />
+      }
+      
       {
         type === 'password' && currentType === 'password' &&
           <EyeSlashIcon 
@@ -119,8 +141,6 @@ const Input: React.FC<InputProps> = ({
             onClick={togglePassword}
           />
       }
-
-      {disabled}
 
       {
         (errorText || emailError) && 

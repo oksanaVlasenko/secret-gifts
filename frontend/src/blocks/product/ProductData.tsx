@@ -1,4 +1,5 @@
 import Input from "@/components/input/Input"
+import Textarea from "@/components/textarea/Textarea"
 import { useI18n } from '@/i18n-context'
 
 import { Product } from '@/types/product.types'
@@ -27,14 +28,15 @@ const ProductData: React.FC<ProductDataProps> = ({
       <Input 
         value={Number(product.price)}
         type='number'
+        currency={product.currency}
         label={t('product.price')}
         placeholder={t('product.pricePlaceholder')}
         onChange={(e) => onInputChange('price', e)}
+        onCurrencyChange={(e) => onInputChange('currency', e)}
       />
 
-      <Input 
+      <Textarea 
         value={product.description}
-        type='text'
         label={t('product.notes')}
         placeholder={t('product.notesPlaceholder')}
         onChange={(e) => onInputChange('description', e)}

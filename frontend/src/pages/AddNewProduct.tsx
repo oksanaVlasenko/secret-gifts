@@ -9,6 +9,8 @@ import { useI18n } from '@/i18n-context'
 
 import { Product } from '@/types/product.types'
 import ProductData from '@/blocks/product/ProductData'
+import Loader from '@/components/loader/Loader'
+import { handleCatch } from '@/utils/handleCatch'
 // Make sure that your URL is valid
 const AddNewProduct: React.FC = () => {
   const { t } = useI18n()
@@ -19,11 +21,12 @@ const AddNewProduct: React.FC = () => {
     title: '',
     price: '',
     images: [],
-    description: ''
+    description: '',
+    currency: 'uah'
   })
+  const [loading, setLoading] = useState<boolean>(false)
 
   const handleRemoveImage = (index: number) => {
-    //setImages((prev) => prev.filter((_, i) => i !== index));
     const images = product.images.filter((_, i) => i !== index)
 
     handleInputChange('images', images)
@@ -63,6 +66,8 @@ const AddNewProduct: React.FC = () => {
   }
 
   const testFetchDataFromUrl = async () => {
+    setLoading(true)
+
     await axios({
       method: 'post',
       url: 'http://localhost:3000/product/map-product',
@@ -74,8 +79,6 @@ const AddNewProduct: React.FC = () => {
       },
     })
       .then((res) => {
-        console.log(res, ' res ')
-
         setProduct(prevProduct => ({
           ...prevProduct,
           title: res.data.title,
@@ -83,7 +86,8 @@ const AddNewProduct: React.FC = () => {
           images: res.data.images
         }))
       })
-      .catch((error) => console.error('Error:', error.response?.data || error.message))
+      .catch((error) => handleCatch(error))
+      .finally(() => setLoading(false))
   }
 
   return (
@@ -98,18 +102,32 @@ const AddNewProduct: React.FC = () => {
         onFetchData={testFetchDataFromUrl}
       />
 
-      <div className='product-container'>
-        <Gallery 
-          images={product.images}
-          onAddImage={handleAddImage}
-          onDeleteImage={handleRemoveImage}
-        />
+      {
+        loading 
+        ? (
+          <div className='product-container loader'>
+            <Loader 
+              fullScreen={false}
+            />
+          </div>
+        )
+        : (
+          <div className='product-container'>
+            <Gallery 
+              images={product.images}
+              onAddImage={handleAddImage}
+              onDeleteImage={handleRemoveImage}
+            />
 
-        <ProductData 
-          product={product}
-          onInputChange={handleInputChange}
-        />
-      </div>
+            <ProductData 
+              product={product}
+              onInputChange={handleInputChange}
+            />
+          </div>
+        )
+      }
+
+      
       
     </div>
   )

@@ -107,7 +107,6 @@ const MyProfile: React.FC = () => {
         setCoverUrl(user?.coverURL ?? '')
       })
       .catch((err) => {
-        console.log('erro block')
         handleCatch(err)
       })
       .finally(() => handleFlagChange('loading', false))

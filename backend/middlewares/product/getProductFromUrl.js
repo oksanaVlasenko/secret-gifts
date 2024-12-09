@@ -88,27 +88,32 @@ exports.fetchProductFromUrl = async (req, res, next) => {
         $('title').text() ||
         'No title found';
 
-      const rawPrice = $('[itemprop="price"]').attr('content') || $('[class*="price"]').text() || 'No price found';
+        const rawPrice = $('[itemprop="price"]').attr('content') || $('[class*="price"]').text() || '';
 
-      // Використовуємо регулярний вираз для вибору числа та символу
-      const priceMatch = rawPrice.match(/(\d+[\.,]?\d*)\s?(\D{1,3})/);
-      const price = priceMatch ? `${priceMatch[1]} ${priceMatch[2]}` : 'No price found';
+        // Використовуємо регулярний вираз для вибору числа та символу
+        const priceMatch = rawPrice.match(/(\d+[\.,]?\d*)\s?(\D{1,3})/);
+        
+        // Якщо знаходимо ціну, повертаємо її у відповідному форматі, інакше — 0
+        const price = priceMatch ? `${priceMatch[1]} ${priceMatch[2]}` : 0;
 
       const images = [];
+
       $('img').each((_, img) => {
         const src = $(img).attr('src');
-        if (src && src.endsWith('.jpg')) { // Перевіряємо, чи закінчується на '.jpg'
+        console.log(img, ' img')
+        if (src && src.endsWith('.jpg')) { 
           const absoluteSrc = new URL(src, url).href;
           images.push(absoluteSrc);
         }
-        if (images.length >= 10) { // Зупиняємо перебір після перших 5
-          return false; // Перериваємо each
+
+        if (images.length >= 10) { 
+          return false; 
         }
       });
 
       req.body.productData = { title, price, images };
 
-      return next(); // Передаємо в наступний мідлвар
+      return next();
     } else {
       return next(
         new AppError(500, `Failed to fetch product data: ${response.status}`)
