@@ -7,7 +7,7 @@ import Gallery from '@/components/gallery/Gallery'
 import SearchUrl from '@/blocks/product/SearchUrlBlock'
 import { useI18n } from '@/i18n-context'
 
-import { Product } from '@/types/product.types'
+import { Images, Product } from '@/types/product.types'
 import ProductData from '@/blocks/product/ProductData'
 import Loader from '@/components/loader/Loader'
 import { handleCatch } from '@/utils/handleCatch'
@@ -25,36 +25,32 @@ const AddNewProduct: React.FC = () => {
     currency: 'uah'
   })
   const [loading, setLoading] = useState<boolean>(false)
+  const [pending, setPending] = useState<boolean>(false)
 
-  const handleRemoveImage = (index: number) => {
-    const images = product.images.filter((_, i) => i !== index)
+  const [customImages, setCustomImages] = useState<File[]>([])
+
+  const handleRemoveImage = (id: string) => {
+    const images = product.images.filter((i) => i.id !== id)
 
     handleInputChange('images', images)
   };
 
   const handleAddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.files, ' e')
     if (e.target.files) {
-      const file = e.target.files[0]; // Отримуємо перший файл
+      const file = e.target.files[0]; 
 
-      console.log(file, 'file')
-      // Якщо файл існує
+      setCustomImages([...customImages, file])
+
       if (file) {
-        // Створюємо URL для файла
         const imageUrl = URL.createObjectURL(file);
 
-        // Додаємо URL в стан images
-        const images = [...product.images, imageUrl]
+        const images = [...product.images, { src: imageUrl, id: crypto.randomUUID() }]
         handleInputChange('images', images)
       }
     }
-    // const newImage = prompt('Введіть URL нового фото:');
-    // if (newImage) {
-    //   setImages((prev) => [...prev, newImage]);
-    // }
   };
 
-  const handleInputChange = (field: string, value: string | number | null | undefined | string[] ) => {  
+  const handleInputChange = (field: string, value: string | number | null | undefined | Images[] ) => {  
     setProduct((prev) => ({
       ...prev,
       [field]: value,
@@ -63,6 +59,68 @@ const AddNewProduct: React.FC = () => {
 
   const handleUrl = (e: string | number | null | undefined) => {
     setUrl(e)
+  }
+
+  const uploadCustomImages = async () => {
+    const formData = new FormData();
+
+    if (customImages && customImages.length > 0) {
+      customImages.forEach((img) => formData.append('images', img))
+    } else {
+      console.error('File is undefined');
+      return
+    }
+
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/product/images',
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+  
+      console.log(response.data, ' res');
+      return response.data; // Повертаємо response.data
+    } catch (error) {
+      handleCatch(error);
+      throw error; // Прокидуємо помилку, якщо вона є
+    }
+  }
+
+  const createProduct = async () => {
+    setPending(true)
+
+    let newImages = []
+
+    if (customImages && customImages.length > 0) {
+      newImages = await uploadCustomImages();
+    }
+
+    console.log(newImages, ' new images')
+
+    const data = {
+      ...product,
+      images:  [...new Set([...product.images, ...newImages])],
+      url
+    }
+
+    await axios({
+      method: 'post',
+      url: 'http://localhost:3000/product/create',
+      data: {
+        data
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+    .then((res) => {
+      console.log(res.data, ' res')
+    })
+    .catch((error) => handleCatch(error))
+    .finally(() => setPending(false))
   }
 
   const testFetchDataFromUrl = async () => {
@@ -82,8 +140,8 @@ const AddNewProduct: React.FC = () => {
         setProduct(prevProduct => ({
           ...prevProduct,
           title: res.data.title,
-          price: res.data.price,
-          images: res.data.images
+          price: Number(res.data.price),
+          images: res.data.images.map((img: string )=> { return {id: crypto.randomUUID(), src: img} })
         }))
       })
       .catch((error) => handleCatch(error))
@@ -122,7 +180,15 @@ const AddNewProduct: React.FC = () => {
             <ProductData 
               product={product}
               onInputChange={handleInputChange}
-            />
+            >
+              <button 
+                type="button" 
+                className={`btn-filled-red product-btn ${pending ? 'pending-animation' : ''}`}
+                onClick={createProduct}
+              >
+                create
+              </button>
+            </ProductData>
           </div>
         )
       }

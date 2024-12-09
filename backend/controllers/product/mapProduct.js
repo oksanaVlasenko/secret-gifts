@@ -1,7 +1,6 @@
 const { AppError, catchAsync } = require('../../utils')
 
 exports.mapProduct = catchAsync((req, res) => {
-  console.log(req.body, ' data')
   const { productData } = req.body;
 
   if (!productData) {

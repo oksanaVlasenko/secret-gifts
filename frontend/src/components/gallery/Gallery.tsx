@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide, SwiperClass  } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs, Zoom } from 'swiper/modules';
 
 import { CameraIcon, TrashIcon, PhotoIcon } from '@heroicons/react/16/solid';
+import { Images } from '@/types/product.types'
 
 import FileInput from '@/components/file-input/FileInput';
 
@@ -16,8 +17,8 @@ import './gallery.scss'
 import GalleryPopup from '../gallery-popup/GalleryPopup';
 
 interface GalleryProps {
-  images: string[],
-  onDeleteImage: (index: number) => void,
+  images: Images[],
+  onDeleteImage: (id: string) => void,
   onAddImage: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -67,14 +68,14 @@ const Gallery: React.FC<GalleryProps> = ({
                 className="mySwiper2"
               >
                 {
-                  images.map((img, index) => (
-                    <SwiperSlide key={index}>
-                      <img src={img} onClick={() => setOpenModal(true)}/>
+                  images.map((img) => (
+                    <SwiperSlide key={img.id}>
+                      <img src={img.src} onClick={() => setOpenModal(true)}/>
                       
                       <div className='delete-bg'>
                         <TrashIcon 
                           className='icon-bg-upload'
-                          onClick={() => onDeleteImage(index)}
+                          onClick={() => onDeleteImage(img.id)}
                         />
                       </div>
                       
@@ -94,9 +95,9 @@ const Gallery: React.FC<GalleryProps> = ({
                 className="mySwiper"
               >
                 {
-                  images.map((img, index) => (
-                    <SwiperSlide key={index}>
-                      <img src={img} />
+                  images.map((img) => (
+                    <SwiperSlide key={img.id}>
+                      <img src={img.src} />
                     </SwiperSlide>
                   ))
                 }
@@ -140,17 +141,17 @@ const Gallery: React.FC<GalleryProps> = ({
             className="mySwiperModal"
           >
             {
-              images.map((img, index) => (
-                <SwiperSlide key={index}>
+              images.map((img) => (
+                <SwiperSlide key={img.id}>
                   <div className="swiper-zoom-container">
-                    <img src={img} onClick={() => setOpenModal(true)}/>
+                    <img src={img.src} onClick={() => setOpenModal(true)}/>
                   </div>
                   
                   
                   <div className='delete-bg'>
                     <TrashIcon 
                       className='icon-bg-upload'
-                      onClick={() => onDeleteImage(index)}
+                      onClick={() => onDeleteImage(img.id)}
                     />
                   </div>
                   
@@ -170,9 +171,9 @@ const Gallery: React.FC<GalleryProps> = ({
             className="mySwiper"
           >
             {
-              images.map((img, index) => (
-                <SwiperSlide key={index}>
-                  <img src={img} />
+              images.map((img) => (
+                <SwiperSlide key={img.id}>
+                  <img src={img.src} />
                 </SwiperSlide>
               ))
             }

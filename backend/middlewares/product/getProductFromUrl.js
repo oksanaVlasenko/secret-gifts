@@ -92,15 +92,14 @@ exports.fetchProductFromUrl = async (req, res, next) => {
 
         // Використовуємо регулярний вираз для вибору числа та символу
         const priceMatch = rawPrice.match(/(\d+[\.,]?\d*)\s?(\D{1,3})/);
-        
         // Якщо знаходимо ціну, повертаємо її у відповідному форматі, інакше — 0
-        const price = priceMatch ? `${priceMatch[1]} ${priceMatch[2]}` : 0;
+        const price = priceMatch ? `${priceMatch[1]}` : 0;
 
       const images = [];
 
       $('img').each((_, img) => {
         const src = $(img).attr('src');
-        console.log(img, ' img')
+
         if (src && src.endsWith('.jpg')) { 
           const absoluteSrc = new URL(src, url).href;
           images.push(absoluteSrc);

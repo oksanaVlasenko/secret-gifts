@@ -5,13 +5,15 @@ import { useI18n } from '@/i18n-context'
 import { Product } from '@/types/product.types'
 
 interface ProductDataProps {
+  children: React.ReactNode
   product: Product,
   onInputChange: (field: string, value: string | number | null | undefined ) => void
 }
 
 const ProductData: React.FC<ProductDataProps> = ({
   product,
-  onInputChange
+  children,
+  onInputChange,
 }) => {
   const { t } = useI18n()
 
@@ -41,6 +43,8 @@ const ProductData: React.FC<ProductDataProps> = ({
         placeholder={t('product.notesPlaceholder')}
         onChange={(e) => onInputChange('description', e)}
       />
+
+      {children}
     </div>
   )
 }

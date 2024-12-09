@@ -1,0 +1,32 @@
+.home {
+  .cards-container {
+    @apply w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5;
+    
+    .card {
+      @apply w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl;
+
+      .image {
+        @apply h-80 max-h-80 w-full object-contain rounded-t-xl;
+
+        //transform: scale(0.9); 
+      }
+
+      .card-body {
+        @apply px-4 py-3 w-72;
+
+        .category-name {
+          @apply text-gray-400 mr-3 uppercase text-xs;
+        }
+
+        .product-name {
+          @apply text-lg font-bold text-black truncate block capitalize;
+        }
+
+        .product-price {
+          @apply text-lg font-semibold text-black cursor-auto my-3;
+        }
+      }
+    }
+  
+  }
+}

@@ -31,12 +31,16 @@
     }
 
     .product-data {
-      @apply w-full sm:ml-14;
+      @apply w-full sm:ml-14 flex flex-col;
 
       .input-wrapper,
       .textarea-wrapper {
         @apply w-full mb-8 max-w-[calc(100%-2rem)] mx-auto;
       }
+    }
+
+    .product-btn {
+      @apply w-full max-w-[calc(100%-2rem)] sm:w-1/2 sm:max-w-80 mt-4 mx-auto;
     }
   }
 }
