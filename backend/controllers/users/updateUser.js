@@ -3,6 +3,8 @@ const { catchAsync } = require('../../utils')
 exports.updateUser = catchAsync(async (req, res) => {
   const { user } = req
 
+  console.log(user, ' user')
+
   Object.keys(req.body).forEach((key) => {
     user[key] = req.body[key]
   })

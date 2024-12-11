@@ -3,34 +3,6 @@ const { uploadCloudinary, deleteOnCloudinary, uploadCloudinaryMultiple } = requi
 const fs = require('fs/promises')
 
 const updateImages = async (req, res, next) => {
-
-  // if (req.files) {
-
-  //   const images = await Promise.all(
-  //     req.files.map(async (img) => {
-  //       const { path: tempUpload } = img;
-    
-  //       // Читання файлу з Jimp
-  //       const file = await Jimp.read(tempUpload);
-  //       file.write(tempUpload); // Перезапис файлу, якщо потрібно
-  //       console.log(tempUpload, ' temp') 
-  //       // Завантаження файлу на Cloudinary
-  //       const { secure_url: imgURL, public_id: imgId } = await uploadCloudinary(tempUpload);
-        
-  //       // Видалення тимчасового файлу після завантаження
-  //       await fs.unlink(tempUpload);
-    
-  //       // Повертаємо об'єкт з результатами
-  //       return {
-  //         id: imgId,
-  //         src: imgURL
-  //       };
-  //     })
-  //   );
-    
-  //   req.body.images = images
-  // }
-
   if (req.files) {
     const images = [];
 
@@ -43,7 +15,6 @@ const updateImages = async (req, res, next) => {
 
     let resultOfUpload = await uploadCloudinaryMultiple(req.files)
 
-    console.log(resultOfUpload, ' result')
     resultOfUpload = resultOfUpload.map(img => {
       return {
         id: img.public_id,
@@ -57,35 +28,6 @@ const updateImages = async (req, res, next) => {
       await fs.unlink(tempUpload);
     });
 
-    // for (const img of req.files) {
-    //   try {
-    //     const { path: tempUpload } = img;
-
-    //     const stats = await fs.stat(tempUpload);
-    //     if (stats.size === 0) {
-    //       throw new Error(`File is empty: ${tempUpload}`);
-    //     }
-
-    //     console.log(`Processing file: ${tempUpload}, Size: ${stats.size} bytes`);
-
-    //     // Читання файлу через Jimp
-    //     const file = await Jimp.read(tempUpload);
-    //     file.write(tempUpload); // Перезапис файлу
-
-    //     // Завантаження файлу на Cloudinary
-    //     const { secure_url: imgURL, public_id: imgId } = await uploadCloudinary(tempUpload);
-
-    //     // Видалення тимчасового файлу після завантаження
-    //     await fs.unlink(tempUpload);
-
-    //     // Додавання результату у список
-    //     images.push({ id: imgId, src: imgURL });
-    //   } catch (error) {
-    //     console.error(`Error processing file ${img.path}:`, error.message);
-    //     // Продовжуємо обробку наступних файлів
-    //   }
-    // }
-
     req.body.images = resultOfUpload;
   }
   next()
@@ -94,7 +36,11 @@ const updateImages = async (req, res, next) => {
 const deleteImages = async (req, res, next) => {
   const { deletedImages } = req.body 
 
-  console.log(deletedImages, ' for del')
+  if (deletedImages && deletedImages.length > 0) {
+    deletedImages.forEach(async (img) => {
+      if(img.id) await deleteOnCloudinary(img.id)
+    })
+  }
 
   next()
 }

@@ -4,6 +4,7 @@ const { getProducts } = require('./getProducts')
 const { saveImages } = require('./saveImages')
 const { deleteProduct } = require('./deleteProduct')
 const { getProduct } = require('./getProduct')
+const { updateProduct } = require('./updateProduct')
 
 module.exports = {
   mapProduct,
@@ -11,5 +12,6 @@ module.exports = {
   getProducts,
   saveImages,
   deleteProduct,
-  getProduct
+  getProduct,
+  updateProduct
 }

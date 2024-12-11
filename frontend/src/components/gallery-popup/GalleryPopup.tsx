@@ -12,6 +12,7 @@ const GalleryPopup: React.FC<GalleryPopupProps> = ({ children, onClose }) => {
         <button className="close-btn" onClick={onClose}>
           ✕
         </button>
+        
         {children}
       </div>
     </div>

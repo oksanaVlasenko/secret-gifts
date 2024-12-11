@@ -129,6 +129,7 @@ const AddNewProduct: React.FC = () => {
     })
     .then((res) => {
       console.log(res.data, ' res')
+      navigate('/')
     })
     .catch((error) => handleCatch(error))
     .finally(() => setPending(false))

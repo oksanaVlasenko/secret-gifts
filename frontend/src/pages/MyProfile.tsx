@@ -144,7 +144,6 @@ const MyProfile: React.FC = () => {
     handleFlagChange('updating', true)
     const formData = new FormData();
 
-    console.log(file, ' file')
     if (file) {
       formData.append('cover', file);
     } else {
@@ -153,7 +152,6 @@ const MyProfile: React.FC = () => {
       return
     }
 
-    console.log(formData, ' data form')
     axios({
       method: 'patch',
       url: 'http://localhost:3000/user/cover',

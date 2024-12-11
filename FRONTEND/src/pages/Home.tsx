@@ -4,17 +4,25 @@ import { handleCatch } from '@/utils/handleCatch'
 import axios from 'axios'
 import { getToken } from '@/utils/authToken'
 import { useEffect, useState } from "react"
+import { useI18n } from '@/i18n-context'
+
 import { Product } from '@/types/product.types'
 import Card from "@/blocks/product/Card"
 
 import '@/styles/pages/home.scss'
+import Loader from "@/components/loader/Loader"
+import { PlusIcon } from "@heroicons/react/20/solid"
 
 const Home = () => {
+  const { t } = useI18n()
   const token = getToken()
 
+  const [loading, setLoading] = useState<boolean>(true)
   const [products, setProducts] = useState<Product[]>([])
 
   const fetchProducts = async () => {
+    setLoading(true)
+
     await axios({
       method: 'get',
       url: 'http://localhost:3000/product/',
@@ -27,12 +35,10 @@ const Home = () => {
       setProducts(res.data)
     })
     .catch((error) => handleCatch(error))
+    .finally(() => setLoading(false))
   }
 
-  const deleteProduct = async (id: string) => {
-    const newProducts = products.filter((p) => p.id !== id)
-    setProducts(newProducts)
-    
+  const deleteProduct = async (id: string) => {   
     await axios({
       method: 'delete',
       url: 'http://localhost:3000/product/',
@@ -41,8 +47,7 @@ const Home = () => {
         Authorization: `Bearer ${token}`
       },
     })
-    .then((res) => {
-      console.log(res.data, ' res')
+    .then(() => {
       const newProducts = products.filter((p) => p.id !== id)
       setProducts(newProducts)
     })
@@ -55,22 +60,34 @@ const Home = () => {
 
   return (
     <div className="home">
-      <h2>Home</h2>
-      <Link to='/new-product'>Add New product</Link>
+      <Link 
+        to='/new-product'
+        className="btn-outline-red with-icon ml-10 mt-4 sm:mt-0 w-60"
+      >
+        <PlusIcon className='w-4 h-4 mr-2 mb-1 text-[#9B0D0F]' />
+        {t('product.createNewProduct')}
+      </Link>
 
-      <div className="cards-container">
-        {
-          products.map((product) => (
-            <Card 
-              key={product.id}
-              product={product}
-              onDeleteProduct={deleteProduct}
-            />
-          ))
-        }
-      </div>
+      {
+        loading ? (
+          <div className="cards-container loader">
+            <Loader fullScreen={false} />
+          </div>
+        ) : (
+          <div className="cards-container">
+            {
+              products.map((product) => (
+                <Card 
+                  key={product.id}
+                  product={product}
+                  onDeleteProduct={deleteProduct}
+                />
+              ))
+            }
+          </div>
+        )
+      }
     </div>
-    
   )
 }
 

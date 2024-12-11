@@ -26,6 +26,7 @@ const EditProduct: React.FC = () => {
 
   const [initialLoading, setInitialLoading] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
+  const [pending, setPending] = useState<boolean>(false)
 
   const [url, setUrl] = useState<string | number | null | undefined>('')
   const [product, setProduct] = useState<Product>({
@@ -57,8 +58,6 @@ const EditProduct: React.FC = () => {
       },
     })
     .then((res) => {
-      console.log(res.data, ' res')
-
       setUrl(res.data.url)
       setProduct({
         title: res.data.title,
@@ -74,7 +73,8 @@ const EditProduct: React.FC = () => {
 
   const handleRemoveImage = (id: string) => {
     const deleted = product.images.find(i => i.id === id)
-    if (deleted) setDeletedImages([...deletedImages, deleted])
+
+    if (deleted && deleted.src.includes('cloudinary')) setDeletedImages([...deletedImages, deleted])
 
     const images = product.images.filter((i) => i.id !== id)
 
@@ -110,32 +110,32 @@ const EditProduct: React.FC = () => {
     setUrl(e)
   }
 
-  // const uploadCustomImages = async () => {
-  //   const formData = new FormData();
+  const uploadCustomImages = async () => {
+    const formData = new FormData();
 
-  //   if (customImages && customImages.length > 0) {
-  //     customImages.forEach((img) => formData.append('images', img))
-  //   } else {
-  //     console.error('File is undefined');
-  //     return
-  //   }
+    if (customImages && customImages.length > 0) {
+      customImages.forEach((img) => formData.append('images', img))
+    } else {
+      console.error('File is undefined');
+      return
+    }
 
-  //   try {
-  //     const response = await axios({
-  //       method: 'post',
-  //       url: 'http://localhost:3000/product/images',
-  //       data: formData,
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
+    try {
+      const response = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/product/images',
+        data: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
   
-  //     return response.data; 
-  //   } catch (error) {
-  //     handleCatch(error);
-  //     throw error; 
-  //   }
-  // }
+      return response.data; 
+    } catch (error) {
+      handleCatch(error);
+      throw error; 
+    }
+  }
 
   const testFetchDataFromUrl = async () => {
     setLoading(true)
@@ -163,22 +163,36 @@ const EditProduct: React.FC = () => {
   }
 
   const saveProduct = async () => {
-    console.log((deletedImages), ' delete')
+    setPending(true)
+
+    let newImages = []
+
+    if (customImages && customImages.length > 0) {
+      newImages = await uploadCustomImages();
+    }
+
+    const images = product.images.filter(i => !i.src.includes('blob:'))
+
+    const data = {
+      ...product,
+      images:  [...new Set([...images, ...newImages])],
+      url,
+      deletedImages: deletedImages,
+    }
 
     await axios({
       method: 'patch',
       url: `http://localhost:3000/product/edit/${id}`,
-      data: {
-        deletedImages: deletedImages
-      },
+      data: data,
       headers: {
         Authorization: `Bearer ${token}`
       },
     })
-    .then((res) => {
-      console.log(res.data, ' res')
+    .then(() => {
+      navigate('/')
     })
     .catch((error) => handleCatch(error))
+    .finally(() => setPending(false))
   }
  
   if (initialLoading) {
@@ -228,7 +242,7 @@ const EditProduct: React.FC = () => {
               {/* ${pending ? 'pending-animation' : ''} */}
               <button 
                 type="button" 
-                className={`btn-filled-red product-btn `}
+                className={`btn-filled-red product-btn ${pending ? 'pending-animation' : ''}`}
                 onClick={saveProduct}
               >
                 {t('product.editWish')}

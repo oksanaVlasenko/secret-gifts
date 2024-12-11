@@ -14,6 +14,6 @@ productRouter.post('/create', authMdwr.protect, productCtrl.createProduct)
 productRouter.get('/', authMdwr.protect, productCtrl.getProducts)
 productRouter.delete('/', authMdwr.protect, productCtrl.deleteProduct)
 productRouter.get('/:id', authMdwr.protect, productCtrl.getProduct)
-productRouter.patch('/edit/:id', authMdwr.protect, productMdwr.deleteImages)
+productRouter.patch('/edit/:id', authMdwr.protect, productMdwr.deleteImages, productMdwr.checkUpdateProduct, productCtrl.updateProduct)
 
 module.exports = productRouter

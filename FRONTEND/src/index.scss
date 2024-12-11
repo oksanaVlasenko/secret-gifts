@@ -30,6 +30,11 @@ body, html {
   @apply overflow-x-hidden;
 }
 
+::selection {
+  background-color: $buff; /* Колір фону виділення */
+  color: $white-smoke;           /* Колір тексту під час виділення */
+}
+
 .logo {
   @apply m-8 flex flex-row justify-between items-center;
 

@@ -2,8 +2,12 @@
   .cards-container {
     @apply w-fit mx-auto grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 justify-items-center justify-center gap-y-20 gap-x-14 mt-10 mb-5;
     
+    &.loader {
+      @apply flex justify-center items-center h-72;
+    }
+
     .card {
-      @apply w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl;
+      @apply w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl cursor-pointer;
 
       .image {
         @apply h-80 max-h-80 w-full object-contain rounded-t-xl mt-6;
