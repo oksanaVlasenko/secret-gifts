@@ -2,71 +2,7 @@ const { catchAsync, AppError } = require('../../utils')
 const { fetchProduct } = require('../../services/cheerio');
 const axios = require('axios');
 const cheerio = require('cheerio');
-
-// exports.fetchProductFromUrl = async (req, res, next) => {
-//   const { url } = req.body;
-//   console.log('URL:', url);
-
-//   if (!url) {
-//     return next(new AppError(500, 'URL is required'));
-//   }
-
-//   await axios
-//     .get(url, {
-//       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-//     })
-//     .then((response) => {
-//       if (response.status === 200) {
-//         const $ = cheerio.load(response.data);
-
-//         const title = $('meta[property="og:title"]').attr('content') || $('title').text() || 'No title found';
-//         const price = $('[itemprop="price"]').attr('content') || $('[class*="price"]').text() || 'No price found';
-
-//         const images = [];
-//         $('img').each((_, img) => {
-//           const src = $(img).attr('src');
-//           if (src) {
-//             const absoluteSrc = new URL(src, url).href;
-//             images.push(absoluteSrc);
-//           }
-//         });
-
-//         // Зберігаємо результат у req.body для подальшого використання
-//         req.body.productData = { title, price, images };
-
-//         next(); // Передаємо управління наступному мідлвару
-//       } else {
-//         console.error('Error: Non-200 response');
-//         throw new AppError(500, 'Failed to fetch product data: Non-200 response');
-//       }
-//     })
-//     .catch((error) => {
-//       console.error('Axios error:', error.message);
-//       throw new AppError(500, 'Failed to fetch product data');
-//     });
-// };
-// exports.fetchProductFromUrl = catchAsync(async (req, res, next) => {
-//   const { url } = req.body;
-//   console.log(url, ' fetch ');
-
-//   // Перевірка на успішне отримання даних
-//   const data = await fetchProduct(url);
-//   console.log(data.title, ' data');
-  
-//   // Перевірка на наявність усіх необхідних даних
-//   if (!data || !data.title || !data.price || !data.images) {
-//     console.log('EERRRROEEOEEERF HEEERREEEEE')
-//     throw new AppError(500, 'Failed to fetch product data');
-//   }
-
-//   // Додавання даних до req.body
-//   req.body.title = data.title;
-//   req.body.price = data.price;
-//   req.body.images = data.images;
-
-//   console.log('next here');
-//   next();
-// });
+const puppeteer = require('puppeteer');
 
 exports.fetchProductFromUrl = async (req, res, next) => {
   const { url } = req.body;
@@ -76,144 +12,107 @@ exports.fetchProductFromUrl = async (req, res, next) => {
   }
 
   try {
-    const response = await axios.get(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+
+    await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64)');
+
+    await page.goto(url, { waitUntil: 'networkidle0' });
+
+    const content = await page.content();
+
+    const $ = cheerio.load(content);
+
+    const title =
+      $('meta[property="og:title"]').attr('content') ||
+      $('title').text() ||
+      'No title found';
+
+    const rawPrice =
+      $('[itemprop="price"]').attr('content') ||
+      $('[class*="price"]').text() ||
+      '';
+
+    const priceMatch = rawPrice.match(/(\d+[\.,]?\d*)\s?(\D{1,3})/);
+    const price = priceMatch ? `${priceMatch[1]}` : 0;
+
+    const images = [];
+
+    $('img').each((_, img) => {
+      const src = $(img).attr('src');
+
+      if (src && src.endsWith('.jpg')) {
+        const absoluteSrc = new URL(src, url).href;
+        images.push(absoluteSrc);
+      }
+
+      if (images.length >= 5) {
+        return false;
+      }
     });
 
-    if (response.status === 200) {
-      const $ = cheerio.load(response.data);
+    await browser.close();
 
-      const title =
-        $('meta[property="og:title"]').attr('content') ||
-        $('title').text() ||
-        'No title found';
-
-        const rawPrice = $('[itemprop="price"]').attr('content') || $('[class*="price"]').text() || '';
-
-        // Використовуємо регулярний вираз для вибору числа та символу
-        const priceMatch = rawPrice.match(/(\d+[\.,]?\d*)\s?(\D{1,3})/);
-        // Якщо знаходимо ціну, повертаємо її у відповідному форматі, інакше — 0
-        const price = priceMatch ? `${priceMatch[1]}` : 0;
-
-      const images = [];
-
-      $('img').each((_, img) => {
-        const src = $(img).attr('src');
-
-        if (src && src.endsWith('.jpg')) { 
-          const absoluteSrc = new URL(src, url).href;
-          images.push(absoluteSrc);
-        }
-
-        if (images.length >= 10) { 
-          return false; 
-        }
-      });
-
-      req.body.productData = { title, price, images };
-
-      return next();
-    } else {
-      return next(
-        new AppError(500, `Failed to fetch product data: ${response.status}`)
-      );
-    }
+    req.body.productData = { title, price, images };
+    return next();
   } catch (error) {
-    console.error('Axios error:', error.message);
+    console.error('Puppeteer error:', error.message);
     return next(new AppError(500, 'Failed to fetch product data'));
   }
 };
 
-// exports.fetchProductFromUrl = (req, res, next) => {
+// exports.fetchProductFromUrl = async (req, res, next) => {
 //   const { url } = req.body;
 
 //   if (!url) {
 //     return next(new AppError(400, 'URL is required'));
 //   }
 
-//   axios
-//     .get(url, {
+//   try {
+//     const response = await axios.get(url, {
 //       headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)' },
-//     })
-//     .then((response) => {
-//       if (response.status === 200) {
-//         const $ = cheerio.load(response.data);
-
-//         const title =
-//           $('meta[property="og:title"]').attr('content') ||
-//           $('title').text() ||
-//           'No title found';
-//         const price =
-//           $('[itemprop="price"]').attr('content') ||
-//           $('[class*="price"]').text() ||
-//           'No price found';
-
-//         const images = [];
-//         $('img').each((_, img) => {
-//           const src = $(img).attr('src');
-//           if (src) {
-//             const absoluteSrc = new URL(src, url).href;
-//             images.push(absoluteSrc);
-//           }
-//         });
-
-//         // Зберігаємо дані в req.body
-//         req.body.productData = { title, price, images };
-
-//         // Передаємо управління наступному мідлвару
-//         next();
-//       } else {
-//         return next(
-//           new AppError(500, `Failed to fetch product data: ${response.status}`)
-//         );
-//       }
-//     })
-//     .catch((error) => {
-//       console.error('Axios error:', error.message);
-//       return next(new AppError(500, 'Failed to fetch product data'));
 //     });
-// };
 
-// exports.fetchProductFromUrl = async (req, res, next) => {
-//   const { url } = req.body;
-//   console.log('URL:', url);
-
-//   if (!url) {
-//     throw new AppError(500, 'Failed to fetch product data');
-//   }
-
-//   axios
-//   .get(url)  // робимо запит до заданого URL
-//   .then((response) => {  // якщо запит успішний
-//     if (response.status === 200) {  // перевірка статусу відповіді
+//     if (response.status === 200) {
 //       const $ = cheerio.load(response.data);
 
-//       const title = $('meta[property="og:title"]').attr('content') || $('title').text() || 'No title found';
-//       const price = $('[itemprop="price"]').attr('content') || $('[class*="price"]').text() || 'No price found';
-//       //const image = $('meta[property="og:image"]').attr('content') || $('img').attr('src') || 'No image found';
+//       const title =
+//         $('meta[property="og:title"]').attr('content') ||
+//         $('title').text() ||
+//         'No title found';
+
+//         const rawPrice = $('[itemprop="price"]').attr('content') || $('[class*="price"]').text() || '';
+
+//         // Використовуємо регулярний вираз для вибору числа та символу
+//         const priceMatch = rawPrice.match(/(\d+[\.,]?\d*)\s?(\D{1,3})/);
+//         // Якщо знаходимо ціну, повертаємо її у відповідному форматі, інакше — 0
+//         const price = priceMatch ? `${priceMatch[1]}` : 0;
 
 //       const images = [];
+
 //       $('img').each((_, img) => {
-//           const src = $(img).attr('src');
-          
-//           if (src) {
-//               const absoluteSrc = new URL(src, url).href;
-//               images.push(absoluteSrc);
-//           }
+//         const src = $(img).attr('src');
+
+//         if (src && src.endsWith('.jpg')) { 
+//           const absoluteSrc = new URL(src, url).href;
+//           images.push(absoluteSrc);
+//         }
+
+//         if (images.length >= 10) { 
+//           return false; 
+//         }
 //       });
 
-//       console.log(title, ' title 27')
-//       req.body.productData = ({ title, price, images });
+//       req.body.productData = { title, price, images };
 
-//       next()
+//       return next();
 //     } else {
-//       console.error('Error: Non-200 response');  // якщо статус відповіді не 200 (OK)
+//       return next(
+//         new AppError(500, `Failed to fetch product data: ${response.status}`)
+//       );
 //     }
-//   })
-//   .catch((error) => {  // обробка помилок, якщо щось пішло не так
-//     console.error('Axios error:', error.message);  // виведення повідомлення про помилку
-//     throw new Error('Failed to fetch data');  // кидаємо нову помилку
-//   });
-
-//   next()
+//   } catch (error) {
+//     console.error('Axios error:', error.message);
+//     return next(new AppError(500, 'Failed to fetch product data'));
+//   }
 // };

@@ -6,7 +6,7 @@
       @apply w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl;
 
       .image {
-        @apply h-80 max-h-80 w-full object-contain rounded-t-xl;
+        @apply h-80 max-h-80 w-full object-contain rounded-t-xl mt-6;
 
         //transform: scale(0.9); 
       }

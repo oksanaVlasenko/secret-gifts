@@ -1,4 +1,5 @@
 import { useRef, useState } from 'react'
+import { useI18n } from '@/i18n-context'
 
 import { Swiper, SwiperSlide, SwiperClass  } from 'swiper/react';
 import { FreeMode, Navigation, Thumbs, Zoom } from 'swiper/modules';
@@ -27,6 +28,8 @@ const Gallery: React.FC<GalleryProps> = ({
   onAddImage,
   onDeleteImage
 }) => {
+  const { t } = useI18n()
+
   const [thumbsSwiper, setThumbsSwiper] = useState<SwiperClass>()
   const [thumbsSwiperModal, setThumbsSwiperModal] = useState<SwiperClass>()
 
@@ -107,12 +110,13 @@ const Gallery: React.FC<GalleryProps> = ({
         }     
 
         <FileInput 
+          isMultiple={true}
           triggerElement={
             <button 
-              className={`btn-outline-red with-icon ml-0 mt-4 sm:mt-0`}
+              className={`btn-outline-red with-icon ml-0 mt-4 sm:mt-0 ${images.length >= 10 ? 'disabled' : ''}`}
             >
               <CameraIcon className='w-4 h-4 mr-2 mb-1 text-[#9B0D0F]' />
-              Add photo
+              {t('product.addPhoto')}
             </button>                  
           }
           onFileSelect={onAddImage}
@@ -124,7 +128,6 @@ const Gallery: React.FC<GalleryProps> = ({
         <GalleryPopup onClose={closeModal}>
           <Swiper
             ref={swiperRefModal}
-            //ey={`gallery-swiper-${Date.now()}`}
             style={
               {
                 '--swiper-navigation-color': '#9B0D0F',

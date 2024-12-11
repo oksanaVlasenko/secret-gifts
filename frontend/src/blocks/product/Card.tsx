@@ -1,4 +1,4 @@
-import { TrashIcon } from "@heroicons/react/20/solid"
+import { PhotoIcon, TrashIcon } from "@heroicons/react/20/solid"
 import { Product } from '@/types/product.types'
 
 import { useNavigate } from 'react-router-dom'; 
@@ -42,11 +42,18 @@ const Card: React.FC<CardProps> = ({product, onDeleteProduct}) => {
 
   return (
     <div className="card" onClick={handleCardClick}>
-      <img 
-        src={product.images[0].src}
-        alt="Product" 
-        className="image" 
-      />
+      {
+        !product.images.length || product.images.length === 0 ? (
+          <PhotoIcon  className="image"  />
+        ) : (
+          <img 
+            src={product.images[0].src}
+            alt="Product" 
+            className="image" 
+          />
+        )
+      }
+      
         
       <div className="card-body">
         <span className="category-name">

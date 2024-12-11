@@ -2,10 +2,11 @@ import React, { useRef } from 'react';
 
 interface FileInputProps {
   triggerElement: React.ReactNode; 
+  isMultiple?: boolean,
   onFileSelect: (event: React.ChangeEvent<HTMLInputElement>) => void; 
 }
 
-const FileInput: React.FC<FileInputProps> = ({ triggerElement, onFileSelect }) => {
+const FileInput: React.FC<FileInputProps> = ({ triggerElement, isMultiple = false, onFileSelect }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleClick = () => {
@@ -25,7 +26,9 @@ const FileInput: React.FC<FileInputProps> = ({ triggerElement, onFileSelect }) =
       <input
         ref={fileInputRef}
         type="file"
+        accept="image/*"
         style={{ display: 'none' }}
+        multiple={isMultiple}
         onChange={handleFileChange}
       />
     </div>

@@ -29,24 +29,24 @@ const Home = () => {
     .catch((error) => handleCatch(error))
   }
 
-  const deleteProduct = (id: string) => {
+  const deleteProduct = async (id: string) => {
     const newProducts = products.filter((p) => p.id !== id)
     setProducts(newProducts)
     
-    // await axios({
-    //   method: 'delete',
-    //   url: 'http://localhost:3000/product/',
-    //   data: {id},
-    //   headers: {
-    //     Authorization: `Bearer ${token}`
-    //   },
-    // })
-    // .then((res) => {
-    //   console.log(res.data, ' res')
-    //   const newProducts = products.filter((p) => p.id !== id)
-    //   setProducts(newProducts)
-    // })
-    // .catch((error) => handleCatch(error))
+    await axios({
+      method: 'delete',
+      url: 'http://localhost:3000/product/',
+      data: {id},
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+    .then((res) => {
+      console.log(res.data, ' res')
+      const newProducts = products.filter((p) => p.id !== id)
+      setProducts(newProducts)
+    })
+    .catch((error) => handleCatch(error))
   }
 
   useEffect(() => {

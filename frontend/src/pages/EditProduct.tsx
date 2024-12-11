@@ -1,25 +1,31 @@
-import '@/styles/pages/addNewProduct.scss'
+import '@/styles/pages/editProduct.scss'
 
-import axios from 'axios'
-import { useState } from 'react'
-import { useI18n } from '@/i18n-context'
 import { useNavigate } from 'react-router-dom';
+import { useI18n } from '@/i18n-context'
+import { useParams } from 'react-router-dom';
 
 import { getToken } from '@/utils/authToken'
 import { handleCatch } from '@/utils/handleCatch'
 
 import { Images, Product } from '@/types/product.types'
 
-import Gallery from '@/components/gallery/Gallery'
-import SearchUrl from '@/blocks/product/SearchUrlBlock'
-import ProductData from '@/blocks/product/ProductData'
-import Loader from '@/components/loader/Loader'
-import { ChevronLeftIcon } from '@heroicons/react/20/solid'
+import { ChevronLeftIcon } from '@heroicons/react/16/solid';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+import Loader from '@/components/loader/Loader';
+import SearchUrl from '@/blocks/product/SearchUrlBlock';
+import Gallery from '@/components/gallery/Gallery';
+import ProductData from '@/blocks/product/ProductData';
 
-const AddNewProduct: React.FC = () => {
+
+const EditProduct: React.FC = () => {
   const { t } = useI18n()
   const token = getToken()
   const navigate = useNavigate();
+  const { id } = useParams();
+
+  const [initialLoading, setInitialLoading] = useState<boolean>(true)
+  const [loading, setLoading] = useState<boolean>(false)
 
   const [url, setUrl] = useState<string | number | null | undefined>('')
   const [product, setProduct] = useState<Product>({
@@ -29,16 +35,47 @@ const AddNewProduct: React.FC = () => {
     description: '',
     currency: 'uah'
   })
-  const [loading, setLoading] = useState<boolean>(false)
-  const [pending, setPending] = useState<boolean>(false)
-
   const [customImages, setCustomImages] = useState<File[]>([])
+  const [deletedImages, setDeletedImages] = useState<Images[]>([])
+
+  useEffect(() => {
+    fetchProductById()
+  }, [])
 
   const goBack = () => {
     navigate(-1); 
   };
 
+  const fetchProductById = async () => {
+    setInitialLoading(true)
+
+    await axios({
+      method: 'get',
+      url: `http://localhost:3000/product/${id}`,
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+    .then((res) => {
+      console.log(res.data, ' res')
+
+      setUrl(res.data.url)
+      setProduct({
+        title: res.data.title,
+        price: Number(res.data.price),
+        images: res.data.images,
+        description: res.data.description,
+        currency: res.data.currency
+      })
+    })
+    .catch((error) => handleCatch(error))
+    .finally(() => setInitialLoading(false))
+  }
+
   const handleRemoveImage = (id: string) => {
+    const deleted = product.images.find(i => i.id === id)
+    if (deleted) setDeletedImages([...deletedImages, deleted])
+
     const images = product.images.filter((i) => i.id !== id)
 
     handleInputChange('images', images)
@@ -73,66 +110,32 @@ const AddNewProduct: React.FC = () => {
     setUrl(e)
   }
 
-  const uploadCustomImages = async () => {
-    const formData = new FormData();
+  // const uploadCustomImages = async () => {
+  //   const formData = new FormData();
 
-    if (customImages && customImages.length > 0) {
-      customImages.forEach((img) => formData.append('images', img))
-    } else {
-      console.error('File is undefined');
-      return
-    }
+  //   if (customImages && customImages.length > 0) {
+  //     customImages.forEach((img) => formData.append('images', img))
+  //   } else {
+  //     console.error('File is undefined');
+  //     return
+  //   }
 
-    try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://localhost:3000/product/images',
-        data: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+  //   try {
+  //     const response = await axios({
+  //       method: 'post',
+  //       url: 'http://localhost:3000/product/images',
+  //       data: formData,
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     });
   
-      return response.data; 
-    } catch (error) {
-      handleCatch(error);
-      throw error; 
-    }
-  }
-
-  const createProduct = async () => {
-    setPending(true)
-
-    let newImages = []
-
-    if (customImages && customImages.length > 0) {
-      newImages = await uploadCustomImages();
-    }
-
-    const images = product.images.filter(i => !i.src.includes('blob:'))
-
-    const data = {
-      ...product,
-      images:  [...new Set([...images, ...newImages])],
-      url
-    }
-
-    await axios({
-      method: 'post',
-      url: 'http://localhost:3000/product/create',
-      data: {
-        data
-      },
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-    .then((res) => {
-      console.log(res.data, ' res')
-    })
-    .catch((error) => handleCatch(error))
-    .finally(() => setPending(false))
-  }
+  //     return response.data; 
+  //   } catch (error) {
+  //     handleCatch(error);
+  //     throw error; 
+  //   }
+  // }
 
   const testFetchDataFromUrl = async () => {
     setLoading(true)
@@ -159,8 +162,31 @@ const AddNewProduct: React.FC = () => {
       .finally(() => setLoading(false))
   }
 
+  const saveProduct = async () => {
+    console.log((deletedImages), ' delete')
+
+    await axios({
+      method: 'patch',
+      url: `http://localhost:3000/product/edit/${id}`,
+      data: {
+        deletedImages: deletedImages
+      },
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+    .then((res) => {
+      console.log(res.data, ' res')
+    })
+    .catch((error) => handleCatch(error))
+  }
+ 
+  if (initialLoading) {
+    return <Loader />
+  }
+
   return (
-    <div className="new-product">
+    <div className='edit-product'>
       <div className='header'>
         <ChevronLeftIcon 
           className='w-10 h-10 text-[#9B0D0F] cursor-pointer' 
@@ -168,7 +194,7 @@ const AddNewProduct: React.FC = () => {
         />
 
         <h2>
-          {t('product.newProduct')}
+          {t('product.editWish')}
         </h2>
       </div>
 
@@ -178,7 +204,7 @@ const AddNewProduct: React.FC = () => {
         onFetchData={testFetchDataFromUrl}
       />
 
-      {
+{
         loading 
         ? (
           <div className='product-container loader'>
@@ -199,12 +225,13 @@ const AddNewProduct: React.FC = () => {
               product={product}
               onInputChange={handleInputChange}
             >
+              {/* ${pending ? 'pending-animation' : ''} */}
               <button 
                 type="button" 
-                className={`btn-filled-red product-btn ${pending ? 'pending-animation' : ''}`}
-                onClick={createProduct}
+                className={`btn-filled-red product-btn `}
+                onClick={saveProduct}
               >
-                {t('product.createNewProduct')}
+                {t('product.editWish')}
               </button>
             </ProductData>
           </div>
@@ -214,4 +241,4 @@ const AddNewProduct: React.FC = () => {
   )
 }
 
-export default AddNewProduct
+export default EditProduct

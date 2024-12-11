@@ -8,6 +8,7 @@ const SignUp = lazy(() => import('@/pages/SignUp'));
 const Unauthorized = lazy(() => import('@/pages/Unauthorized'))
 const MyProfile = lazy(() => import('@/pages/MyProfile'))
 const AddNewProduct = lazy(() => import('@/pages/AddNewProduct'))
+const EditProduct = lazy(() => import('@/pages/EditProduct'))
 
 const routes: RouteObject[] = [
   { path: '/login', element: <Login /> },
@@ -15,7 +16,8 @@ const routes: RouteObject[] = [
   { path: '/signup', element: <SignUp /> },
   { path: '/unauthorized', element: <Unauthorized /> },
   { path: '/profile', element: <MyProfile /> },
-  { path: '/new-product', element: <AddNewProduct /> }
+  { path: '/new-product', element: <AddNewProduct /> },
+  { path: '/product/:id', element: <EditProduct /> }
 ];
 
 export default routes;

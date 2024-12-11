@@ -47,13 +47,16 @@
     "autofill": "Autofill",
     "autofillTooltip": "Automatically populate product data from the link.",
     "urlPlaceholder": "Enter the url",
-    "newProduct": "New product",
+    "newProduct": "New wish",
     "title": "Title",
     "titlePlaceholder": "Enter a title",
     "price": "Price",
     "pricePlaceholder": "Enter a price",
     "notes": "Notes",
-    "notesPlaceholder": "Enter notes"
+    "notesPlaceholder": "Enter notes",
+    "createNewProduct": "Add new wish",
+    "addPhoto": "Add photo",
+    "editWish": "Change wish"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

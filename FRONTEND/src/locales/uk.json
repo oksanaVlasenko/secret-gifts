@@ -47,13 +47,16 @@
     "autofill": "Автозаповнення",
     "autofillTooltip": "Автоматично заповнити дані продукту за посиланням.",
     "urlPlaceholder": "Введіть посилання",
-    "newProduct": "Новий продукт",
+    "newProduct": "Нове бажання",
     "title": "Назва",
     "titlePlaceholder": "Введіть назву",
     "price": "Ціна",
     "pricePlaceholder": "Введіть ціну",
     "notes": "Примітки",
-    "notesPlaceholder": "Введіть примітку"
+    "notesPlaceholder": "Введіть примітку",
+    "createNewProduct": "Додати нове бажання",
+    "addPhoto": "Додати фото",
+    "editWish": "Змінити бажання"
   },
   "system": {
     "invalidPhone": "Недійсний номер телефону",

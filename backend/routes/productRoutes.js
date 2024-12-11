@@ -13,5 +13,7 @@ productRouter.post('/images', authMdwr.protect, uploadTmp.array('images', 10), p
 productRouter.post('/create', authMdwr.protect, productCtrl.createProduct)
 productRouter.get('/', authMdwr.protect, productCtrl.getProducts)
 productRouter.delete('/', authMdwr.protect, productCtrl.deleteProduct)
+productRouter.get('/:id', authMdwr.protect, productCtrl.getProduct)
+productRouter.patch('/edit/:id', authMdwr.protect, productMdwr.deleteImages)
 
 module.exports = productRouter

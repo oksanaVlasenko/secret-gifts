@@ -11,7 +11,7 @@ const updateImage = async (req, res, next) => {
         
         const file = await Jimp.read(tempUpload)
         file.write(tempUpload)
-
+        
         if(oldID) await deleteOnCloudinary(oldID)
 
         const { secure_url: avatarURL, public_id: avatarId } = await uploadCloudinary(tempUpload)
