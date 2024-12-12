@@ -9,6 +9,7 @@ import { getToken } from '@/utils/authToken'
 import { handleCatch } from '@/utils/handleCatch'
 
 import { Images, Product } from '@/types/product.types'
+import { DropdownProps } from '@/components/dropdown/Dropdown.types'
 
 import Gallery from '@/components/gallery/Gallery'
 import SearchUrl from '@/blocks/product/SearchUrlBlock'
@@ -27,12 +28,61 @@ const AddNewProduct: React.FC = () => {
     price: '',
     images: [],
     description: '',
-    currency: 'uah'
+    currency: 'uah',
+    category: null,
+    wishlist: null
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [pending, setPending] = useState<boolean>(false)
 
   const [customImages, setCustomImages] = useState<File[]>([])
+
+  const options = [
+    {
+      "id": 3,
+      "label": "Item 3 lorem75 lorem96 lorem65",
+      "disabled": false
+    },
+    {
+      "id": 4,
+      "label": "Item 3 lorem75 lorem96 lorem65",
+      "disabled": false
+    },
+  ]
+
+  const handleCategoryChange = (newSelectedValue: string | number  | null) => {
+    handleInputChange('category', newSelectedValue); 
+  }
+
+  const handleClearCategoryValue = () => {
+    handleInputChange('category', null); 
+  }
+
+  const handleWishlistChange = (newSelectedValue: string | number  | null) => {
+    handleInputChange('wishlist', newSelectedValue); 
+  }
+
+  const handleClearWishlistValue = () => {
+    handleInputChange('wishlist', null); 
+  }
+
+  const dropdownCategory: DropdownProps = {
+    selectedValue: product.category,
+    label: t('product.categoryLabel'), 
+    searchPlaceholder: t('system.searchPlaceholder'),
+    options,
+    onSelectChange: handleCategoryChange,
+    onClearValue: handleClearCategoryValue,
+  };
+
+  const dropdownWishlist: DropdownProps = {
+    selectedValue: product.wishlist,
+    label: t('product.wishListLabel'), 
+    searchPlaceholder: t('system.searchPlaceholder'),
+    options,
+    onSelectChange: handleWishlistChange,
+    onClearValue: handleClearWishlistValue,
+  };
 
   const goBack = () => {
     navigate(-1); 
@@ -198,6 +248,8 @@ const AddNewProduct: React.FC = () => {
 
             <ProductData 
               product={product}
+              dropdownCategory={dropdownCategory}
+              dropdownWishlist={dropdownWishlist}
               onInputChange={handleInputChange}
             >
               <button 

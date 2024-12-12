@@ -56,11 +56,14 @@
     "notesPlaceholder": "Enter notes",
     "createNewProduct": "Add new wish",
     "addPhoto": "Add photo",
-    "editWish": "Change wish"
+    "editWish": "Change wish",
+    "categoryLabel": "Select a category",
+    "wishListLabel": "Select a wishlist"
   },
   "system": {
     "invalidPhone": "Invalid phone number",
     "invalidEmail": "Invalid email format",
-    "invalidUrl": "Invalid URL format"
+    "invalidUrl": "Invalid URL format",
+    "searchPlaceholder": "Search..."
   }
 }

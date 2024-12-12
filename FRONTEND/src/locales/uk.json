@@ -56,11 +56,14 @@
     "notesPlaceholder": "Введіть примітку",
     "createNewProduct": "Додати нове бажання",
     "addPhoto": "Додати фото",
-    "editWish": "Змінити бажання"
+    "editWish": "Змінити бажання",
+    "categoryLabel": "Виберіть категорію",
+    "wishListLabel": "Виберіть список бажань"
   },
   "system": {
     "invalidPhone": "Недійсний номер телефону",
     "invalidEmail": "Невірний формат електронної пошти",
-    "invalidUrl": "Невірний формат посилання"
+    "invalidUrl": "Невірний формат посилання",
+    "searchPlaceholder": "Пошук..."
   }
 }

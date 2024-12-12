@@ -38,7 +38,8 @@
       @apply w-full sm:ml-14 flex flex-col;
 
       .input-wrapper,
-      .textarea-wrapper {
+      .textarea-wrapper,
+      .dropdown-container {
         @apply w-full mb-8 max-w-[calc(100%-2rem)] mx-auto;
       }
     }

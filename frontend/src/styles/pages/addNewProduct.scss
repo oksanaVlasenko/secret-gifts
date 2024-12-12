@@ -28,18 +28,22 @@
   }
 
   .product-container {
-    @apply flex my-10 flex-col sm:flex-row sm:mx-14;
+    @apply flex my-10 flex-col md:flex-row md:mx-14;
 
     &.loader {
       @apply justify-center items-center h-72;
     }
 
     .product-data {
-      @apply w-full sm:ml-14 flex flex-col;
+      @apply w-full md:ml-14 flex flex-col;
 
       .input-wrapper,
       .textarea-wrapper {
         @apply w-full mb-8 max-w-[calc(100%-2rem)] mx-auto;
+      }
+
+      .dropdown-block {
+        @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2 gap-4 md:gap-4 lg:gap-10 mx-4 mb-8;
       }
     }
 

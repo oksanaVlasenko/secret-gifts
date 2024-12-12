@@ -6,7 +6,9 @@ export type Product = {
   currency: string,
   url?: string,
   selected?: boolean,
-  id?: string
+  id?: string,
+  category: string | number | null,
+  wishlist: string | number | null
 }
 
 export type Images = {
