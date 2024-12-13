@@ -64,6 +64,10 @@
     "invalidPhone": "Invalid phone number",
     "invalidEmail": "Invalid email format",
     "invalidUrl": "Invalid URL format",
-    "searchPlaceholder": "Search..."
+    "searchPlaceholder": "Search...",
+    "newValuePlaceholder": "Enter a new value",
+    "openCreationBlock": "Add new value",
+    "cancel": "Cancel",
+    "add": "Add"
   }
 }

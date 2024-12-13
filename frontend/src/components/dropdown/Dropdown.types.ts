@@ -18,4 +18,5 @@ export interface DropdownProps {
   onOpenList?: () => void;
   onCloseList?: () => void;
   onClearValue?: () => void;
+  onCreateNewValue?: (newValue: string | number | null | undefined) => void;
 }

@@ -1,0 +1,25 @@
+.dropdown-footer {
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+  background-color: white; 
+  z-index: 10; 
+  padding: 0.5rem; 
+  text-align: center;
+
+  .new-option-container {
+    @apply flex flex-col align-super mx-auto my-3;
+
+    .input-wrapper {
+      @apply w-full;
+
+      margin-bottom: 0 !important;
+      max-width: 100% !important;
+
+      .input-container {
+        @apply px-4 py-1.5;
+      }
+    }
+    
+  }
+}

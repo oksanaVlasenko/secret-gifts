@@ -1,11 +1,13 @@
 import { useDropdownContext } from '@/context/dropdownContext';
 
 import { Option } from '@/components/dropdown/Dropdown.types';
+import NewValueBlock from '@/components/dropdown/NewValueBlock'
 
 import { 
   CheckIcon, 
-  FaceFrownIcon
+  FaceFrownIcon,
 } from '@heroicons/react/20/solid';
+
 
 function highlightMatch(value: string, search: string | null) {
   if (!search) return value;
@@ -38,7 +40,7 @@ const OptionList: React.FC<OptionListProps> = ({
 }) => {
 
   const { selectedValue, notFoundText } = useDropdownContext()
-  
+
   return (
     <div
       className={`dropdown-list custom-scrollbar ${position}`}
@@ -77,6 +79,7 @@ const OptionList: React.FC<OptionListProps> = ({
             </p>
           )
         })
+        
         ) : (
           <div className='dropdown-empty-search'>
             <FaceFrownIcon className='not-found-icon'/>
@@ -87,6 +90,8 @@ const OptionList: React.FC<OptionListProps> = ({
           </div>
         )
       }
+
+      <NewValueBlock />
     </div>
   )
 }

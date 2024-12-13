@@ -9,7 +9,7 @@ import { getToken } from '@/utils/authToken'
 import { handleCatch } from '@/utils/handleCatch'
 
 import { Images, Product } from '@/types/product.types'
-import { DropdownProps } from '@/components/dropdown/Dropdown.types'
+import { DropdownProps, Option } from '@/components/dropdown/Dropdown.types'
 
 import Gallery from '@/components/gallery/Gallery'
 import SearchUrl from '@/blocks/product/SearchUrlBlock'
@@ -37,7 +37,7 @@ const AddNewProduct: React.FC = () => {
 
   const [customImages, setCustomImages] = useState<File[]>([])
 
-  const options = [
+  const options: Option[] = [
     {
       "id": 3,
       "label": "Item 3 lorem75 lorem96 lorem65",
@@ -66,6 +66,13 @@ const AddNewProduct: React.FC = () => {
     handleInputChange('wishlist', null); 
   }
 
+  const handleCreateCategory = (newValue: string | number | null | undefined) => {
+    options.push({
+      id: String(newValue),
+      label: String(newValue)
+    })
+  }
+
   const dropdownCategory: DropdownProps = {
     selectedValue: product.category,
     label: t('product.categoryLabel'), 
@@ -73,6 +80,7 @@ const AddNewProduct: React.FC = () => {
     options,
     onSelectChange: handleCategoryChange,
     onClearValue: handleClearCategoryValue,
+    onCreateNewValue: handleCreateCategory
   };
 
   const dropdownWishlist: DropdownProps = {

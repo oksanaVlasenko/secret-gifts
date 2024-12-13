@@ -52,10 +52,15 @@ body, html {
 }
 
 .btn-filled-red {
-  @apply text-[$white-smoke] bg-[#9B0D0F] hover:bg-[#7A0B0D] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2;
+  @apply text-[$white-smoke] bg-[#9B0D0F] hover:bg-[#7A0B0D] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
 
   &.disabled {
     @apply cursor-not-allowed opacity-50;
+  }
+
+  &.small-btn,
+  &.small {
+    @apply py-1.5 px-4 text-xs;
   }
 
   &.pending-animation {
@@ -98,11 +103,12 @@ body, html {
   @apply text-[$white-smoke] border-2 border-[#9B0D0F] hover:border-[#7A0B0D] text-[#9B0D0F] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
 
   &.with-icon {
-    @apply flex flex-row items-center;
+    @apply flex flex-row items-center justify-center;
   }
 
+  &.small-btn,
   &.small {
-    @apply py-1.5 px-4;
+    @apply py-1.5 px-4 text-xs;
   }
 
   &.disabled {

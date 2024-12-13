@@ -64,6 +64,10 @@
     "invalidPhone": "Недійсний номер телефону",
     "invalidEmail": "Невірний формат електронної пошти",
     "invalidUrl": "Невірний формат посилання",
-    "searchPlaceholder": "Пошук..."
+    "searchPlaceholder": "Пошук...",
+    "newValuePlaceholder": "Введіть нове значення",
+    "openCreationBlock": "Додати нове значення",
+    "cancel": "Відмінити",
+    "add": "Додати"
   }
 }
