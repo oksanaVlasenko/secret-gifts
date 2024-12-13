@@ -15,7 +15,8 @@ exports.getProducts = catchAsync(async (req, res) => {
       title: p.title,
       url: p.url,
       selected: p.selected,
-      id: p._id
+      id: p._id,
+      categoryId: p.categoryId
     }
   })
   

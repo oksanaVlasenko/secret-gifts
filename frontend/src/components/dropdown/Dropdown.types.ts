@@ -3,6 +3,8 @@ export interface Option {
   label: string | number;
   disabled?: boolean | null; 
   icon?: string | null;
+  deleteIcon?: boolean;
+  editIcon?: boolean;
 }
 
 export interface DropdownProps {
@@ -18,5 +20,6 @@ export interface DropdownProps {
   onOpenList?: () => void;
   onCloseList?: () => void;
   onClearValue?: () => void;
-  onCreateNewValue?: (newValue: string | number | null | undefined) => void;
+  onCreateNewValue?: (newValue: string | number | null | undefined) => Promise<{ success: boolean; error?: string }>;
+  onDeleteOption?: (id: string | number) => Promise<{ success: boolean; error?: string }>;
 }

@@ -1,7 +1,7 @@
 import '@/styles/pages/addNewProduct.scss'
 
-import axios from 'axios'
-import { useState } from 'react'
+import axios, { AxiosError } from 'axios'
+import { useEffect, useState } from 'react'
 import { useI18n } from '@/i18n-context'
 import { useNavigate } from 'react-router-dom';
 
@@ -29,11 +29,12 @@ const AddNewProduct: React.FC = () => {
     images: [],
     description: '',
     currency: 'uah',
-    category: null,
+    categoryId: null,
     wishlist: null
   })
   const [loading, setLoading] = useState<boolean>(false)
   const [pending, setPending] = useState<boolean>(false)
+  const [categories, setCategories] = useState<Option[]>([])
 
   const [customImages, setCustomImages] = useState<File[]>([])
 
@@ -50,12 +51,16 @@ const AddNewProduct: React.FC = () => {
     },
   ]
 
+  useEffect(() => {
+    fetchCategories()
+  }, [])
+
   const handleCategoryChange = (newSelectedValue: string | number  | null) => {
-    handleInputChange('category', newSelectedValue); 
+    handleInputChange('categoryId', newSelectedValue); 
   }
 
   const handleClearCategoryValue = () => {
-    handleInputChange('category', null); 
+    handleInputChange('categoryId', null); 
   }
 
   const handleWishlistChange = (newSelectedValue: string | number  | null) => {
@@ -66,21 +71,69 @@ const AddNewProduct: React.FC = () => {
     handleInputChange('wishlist', null); 
   }
 
-  const handleCreateCategory = (newValue: string | number | null | undefined) => {
-    options.push({
-      id: String(newValue),
-      label: String(newValue)
-    })
+  const handleDeleteCategory = async (id: string | number) => {
+    try {
+      const res = await axios({
+        method: 'delete',
+        url: 'http://localhost:3000/category/',
+        data: { id },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      console.log(res.data, 'res create new');
+      await fetchCategories();
+      return { success: true };
+    } catch (error) {
+      handleCatch(error);
+
+      let errorMessage: string = ''
+      
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          errorMessage = 'Not unique value'
+        }
+      } 
+
+      return { success: false, error: errorMessage };
+    }
+  }
+
+  const handleCreateCategory = async (newValue: string | number | null | undefined) => {
+    try {
+      const res = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/category/create',
+        data: { name: newValue },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      console.log(res.data, 'res create new');
+      await fetchCategories();
+      return { success: true };
+    } catch (error) {
+      handleCatch(error);
+
+      let errorMessage: string = ''
+      
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          errorMessage = 'Not unique value'
+        }
+      } 
+
+      return { success: false, error: errorMessage };
+    }
   }
 
   const dropdownCategory: DropdownProps = {
-    selectedValue: product.category,
+    selectedValue: product.categoryId,
     label: t('product.categoryLabel'), 
     searchPlaceholder: t('system.searchPlaceholder'),
-    options,
+    options: categories,
     onSelectChange: handleCategoryChange,
     onClearValue: handleClearCategoryValue,
-    onCreateNewValue: handleCreateCategory
+    onCreateNewValue: handleCreateCategory,
+    onDeleteOption: handleDeleteCategory
   };
 
   const dropdownWishlist: DropdownProps = {
@@ -191,6 +244,30 @@ const AddNewProduct: React.FC = () => {
     })
     .catch((error) => handleCatch(error))
     .finally(() => setPending(false))
+  }
+
+  const fetchCategories = async () => {
+    await axios({
+      method: 'get',
+      url: 'http://localhost:3000/category/',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+      .then((res) => {
+        console.log(res.data, ' all categories')
+        if (res.data && res.data.length > 0) {
+          setCategories(res.data.map((c: { '_id': string, 'name': string }) => {
+            return {
+              id: c._id,
+              label: c.name,
+              deleteIcon: true,
+              editIcon: true
+            }
+          }))
+        }
+      })
+      .catch((error) => handleCatch(error))
   }
 
   const testFetchDataFromUrl = async () => {

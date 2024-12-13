@@ -18,6 +18,8 @@ export const handleCatch = (error: unknown): void => {
   }
 
   console.error(error);
+
+  
 };
 
 function isHttpError(error: unknown): error is HttpError {

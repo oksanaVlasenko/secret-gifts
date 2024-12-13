@@ -41,6 +41,10 @@ const productSchema = mongoose.Schema(
     selected: {
       type: Boolean,
       default: false
+    },
+    categoryId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category'
     }
   }
 )

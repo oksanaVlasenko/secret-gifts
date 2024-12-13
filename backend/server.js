@@ -10,6 +10,7 @@ dotenv.config({ path: './.env' });
 const {
 	authRouter,
   productRouter,
+  categoryRoutes,
 	// noticesRouter,
 	// petsRouter,
 	// swaggerRouter,
@@ -37,6 +38,7 @@ app.use((req, res, next) => {
 
 app.use('/auth', authRouter);
 app.use('/user', userRouter);
+app.use('/category', categoryRoutes)
 //app.use('/product', productRouter)
 
 app.use('/product', (req, res, next) => {

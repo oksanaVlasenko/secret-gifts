@@ -7,7 +7,7 @@ export type Product = {
   url?: string,
   selected?: boolean,
   id?: string,
-  category: string | number | null,
+  categoryId: string | number | null,
   wishlist: string | number | null
 }
 

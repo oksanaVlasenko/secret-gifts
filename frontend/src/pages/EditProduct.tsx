@@ -8,10 +8,10 @@ import { getToken } from '@/utils/authToken'
 import { handleCatch } from '@/utils/handleCatch'
 
 import { Images, Product } from '@/types/product.types'
-import { DropdownProps } from '@/components/dropdown/Dropdown.types'
+import { DropdownProps, Option } from '@/components/dropdown/Dropdown.types'
 
 import { ChevronLeftIcon } from '@heroicons/react/16/solid';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { useEffect, useState } from 'react';
 import Loader from '@/components/loader/Loader';
 import SearchUrl from '@/blocks/product/SearchUrlBlock';
@@ -28,6 +28,7 @@ const EditProduct: React.FC = () => {
   const [initialLoading, setInitialLoading] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
   const [pending, setPending] = useState<boolean>(false)
+  const [categories, setCategories] = useState<Option[]>([])
 
   const [url, setUrl] = useState<string | number | null | undefined>('')
   const [product, setProduct] = useState<Product>({
@@ -36,14 +37,18 @@ const EditProduct: React.FC = () => {
     images: [],
     description: '',
     currency: 'uah',
-    category: null,
+    categoryId: null,
     wishlist: null
   })
   const [customImages, setCustomImages] = useState<File[]>([])
   const [deletedImages, setDeletedImages] = useState<Images[]>([])
 
   useEffect(() => {
-    fetchProductById()
+    Promise.all([
+      fetchCategories(),
+      fetchProductById()
+    ])
+    
   }, [])
 
   
@@ -61,11 +66,11 @@ const EditProduct: React.FC = () => {
   ]
 
   const handleCategoryChange = (newSelectedValue: string | number  | null) => {
-    handleInputChange('category', newSelectedValue); 
+    handleInputChange('categoryId', newSelectedValue); 
   }
 
   const handleClearCategoryValue = () => {
-    handleInputChange('category', null); 
+    handleInputChange('categoryId', null); 
   }
 
   const handleWishlistChange = (newSelectedValue: string | number  | null) => {
@@ -76,13 +81,69 @@ const EditProduct: React.FC = () => {
     handleInputChange('wishlist', null); 
   }
 
+  const handleCreateCategory = async (newValue: string | number | null | undefined) => {
+    try {
+      const res = await axios({
+        method: 'post',
+        url: 'http://localhost:3000/category/create',
+        data: { name: newValue },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      console.log(res.data, 'res create new');
+      await fetchCategories();
+      return { success: true };
+    } catch (error) {
+      handleCatch(error);
+
+      let errorMessage: string = ''
+      
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          errorMessage = 'Not unique value'
+        }
+      } 
+
+      return { success: false, error: errorMessage };
+    }
+  }
+
+  const handleDeleteCategory = async (id: string | number) => {
+    try {
+      const res = await axios({
+        method: 'delete',
+        url: 'http://localhost:3000/category/',
+        data: { id },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      console.log(res.data, 'res create new');
+      await fetchCategories();
+      return { success: true };
+    } catch (error) {
+      handleCatch(error);
+
+      let errorMessage: string = ''
+      
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          errorMessage = 'Not unique value'
+        }
+      } 
+
+      return { success: false, error: errorMessage };
+    }
+  }
+
   const dropdownCategory: DropdownProps = {
-    selectedValue: product.category,
+    selectedValue: product.categoryId,
     label: t('product.categoryLabel'), 
     searchPlaceholder: t('system.searchPlaceholder'),
-    options,
+    options: categories,
     onSelectChange: handleCategoryChange,
     onClearValue: handleClearCategoryValue,
+    onCreateNewValue: handleCreateCategory,
+    onDeleteOption: handleDeleteCategory
   };
 
   const dropdownWishlist: DropdownProps = {
@@ -97,6 +158,30 @@ const EditProduct: React.FC = () => {
   const goBack = () => {
     navigate(-1); 
   };
+
+  const fetchCategories = async () => {
+    await axios({
+      method: 'get',
+      url: 'http://localhost:3000/category/',
+      headers: {
+        Authorization: `Bearer ${token}`
+      },
+    })
+      .then((res) => {
+        console.log(res.data, ' all categories')
+        if (res.data && res.data.length > 0) {
+          setCategories(res.data.map((c: { '_id': string, 'name': string }) => {
+            return {
+              id: c._id,
+              label: c.name,
+              deleteIcon: true,
+              editIcon: false
+            }
+          }))
+        }
+      })
+      .catch((error) => handleCatch(error))
+  }
 
   const fetchProductById = async () => {
     setInitialLoading(true)
@@ -116,7 +201,8 @@ const EditProduct: React.FC = () => {
         price: Number(res.data.price),
         images: res.data.images,
         description: res.data.description,
-        currency: res.data.currency
+        currency: res.data.currency,
+        categoryId: res.data.categoryId
       }))
     })
     .catch((error) => handleCatch(error))
