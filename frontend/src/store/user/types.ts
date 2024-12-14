@@ -5,4 +5,7 @@ export interface UserState {
   token: string | null;
   isAuthenticated: boolean;
   loading: boolean;
+  birthday: string | null;
+  avatarURL: string | null;
+  coverURL: string | null
 }

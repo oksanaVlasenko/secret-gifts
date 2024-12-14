@@ -72,7 +72,10 @@ const Login: React.FC = () => {
         email: res.data.email, 
         token: res.data.token,
         isAuthenticated: true,
-        loading: true
+        loading: true,
+        birthday: res.data.birthday,
+        avatarURL: res.data.avatarURL,
+        coverURL: res.data.coverURL
       }));
   
       setLoading(false);

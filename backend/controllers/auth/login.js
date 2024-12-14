@@ -17,9 +17,13 @@ exports.login = catchAsync(async (req, res) => {
     await user.save()
 
     res.status(200).json({
+      _id: user._id,
       name: user.name,
-      id: user._id,
       email: user.email,
+      phone: user.phone,
+      birthday: user.birthday,
+      avatarURL: user.avatarURL,
+      coverURL: user.coverURL,
       token
     })
   })

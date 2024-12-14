@@ -15,13 +15,13 @@ import Loader from '@/components/loader/Loader';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@/store';
 
+import { loadCategories } from '@/services/categoryServices'
 import { checkAuth, selectUser, startLoading } from '@/store/user/userSlice';
 
 function App() {
  
   const dispatch = useDispatch<AppDispatch>();
   const { isAuthenticated, loading } = useSelector(selectUser);
-  //onst token = useSelector(selectToken)
 
   useEffect(() => {
     // Починаємо завантаження
@@ -29,6 +29,8 @@ function App() {
 
     // Викликаємо перевірку автентифікації
     dispatch(checkAuth());
+
+    loadCategories(dispatch)
   }, [dispatch]);
 
   if (loading) {

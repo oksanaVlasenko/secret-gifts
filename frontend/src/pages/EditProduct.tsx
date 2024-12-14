@@ -1,18 +1,28 @@
 import '@/styles/pages/editProduct.scss'
 
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useEffect, useState } from 'react';
+
 import { useI18n } from '@/i18n-context'
+import { useNavigate } from 'react-router-dom';
 import { useParams } from 'react-router-dom';
+
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { getToken } from '@/utils/authToken'
 import { handleCatch } from '@/utils/handleCatch'
 
+import { AppDispatch } from '@/store';
+import { RootState } from '@/store';
+
+import { createCategory, editCategory, deleteCategory } from '@/services/categoryServices'
+
 import { Images, Product } from '@/types/product.types'
-import { DropdownProps, Option } from '@/components/dropdown/Dropdown.types'
+import { DropdownProps } from '@/components/dropdown/Dropdown.types'
 
 import { ChevronLeftIcon } from '@heroicons/react/16/solid';
-import axios, { AxiosError } from 'axios';
-import { useEffect, useState } from 'react';
+
 import Loader from '@/components/loader/Loader';
 import SearchUrl from '@/blocks/product/SearchUrlBlock';
 import Gallery from '@/components/gallery/Gallery';
@@ -25,10 +35,13 @@ const EditProduct: React.FC = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  const dispatch: AppDispatch = useDispatch();
+
+  const categories = useSelector((state: RootState) => state.categories.categories);
+
   const [initialLoading, setInitialLoading] = useState<boolean>(true)
   const [loading, setLoading] = useState<boolean>(false)
   const [pending, setPending] = useState<boolean>(false)
-  const [categories, setCategories] = useState<Option[]>([])
 
   const [url, setUrl] = useState<string | number | null | undefined>('')
   const [product, setProduct] = useState<Product>({
@@ -44,10 +57,7 @@ const EditProduct: React.FC = () => {
   const [deletedImages, setDeletedImages] = useState<Images[]>([])
 
   useEffect(() => {
-    Promise.all([
-      fetchCategories(),
-      fetchProductById()
-    ])
+    fetchProductById()
     
   }, [])
 
@@ -81,86 +91,16 @@ const EditProduct: React.FC = () => {
     handleInputChange('wishlist', null); 
   }
 
-  const handleCreateCategory = async (newValue: string | number | null | undefined) => {
-    try {
-      const res = await axios({
-        method: 'post',
-        url: 'http://localhost:3000/category/create',
-        data: { name: newValue },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      console.log(res.data, 'res create new');
-      await fetchCategories();
-      return { success: true };
-    } catch (error) {
-      handleCatch(error);
-
-      let errorMessage: string = ''
-      
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 409) {
-          errorMessage = 'Not unique value'
-        }
-      } 
-
-      return { success: false, error: errorMessage };
-    }
+  const handleDeleteCategory = async (id: string | number) => {
+    return deleteCategory(dispatch, id)
   }
 
-  const handleDeleteCategory = async (id: string | number) => {
-    try {
-      const res = await axios({
-        method: 'delete',
-        url: 'http://localhost:3000/category/',
-        data: { id },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      console.log(res.data, 'res create new');
-      await fetchCategories();
-      return { success: true };
-    } catch (error) {
-      handleCatch(error);
-
-      let errorMessage: string = ''
-      
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 409) {
-          errorMessage = 'Not unique value'
-        }
-      } 
-
-      return { success: false, error: errorMessage };
-    }
+  const handleCreateCategory = async (newValue: string | number | null | undefined) => {
+    return createCategory(dispatch, newValue)
   }
 
   const handleEditCategory = async (id: string | number, value: string | number | null | undefined) => {
-    console.log(id, ' id', value, ' value ')
-    try {
-      const res = await axios({
-        method: 'patch',
-        url: `http://localhost:3000/category/edit/${id}`,
-        data: { name: value },
-        headers: { Authorization: `Bearer ${token}` },
-      });
-  
-      console.log(res.data, 'res create new');
-      await fetchCategories();
-      return { success: true };
-    } catch (error) {
-      handleCatch(error);
-
-      let errorMessage: string = ''
-      
-      if (error instanceof AxiosError) {
-        if (error.response?.status === 409) {
-          errorMessage = 'Not unique value'
-        }
-      } 
-
-      return { success: false, error: errorMessage };
-    }
+    return editCategory(dispatch, id, value)
   }
 
   const dropdownCategory: DropdownProps = {
@@ -187,30 +127,6 @@ const EditProduct: React.FC = () => {
   const goBack = () => {
     navigate(-1); 
   };
-
-  const fetchCategories = async () => {
-    await axios({
-      method: 'get',
-      url: 'http://localhost:3000/category/',
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-      .then((res) => {
-        console.log(res.data, ' all categories')
-        if (res.data && res.data.length > 0) {
-          setCategories(res.data.map((c: { '_id': string, 'name': string }) => {
-            return {
-              id: c._id,
-              label: c.name,
-              deleteIcon: true,
-              editIcon: false
-            }
-          }))
-        }
-      })
-      .catch((error) => handleCatch(error))
-  }
 
   const fetchProductById = async () => {
     setInitialLoading(true)

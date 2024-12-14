@@ -10,6 +10,9 @@ const initialState: UserState = {
   token: null,
   isAuthenticated: false,  
   loading: true,
+  birthday: null,
+  avatarURL: null,
+  coverURL: null
 };
 
 const userSlice = createSlice({
@@ -23,6 +26,9 @@ const userSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = true;  
       state.loading = false; 
+      state.birthday = action.payload.birthday
+      state.avatarURL = action.payload.avatarURL
+      state.coverURL = action.payload.coverURL
     },
     logout(state) {
       state.id = null;
@@ -31,6 +37,9 @@ const userSlice = createSlice({
       state.token = null;
       state.isAuthenticated = false;
       state.loading = false;
+      state.birthday = null
+      state.avatarURL = null
+      state.coverURL = null
     },
     checkAuth(state) {
       const token = getToken();

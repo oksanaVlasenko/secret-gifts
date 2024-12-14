@@ -4,7 +4,6 @@ export interface Option {
   disabled?: boolean | null; 
   icon?: string | null;
   deleteIcon?: boolean;
-  editIcon?: boolean;
 }
 
 export interface DropdownProps {
