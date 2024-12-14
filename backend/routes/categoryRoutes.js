@@ -8,5 +8,6 @@ const categoryRoutes = express.Router()
 categoryRoutes.post('/create', authMdwr.protect, categoryMdwr.checkCreateCategoryData, categoryCtrl.createCategory)
 categoryRoutes.get('/', authMdwr.protect, categoryCtrl.getAllCategories)
 categoryRoutes.delete('/', authMdwr.protect, categoryCtrl.deleteCategory)
+categoryRoutes.patch('/edit/:id', authMdwr.protect, categoryMdwr.checkEditData, categoryCtrl.editCategory)
 
 module.exports = categoryRoutes 

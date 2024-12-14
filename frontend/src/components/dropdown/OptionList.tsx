@@ -7,26 +7,24 @@ import {
   CheckIcon, 
   FaceFrownIcon,
   PencilIcon,
-  TrashIcon
+  TrashIcon,
+  XMarkIcon
 } from '@heroicons/react/20/solid';
 import { useState } from 'react';
 import TransparentLoader from '@/components/loader/TransparentLoader';
+import Input from '@/components/input/Input';
+import { useI18n } from '@/i18n-context'
 
 
 function highlightMatch(value: string, search: string | null) {
   if (!search) return value;
 
-  const searchIndex = String(value).toUpperCase().indexOf(String(search).toUpperCase());
+  const regex = new RegExp(`(${search})`, 'ig');
+  const parts = value.split(regex);
 
-  if (searchIndex >= 0) {
-    const start = value.substring(0, searchIndex);
-    const match = value.substring(searchIndex, searchIndex + search.length);
-    const end = value.substring(searchIndex + search.length);
-
-    return `${start}<b>${match}</b>${end}`;
-  }
-
-  return value;
+  return parts.map((part, i) => 
+    regex.test(part) ? <b key={i}>{part}</b> : part
+  );
 }
 
 interface OptionListProps {
@@ -42,9 +40,14 @@ const OptionList: React.FC<OptionListProps> = ({
   searchQuery,
   onSelect
 }) => {
+  const { t } = useI18n()
+
   const [loading, setLoading] = useState<boolean>(false);
-  //const [edit, setEdit] = useState<boolean>(false)
-  const { selectedValue, notFoundText, onDeleteOption } = useDropdownContext()
+  const [editItemId, setEditItemId] = useState<string | number | null>(null);
+  const [editValue, setEditValue] = useState<string | number | null | undefined>('');
+  const [newValueError, setNewValueError] = useState<string | number | null | undefined>('')
+
+  const { selectedValue, notFoundText, onDeleteOption, onEditOption } = useDropdownContext()
 
   const handleDelete = async (e: React.MouseEvent, id: string | number) => {
     e.stopPropagation();
@@ -61,6 +64,49 @@ const OptionList: React.FC<OptionListProps> = ({
     }
   }
 
+  const startEditing = (item: Option) => {
+    setEditItemId(item.id);
+    setEditValue(String(item.label));
+  };
+
+  const handleInput = (value: string | number | null | undefined) => {
+    setEditValue(value)
+    setNewValueError('')
+  }
+
+  const saveEdit = async (e: React.MouseEvent, id: string | number) => {
+    e.stopPropagation();
+
+    if (!editValue) return; 
+
+    const oldName = filteredOptions.find(o => o.id === id)?.label 
+
+    if (oldName && String(oldName).trim() === String(editValue).trim()) {
+      cancelEdit()
+
+      return;
+    }
+  
+    setLoading(true)
+
+    const result = await onEditOption?.(id, editValue);
+  
+    setLoading(false)
+
+    if (result?.success) {
+      cancelEdit()
+    } else {
+      setNewValueError(result?.error)
+    }
+  };
+
+  const cancelEdit = () => {
+    setEditItemId(null);
+    setEditValue('');
+    setLoading(false)
+    setNewValueError('')
+  };
+
   return (
     <div
       className={`dropdown-list custom-scrollbar ${position}`}
@@ -69,16 +115,19 @@ const OptionList: React.FC<OptionListProps> = ({
       
       {filteredOptions.length > 0 ? (
         filteredOptions.map((item) => {
-          const highlightedLabel = highlightMatch(String(item.label), searchQuery)
+          const isEditing = editItemId === item.id;
 
           return (
-            <p 
+            <div 
               key={item.id}
-              className={`dropdown-option ${item.disabled ? 'disabled text-slate-400' : 'text-gray-700'}`}
-              onClick={() => onSelect(item)}
+              className={`dropdown-option
+                ${item.disabled ? 'disabled text-slate-400' : 'text-gray-700'}
+                ${item.id === selectedValue ? 'selected': ''}
+              `}
+              onClick={() => !isEditing && onSelect(item)}
             >
               {
-                item.icon && !item.editIcon &&
+                item.icon && !isEditing &&
                 <span 
                   className={`option-icon-wrapper  ${item.disabled ? 'disabled' : ''}`} 
                   dangerouslySetInnerHTML={{ __html: item.icon }} 
@@ -86,40 +135,52 @@ const OptionList: React.FC<OptionListProps> = ({
               }
               
               {
-                !item.editIcon ? (
+                !isEditing ? (
                   <span 
                     className='truncate' 
                     style={{ width: "calc(100% - 1.5rem)" }}
                     title={String(item.label)}
-                    dangerouslySetInnerHTML={{ __html: highlightedLabel }}
-                  /> 
+                  >
+                    {highlightMatch(String(item.label), searchQuery)}
+                  </span>
                 ) : (
-                  <input />
+                  <Input 
+                    value={editValue ?? ''}
+                    errorText={newValueError}
+                    placeholder={t('system.newValuePlaceholder')}
+                    onChange={handleInput}
+                  />
                 )
               }
-              
 
-              {item.id === selectedValue && 
-                <CheckIcon 
-                  className="w-4 h-4 text-green-600 shrink-0" 
-                  style={{ marginRight: '-0.5rem' }}
-                />
-              }
+              {isEditing ? (
+                <>
+                  <CheckIcon
+                    className={`text-green-600 icon ${!editValue ? 'disabled-icon' : ''}`}
+                    onClick={(e) => saveEdit(e, item.id)}
+                  />
+                  <XMarkIcon
+                    className="text-[#9B0D0F] icon"
+                    onClick={cancelEdit}
+                  />
+                </>
+              ) : (
+                <>
+                  <PencilIcon 
+                    className="text-[#D49A7A] icon" 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      startEditing(item);
+                    }}
+                  />
 
-              <PencilIcon 
-                className="w-4 h-4 text-[#D49A7A] shrink-0" 
-                style={{ marginRight: '-0.5rem', marginLeft: '1rem' }}
-              />
-
-              {
-                item.deleteIcon && 
-                <TrashIcon 
-                  className="w-4 h-4 text-[#9B0D0F] shrink-0" 
-                  style={{ marginRight: '-0.5rem', marginLeft: '1rem' }}
-                  onClick={(e) => handleDelete(e, item.id)}
-                />
-              }
-            </p>
+                  <TrashIcon 
+                    className="text-[#9B0D0F] icon" 
+                    onClick={(e) => handleDelete(e, item.id)}
+                  />
+                </>
+              )}
+            </div>
           )
         })
         

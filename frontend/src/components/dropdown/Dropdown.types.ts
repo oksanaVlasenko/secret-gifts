@@ -22,4 +22,5 @@ export interface DropdownProps {
   onClearValue?: () => void;
   onCreateNewValue?: (newValue: string | number | null | undefined) => Promise<{ success: boolean; error?: string }>;
   onDeleteOption?: (id: string | number) => Promise<{ success: boolean; error?: string }>;
+  onEditOption?: (id: string | number, value: string | number | null | undefined) => Promise<{ success: boolean; error?: string }>;
 }

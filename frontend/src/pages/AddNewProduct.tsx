@@ -125,6 +125,34 @@ const AddNewProduct: React.FC = () => {
     }
   }
 
+  const handleEditCategory = async (id: string | number, value: string | number | null | undefined) => {
+    console.log(id, ' id', value, ' value ')
+    try {
+      const res = await axios({
+        method: 'patch',
+        url: `http://localhost:3000/category/edit/${id}`,
+        data: { name: value },
+        headers: { Authorization: `Bearer ${token}` },
+      });
+  
+      console.log(res.data, 'res create new');
+      await fetchCategories();
+      return { success: true };
+    } catch (error) {
+      handleCatch(error);
+
+      let errorMessage: string = ''
+      
+      if (error instanceof AxiosError) {
+        if (error.response?.status === 409) {
+          errorMessage = 'Not unique value'
+        }
+      } 
+
+      return { success: false, error: errorMessage };
+    }
+  }
+
   const dropdownCategory: DropdownProps = {
     selectedValue: product.categoryId,
     label: t('product.categoryLabel'), 
@@ -133,7 +161,8 @@ const AddNewProduct: React.FC = () => {
     onSelectChange: handleCategoryChange,
     onClearValue: handleClearCategoryValue,
     onCreateNewValue: handleCreateCategory,
-    onDeleteOption: handleDeleteCategory
+    onDeleteOption: handleDeleteCategory,
+    onEditOption: handleEditCategory
   };
 
   const dropdownWishlist: DropdownProps = {

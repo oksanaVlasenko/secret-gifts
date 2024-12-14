@@ -41,9 +41,16 @@
       bottom: 100%; 
       top: auto;
     }
+
+
     
     .dropdown-option {
       @apply cursor-pointer space-x-2 px-4 py-2.5 text-sm inline-flex justify-between w-full items-center  hover:bg-gray-100 hover:text-gray-900 hover:outline-none;
+
+      &.selected {
+        background: rgba(107, 128, 99, 0.3); 
+        color: $white-smoke;
+      }
 
       .option-icon-wrapper {
         svg {
@@ -56,6 +63,27 @@
             @apply text-slate-400 shrink-0;
           }
          
+        }
+      }
+
+      .icon {
+        @apply w-4 h-4 shrink-0 cursor-pointer ml-4;
+
+        &.disabled-icon {
+          @apply text-slate-400 shrink-0 cursor-not-allowed;
+        }
+      }
+
+      
+
+      .input-wrapper {
+        @apply w-full z-10;
+  
+        margin-bottom: 0 !important;
+        max-width: 100% !important;
+  
+        .input-container {
+          @apply px-4 py-1.5;
         }
       }
     }
