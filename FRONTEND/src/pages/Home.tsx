@@ -13,6 +13,8 @@ import '@/styles/pages/home.scss'
 import Loader from "@/components/loader/Loader"
 import { PlusIcon } from "@heroicons/react/20/solid"
 
+import { loadProducts } from '@/api/productService'
+
 const Home = () => {
   const { t } = useI18n()
   const token = getToken()
@@ -23,19 +25,15 @@ const Home = () => {
   const fetchProducts = async () => {
     setLoading(true)
 
-    await axios({
-      method: 'get',
-      url: 'http://localhost:3000/product/',
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-    .then((res) => {
-      console.log(res.data, ' res')
-      setProducts(res.data)
-    })
-    .catch((error) => handleCatch(error))
-    .finally(() => setLoading(false))
+    try {
+      const products = await loadProducts()
+
+      setProducts(products)
+    } catch (error) {
+      handleCatch(error);
+    } finally {
+      setLoading(false)
+    }
   }
 
   const deleteProduct = async (id: string) => {   
