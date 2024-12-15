@@ -1,50 +1,42 @@
 import './checkbox.scss'
 
+import { useId } from 'react'
+
 interface CheckboxProps {
-  sizeClass?: string | null,
-  isDisabled?: boolean,
-  labelText?: string | null,
-  checked: boolean,
-  onChange: (value: boolean) => void
+  value: boolean,
+  label: string | number,
+  className?: string;
+  onCheck: (value: boolean) => void
 }
 
-const CheckboxSwitch: React.FC<CheckboxProps> = ({
-  sizeClass = 'small',
-  isDisabled = false,
-  labelText = 'Toggle state',
-  checked = false,
-  onChange
+const Checkbox: React.FC<CheckboxProps> = ({
+  value,
+  label,
+  className,
+  onCheck
 }) => {
+  const checkboxId = useId()
 
-  const onCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = event.target.checked;
-
-    onChange?.(newValue); // Pass updated state to parent
-  };
+  const handleCheck = (e: React.ChangeEvent<HTMLInputElement>) => {
+    onCheck(e.target.checked)
+  }
 
   return (
-    <label 
-      className={`
-        checkbox-label 
-        ${sizeClass} 
-        ${isDisabled ? 'checkbox-disabled' : ''
-      }`}
-    >
+    <div className={`checkbox-container ${className}`}>
       <input 
+        id={checkboxId} 
         type="checkbox" 
-        className="checkbox-input peer" 
-        disabled={isDisabled} 
-        checked={checked}
-        onChange={onCheckboxChange}
+        checked={value}    
+        onChange={handleCheck}    
       />
-
-      <div className={`checkbox-track peer peer-checked:after:translate-x-full peer-checked:after:border-white peer-checked:bg-[#3A412C] ${isDisabled ? 'checkbox-disabled' : ''}`}></div>
-
-      <span className="checkbox-label-text">
-        {labelText}
-      </span>
-    </label>
+      
+      <label 
+        htmlFor={checkboxId} 
+      >
+        {label}
+      </label>
+    </div>
   )
 }
 
-export default CheckboxSwitch
+export default Checkbox

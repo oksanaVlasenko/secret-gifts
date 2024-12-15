@@ -4,11 +4,12 @@ export type Product = {
   images: Images[],
   description: string | number | null | undefined,
   currency: string,
-  url?: string,
+  url?: string | number | null | undefined,
   selected?: boolean,
   id?: string,
   categoryId: string | number | null,
   wishlist: string | number | null
+  deletedImages?: Images[]
 }
 
 export type Images = {

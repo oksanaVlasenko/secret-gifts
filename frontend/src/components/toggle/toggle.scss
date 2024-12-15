@@ -1,0 +1,56 @@
+/* General Styles */
+.checkbox-label {
+  @apply inline-flex items-center cursor-pointer mb-5;
+
+  .checkbox-input {
+    @apply sr-only;
+  }
+
+  .checkbox-track {
+    @apply relative bg-gray-200 peer-focus:outline-none rounded-full dark:bg-gray-700   after:content-[''] after:absolute  after:bg-white after:border-gray-300 after:border after:rounded-full  after:transition-all dark:border-gray-600 ;
+  }
+  
+  .checkbox-label-text {
+    @apply ms-3 text-sm font-medium text-[#3A412C] dark:text-gray-300;
+  }
+}
+
+/* Size Variants */
+.checkbox-label.small {
+  .checkbox-track {
+    @apply w-9 h-5 after:h-4 after:w-4 after:top-[2px] after:start-[2px];
+  }
+}
+
+.checkbox-label.medium {
+  .checkbox-track {
+    @apply w-11 h-6 after:top-[2px] after:start-[2px] after:h-5 after:w-5;
+  }
+
+  .checkbox-label-text {
+    @apply text-sm;
+  }
+}
+
+.checkbox-label.large {
+  .checkbox-track {
+    @apply w-14 h-7 after:top-0.5 after:start-[4px] after:h-6 after:w-6;
+  }
+
+  .checkbox-label-text {
+    @apply text-lg;
+  }
+}
+
+/* Disabled State */
+.checkbox-disabled {
+  @apply cursor-not-allowed opacity-50;
+
+  .checkbox-track {
+    @apply bg-gray-300 dark:bg-gray-600;
+  }
+
+  .checkbox-thumb {
+    @apply bg-gray-400 dark:bg-gray-500;
+  }
+}

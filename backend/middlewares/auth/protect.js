@@ -26,6 +26,7 @@ exports.protect = catchAsync(async (req, res, next) => {
   
   req.user = currentUser;
   req.token = token;
+  console.log(decoded.id, ' id')
   req.userId = decoded.id;
   
   next();

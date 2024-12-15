@@ -7,7 +7,7 @@ import { AppDispatch } from '@/store';
 import { setUser } from '@/store/user/userSlice';
 
 import Input from '@/components/input/Input'
-import CheckboxSwitch from '@/components/checkbox/Checkbox'
+import Toggle from '@/components/toggle/Toggle'
 
 import '@/styles/pages/login.scss'
 import axios, { AxiosError }  from 'axios'
@@ -116,7 +116,7 @@ const Login: React.FC = () => {
       />
 
       <div className='remind-block'>
-        <CheckboxSwitch 
+        <Toggle 
           checked={rememberMe}
           labelText={t('login.rememberMe')}
           onChange={handlerRememberMe}

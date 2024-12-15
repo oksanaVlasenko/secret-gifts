@@ -1,6 +1,5 @@
 import '@/styles/pages/editProduct.scss'
 
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 import { useI18n } from '@/i18n-context'
@@ -10,13 +9,22 @@ import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
 
-import { getToken } from '@/utils/authToken'
 import { handleCatch } from '@/utils/handleCatch'
 
 import { AppDispatch } from '@/store';
 import { RootState } from '@/store';
 
-import { createCategory, editCategory, deleteCategory } from '@/services/categoryServices'
+import { 
+  createCategory, 
+  editCategory, 
+  deleteCategory 
+} from '@/services/categoryServices'
+import { 
+  editProductFromAPI, 
+  fetchProductByIdFromAPI, 
+  fetchProductFromAPI, 
+  uploadImagesFromAPI 
+} from '@/api/productService';
 
 import { Images, Product } from '@/types/product.types'
 import { DropdownProps } from '@/components/dropdown/Dropdown.types'
@@ -28,12 +36,11 @@ import SearchUrl from '@/blocks/product/SearchUrlBlock';
 import Gallery from '@/components/gallery/Gallery';
 import ProductData from '@/blocks/product/ProductData';
 
-
 const EditProduct: React.FC = () => {
   const { t } = useI18n()
-  const token = getToken()
-  const navigate = useNavigate();
   const { id } = useParams();
+
+  const navigate = useNavigate();
 
   const dispatch: AppDispatch = useDispatch();
 
@@ -58,7 +65,6 @@ const EditProduct: React.FC = () => {
 
   useEffect(() => {
     fetchProductById()
-    
   }, [])
 
   
@@ -131,27 +137,25 @@ const EditProduct: React.FC = () => {
   const fetchProductById = async () => {
     setInitialLoading(true)
 
-    await axios({
-      method: 'get',
-      url: `http://localhost:3000/product/${id}`,
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-    .then((res) => {
-      setUrl(res.data.url)
+    try {
+      const response = await fetchProductByIdFromAPI(id)
+
+      setUrl(response.url)
+
       setProduct(prev => ({
         ...prev,
-        title: res.data.title,
-        price: Number(res.data.price),
-        images: res.data.images,
-        description: res.data.description,
-        currency: res.data.currency,
-        categoryId: res.data.categoryId
+        title: response.title,
+        price: Number(response.price),
+        images: response.images,
+        description: response.description,
+        currency: response.currency,
+        categoryId: response.categoryId
       }))
-    })
-    .catch((error) => handleCatch(error))
-    .finally(() => setInitialLoading(false))
+    } catch (error) {
+      handleCatch(error);
+    } finally {
+      setInitialLoading(false)
+    }
   }
 
   const handleRemoveImage = (id: string) => {
@@ -204,45 +208,37 @@ const EditProduct: React.FC = () => {
     }
 
     try {
-      const response = await axios({
-        method: 'post',
-        url: 'http://localhost:3000/product/images',
-        data: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await uploadImagesFromAPI(formData)
   
-      return response.data; 
+      return response; 
     } catch (error) {
       handleCatch(error);
       throw error; 
     }
   }
 
-  const testFetchDataFromUrl = async () => {
+  const fetchDataFromUrl = async () => {
+    if (!url) {
+      console.error('URL is not defined');
+      return;
+    }
+    
     setLoading(true)
 
-    await axios({
-      method: 'post',
-      url: 'http://localhost:3000/product/map-product',
-      data: {
-        url: url
-      },
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-      .then((res) => {
-        setProduct(prevProduct => ({
-          ...prevProduct,
-          title: res.data.title,
-          price: Number(res.data.price),
-          images: res.data.images.map((img: string )=> { return {id: crypto.randomUUID(), src: img} })
-        }))
-      })
-      .catch((error) => handleCatch(error))
-      .finally(() => setLoading(false))
+    try {
+      const response = await fetchProductFromAPI(url)
+
+      setProduct(prevProduct => ({
+        ...prevProduct,
+        title: response.title,
+        price: Number(response.price),
+        images: response.images.map((img: string )=> { return {id: crypto.randomUUID(), src: img} })
+      }))
+    } catch (error) {
+      handleCatch(error);
+    } finally {
+      setLoading(false)
+    }
   }
 
   const saveProduct = async () => {
@@ -263,19 +259,15 @@ const EditProduct: React.FC = () => {
       deletedImages: deletedImages,
     }
 
-    await axios({
-      method: 'patch',
-      url: `http://localhost:3000/product/edit/${id}`,
-      data: data,
-      headers: {
-        Authorization: `Bearer ${token}`
-      },
-    })
-    .then(() => {
+    try {
+      await editProductFromAPI(id, data)
+
       navigate('/')
-    })
-    .catch((error) => handleCatch(error))
-    .finally(() => setPending(false))
+    } catch (error) {
+      handleCatch(error);
+    } finally {
+      setPending(false)
+    }
   }
  
   if (initialLoading) {
@@ -298,7 +290,7 @@ const EditProduct: React.FC = () => {
       <SearchUrl 
         url={url}
         onUrlChange={handleUrl}
-        onFetchData={testFetchDataFromUrl}
+        onFetchData={fetchDataFromUrl}
       />
 
 {
