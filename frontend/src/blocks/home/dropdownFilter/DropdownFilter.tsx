@@ -37,12 +37,10 @@ const DropdownFilters: React.FC<DropdownFiltersProps> = ({
       .filter((item) => item.checked)
       .map((item) => String(item.id));
 
-    // Передаємо нові вибрані id назад наверх
     onSelectionChange?.(newSelectedIds);
   }
 
   const handleCheckboxChange = (value: boolean, id: string | number) => {
-    console.log(id, 'id', value, ' value')
     const newItems = updatedItems.map((item) =>
       item.id === id ? { ...item, checked: value } : item
     );
@@ -93,23 +91,23 @@ const DropdownFilters: React.FC<DropdownFiltersProps> = ({
       {
         isOpen && 
         <>
-        <Checkbox 
-          value={selectAll}
-          label='Select all'
-          className='selectAll'
-          onCheck={(value) => handleSelectAll(value)} 
-        />
+          <Checkbox 
+            value={selectAll}
+            label='Select all'
+            className='selectAll'
+            onCheck={(value) => handleSelectAll(value)} 
+          />
 
-        {updatedItems.map((item) => {
-          return (
-            <Checkbox 
-              key={item.id}
-              value={item.checked}
-              label={item.label}
-              onCheck={(value) => handleCheckboxChange(value, item.id)} // передача функції onCheck
-            />
-          );
-        })}
+          {updatedItems.map((item) => {
+            return (
+              <Checkbox 
+                key={item.id}
+                value={item.checked}
+                label={item.label}
+                onCheck={(value) => handleCheckboxChange(value, item.id)} // передача функції onCheck
+              />
+            );
+          })}
         </>
       }
     </div>

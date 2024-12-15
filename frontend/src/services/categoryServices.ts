@@ -15,11 +15,12 @@ export const loadCategories = async (dispatch: (arg0: { payload: { categories: C
     const categories = await fetchCategoriesFromAPI();
 
     if (categories && categories.length > 0) {
-      const formattedCategories = categories.map((c: { '_id': string, 'name': string }) => {
+      console.log(categories, ' categories')
+      const formattedCategories = categories.map((c: { '_id': string, 'name': string, 'productsCount': number }) => {
         return {
           id: c._id,
           label: c.name,
-          deleteIcon: true,
+          deleteIcon: true
         }
       })
       

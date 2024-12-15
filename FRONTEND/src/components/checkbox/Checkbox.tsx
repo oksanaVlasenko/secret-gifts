@@ -5,7 +5,7 @@ import { useId } from 'react'
 interface CheckboxProps {
   value: boolean,
   label: string | number,
-  className?: string;
+  className?: string,
   onCheck: (value: boolean) => void
 }
 
@@ -34,6 +34,7 @@ const Checkbox: React.FC<CheckboxProps> = ({
         htmlFor={checkboxId} 
       >
         {label}
+        {/* {` (${count ?? 0})`} */}
       </label>
     </div>
   )
