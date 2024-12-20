@@ -5,13 +5,14 @@ import { Product } from '@/types/product.types'
 const token = getToken()
 const API_URL = 'http://localhost:3000/product/';
 
-export const loadProductsFromAPI = async () => {
+export const loadProductsFromAPI = async (filters?: object) => {
   const response = await axios({
     method: 'get',
     url: API_URL,
     headers: {
       Authorization: `Bearer ${token}`
     },
+    params: filters
   })
 
   return response.data

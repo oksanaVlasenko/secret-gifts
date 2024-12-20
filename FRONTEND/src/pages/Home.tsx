@@ -10,15 +10,18 @@ import { useI18n } from '@/i18n-context'
 import { useSelector } from 'react-redux';
 
 import { Product } from '@/types/product.types'
+import { Filter, FilterProps } from '@/blocks/home/filters/Filter.types'
 
 import Card from "@/blocks/product/Card"
 import Loader from "@/components/loader/Loader"
 
 import { PlusIcon } from "@heroicons/react/20/solid"
 import TransparentLoader from '@/components/loader/TransparentLoader'
-import CategotiesFilters from '@/blocks/home/dropdownFilter/DropdownFilter'
-import MobileFilters from '@/blocks/home/filtrers/MobileFilter'
+
+import { FilterProvider } from '@/context/filtersContext'
+
 import { RootState } from '@/store'
+import GeneralFilters from '@/blocks/home/filters/GeneralFilters'
 
 const Home = () => {
   const { t } = useI18n()
@@ -26,27 +29,29 @@ const Home = () => {
   const categories = useSelector((state: RootState) => state.categories.categories);
 
   const [loading, setLoading] = useState<boolean>(true)
-  const [deleteLoading, setDeleteLoading] = useState<boolean>(false)
+  const [tableLoading, setTableLoading] = useState<boolean>(false)
   const [products, setProducts] = useState<Product[]>([])
 
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
+  const [filters, setFilters] = useState<Filter>({
+    categories: []
+  })
 
-  const fetchProducts = async () => {
-    setLoading(true)
+  const fetchProducts = async (filtersObject?: Filter) => {
+    setTableLoading(true)
 
     try {
-      const products = await loadProductsFromAPI()
+      const products = await loadProductsFromAPI(filtersObject)
 
       setProducts(products)
     } catch (error) {
       handleCatch(error);
     } finally {
-      setLoading(false)
+      setTableLoading(false)
     }
   }
 
   const deleteProduct = async (id: string) => {   
-    setDeleteLoading(true)
+    setTableLoading(true)
 
     try {
       await deleteProductFromAPI(id)
@@ -56,13 +61,39 @@ const Home = () => {
     } catch (error) {
       handleCatch(error);
     } finally {
-      setDeleteLoading(false)
+      setTableLoading(false)
     }
   }
 
-  console.log(selectedCategories, ' selectedCategories')
+  const handleFiltersSelect = (field: string, values: string[]) => {
+    setFilters(prevFilters => {
+      const updatedFilters = { 
+        ...prevFilters, 
+        [field]: values 
+      };
+
+      fetchProducts(updatedFilters); 
+
+      return updatedFilters;
+    });
+  }
+
+  const handleMobileFiltersSelect = (filtersObject: Filter) => {
+    setFilters(filtersObject)
+    
+    fetchProducts(filtersObject)
+  }
+
+  const filtersData: FilterProps = {
+    filters: filters,
+    categoriesList: categories,
+    onSelectChange: handleFiltersSelect,
+    onMobileSelect: handleMobileFiltersSelect
+  }
+
   useEffect(() => {
     fetchProducts()
+      .then(() => setLoading(false))
   }, [])
 
   return (
@@ -77,24 +108,28 @@ const Home = () => {
 
       {
         loading ? (
-          <div className="cards-container loader">
+          <div className="loader">
             <Loader fullScreen={false} />
           </div>
         ) : (
           <div className='main'>
-            <MobileFilters />
+            <FilterProvider value={filtersData}>
+              <GeneralFilters />
+            </FilterProvider>
             
-            <div className='filters'>
-              <CategotiesFilters 
-                options={categories}
-                label='Categories'
-                selectedIds={selectedCategories}
-                onSelectionChange={setSelectedCategories}
+            {/* <MobileFilters />
+            
+            <div className='filters hidden sm:block'>
+              <DropdownFilter 
+                options={[{id: 'null', label: t('product.withoutCategory')}, ...categories]}
+                label={t('product.categories')}
+                selectedIds={filters.categories}
+                onSelectionChange={handleCategoriesSelect}
               />
-            </div>
+            </div> */}
 
             <div className="cards-container">
-              { deleteLoading && <TransparentLoader />}
+              { tableLoading && <TransparentLoader />}
 
               {
                 products.map((product) => (

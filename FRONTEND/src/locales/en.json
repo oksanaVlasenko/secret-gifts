@@ -58,7 +58,10 @@
     "addPhoto": "Add photo",
     "editWish": "Change wish",
     "categoryLabel": "Select a category",
-    "wishListLabel": "Select a wishlist"
+    "wishListLabel": "Select a wishlist",
+    "withoutCategory": "Without category",
+    "selectAll": "Select all",
+    "categories": "Categories"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

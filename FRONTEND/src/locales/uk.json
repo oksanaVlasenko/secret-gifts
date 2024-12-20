@@ -58,7 +58,10 @@
     "addPhoto": "Додати фото",
     "editWish": "Змінити бажання",
     "categoryLabel": "Виберіть категорію",
-    "wishListLabel": "Виберіть список бажань"
+    "wishListLabel": "Виберіть список бажань",
+    "withoutCategory": "Без категорії",
+    "selectAll": "Обрати все",
+    "categories": "Катерогії"
   },
   "system": {
     "invalidPhone": "Недійсний номер телефону",

@@ -18,9 +18,11 @@
   }
 
   .checkbox-container {
+    @apply py-2;
+
     &.selectAll {
       label {
-        @apply font-semibold;
+        @apply font-semibold ;
       }
     }
   }
