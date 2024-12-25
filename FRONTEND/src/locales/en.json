@@ -61,7 +61,10 @@
     "wishListLabel": "Select a wishlist",
     "withoutCategory": "Without category",
     "selectAll": "Select all",
-    "categories": "Categories"
+    "categories": "Categories",
+    "watchProduct": "Watch product",
+    "resetFilters": "Clear all",
+    "applyFilters": "Apply filters"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

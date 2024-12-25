@@ -8,5 +8,6 @@ export interface FilterProps {
   filters: Filter,
   categoriesList: Option[],
   onSelectChange: (field: string, values: string[]) => void;
-  onMobileSelect: (filtersObject: Filter) => void
+  onMobileSelect: (filtersObject: Filter) => void;
+  onResetFilters: () => void;
 }

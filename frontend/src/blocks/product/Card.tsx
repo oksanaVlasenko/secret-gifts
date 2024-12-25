@@ -2,6 +2,7 @@ import { PhotoIcon, TrashIcon } from "@heroicons/react/20/solid"
 import { Product } from '@/types/product.types'
 
 import { useNavigate } from 'react-router-dom'; 
+import { useState } from "react";
 
 interface CardProps {
   product: Product,
@@ -27,6 +28,8 @@ const options = [
 ]
 
 const Card: React.FC<CardProps> = ({product, onDeleteProduct}) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  
   const navigate = useNavigate();
 
   const currencySymbol = options.find(o => o.id === product.currency)?.symbol
@@ -42,6 +45,8 @@ const Card: React.FC<CardProps> = ({product, onDeleteProduct}) => {
 
   return (
     <div className="card" onClick={handleCardClick}>
+      {!isLoaded && <div className="placeholder animate-pulse"></div>}
+
       {
         !product.images.length || product.images.length === 0 ? (
           <PhotoIcon  className="image"  />
@@ -49,7 +54,9 @@ const Card: React.FC<CardProps> = ({product, onDeleteProduct}) => {
           <img 
             src={product.images[0].src}
             alt="Product" 
-            className="image" 
+            className={`image ${isLoaded ? 'fade-in' : 'hidden-img'}`}
+            loading="lazy"
+            onLoad={() => setIsLoaded(true)}
           />
         )
       }

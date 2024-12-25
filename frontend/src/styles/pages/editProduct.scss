@@ -45,7 +45,11 @@
     }
 
     .product-btn {
-      @apply w-full max-w-[calc(100%-2rem)] sm:w-1/2 sm:max-w-80 mt-4 mx-auto;
+      @apply w-full max-w-[calc(100%-2rem)] lg:w-1/2 lg:max-w-[calc(50%-2rem)] mt-4 mx-auto;
+    }
+
+    .btn-container {
+      @apply flex flex-col lg:flex-row mx-auto w-full;
     }
   }
 }

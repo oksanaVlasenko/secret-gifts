@@ -7,7 +7,11 @@
     @apply flex gap-x-10 flex-col sm:flex-row;
 
     .filters {
-      @apply hidden sm:block mt-10 mb-5 w-fit lg:w-72 xl:w-72 md:w-64 sm:w-72 bg-white shadow-md rounded-xl h-20 sm:h-[472px] mr-auto ml-8 md:ml-10 relative sm:sticky top-10 z-10;
+      @apply hidden sm:flex mt-10 mb-5 w-fit lg:w-72 xl:w-72 md:w-64 sm:w-72 bg-white shadow-md rounded-xl h-20 sm:h-[472px] mr-auto ml-8 md:ml-10 relative sm:sticky top-10 z-10 sm:flex-col sm:justify-between;
+    
+      .reset-btn {
+        @apply m-5;
+      }
     }
 
     .mobile-filters {
@@ -40,7 +44,7 @@
           @apply bg-white flex flex-col justify-between w-5/6 h-full p-5 shadow-xl transform transition-all ease-in-out duration-300;
 
           .categories-filters {
-            @apply w-72 mx-auto  bg-white;
+            @apply w-full xs:w-72 mx-auto  bg-white;
 
             .header {
               @apply px-4 py-2.5 shadow-md rounded-xl;
@@ -58,8 +62,12 @@
             }
           }
 
-          .sign-in-btn {
-            @apply  w-72 mx-auto mt-20;
+          .mobile-filter-btn-container {
+            @apply flex flex-col xs:flex-row w-full mx-auto; 
+
+            .mobile-filter-btn {
+              @apply w-full xs:w-[calc(100%-4rem)];
+            }
           }
         }
       }
@@ -79,10 +87,24 @@
       .card {
         @apply w-fit lg:w-72 xl:w-72 md:w-64 sm:w-72 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl cursor-pointer;
   
+        .placeholder {
+          background-color: #e0e0e0;
+          width: 100%;
+          height: 100%;
+        }
+
         .image {
           @apply h-80 max-h-80 w-full object-contain rounded-t-xl mt-6;
   
           //transform: scale(0.9); 
+        }
+
+        .hidden-img {
+          opacity: 0;
+        }
+
+        .fade-in {
+          animation: fadeIn 0.5s ease-in-out;
         }
   
         .card-body {
@@ -106,4 +128,13 @@
   }
 
   
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

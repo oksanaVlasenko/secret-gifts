@@ -4,11 +4,17 @@ import path from 'path'
 
 // https://vite.dev/config/
 export default defineConfig({
+  server: {
+    hmr: {
+      overlay: false,
+    },
+  },
+
   plugins: [react()],
 
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),  // Set alias for `src` directory
+      '@': path.resolve(__dirname, 'src'),  
     },
   },
   

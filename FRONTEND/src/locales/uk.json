@@ -61,7 +61,10 @@
     "wishListLabel": "Виберіть список бажань",
     "withoutCategory": "Без категорії",
     "selectAll": "Обрати все",
-    "categories": "Катерогії"
+    "categories": "Катерогії",
+    "watchProduct": "Подивитись товар",
+    "resetFilters": "Очистити всі",
+    "applyFilters": "Застосувати фільтри"
   },
   "system": {
     "invalidPhone": "Недійсний номер телефону",

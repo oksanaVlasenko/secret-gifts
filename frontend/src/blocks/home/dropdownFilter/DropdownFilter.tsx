@@ -28,12 +28,22 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
   const [isOpen, setIsOpen] = useState<boolean>(false)
   const [selectAll, setSelectAll] = useState<boolean>(options.length === selectedIds?.length ? true : false)
 
-  const [updatedItems, setUpdatedItems] = useState(
-    options.map((item) => ({
+  const setUpdatedItems = (newItems?: OptionWithChecked[]) => {
+    if (newItems) {
+      return newItems
+    }
+
+    let result: OptionWithChecked[] = []
+
+    result = options.map((item) => ({
       ...item,
       checked: selectedIds?.includes(String(item.id)) ?? false,
-    }))
-  );
+    }));
+
+    return result
+  } 
+
+  const updatedItems = setUpdatedItems()
 
   const handleSelectedIds = (newItems: OptionWithChecked[]) => {
     const newSelectedIds = newItems

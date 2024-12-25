@@ -197,6 +197,10 @@ const EditProduct: React.FC = () => {
     setUrl(e)
   }
 
+  const openLinkInNewWindow = () => {
+    window.open(String(url), '_blank', 'noopener,noreferrer');
+  };
+
   const uploadCustomImages = async () => {
     const formData = new FormData();
 
@@ -316,14 +320,23 @@ const EditProduct: React.FC = () => {
               dropdownWishlist={dropdownWishlist}
               onInputChange={handleInputChange}
             >
-              {/* ${pending ? 'pending-animation' : ''} */}
-              <button 
-                type="button" 
-                className={`btn-filled-red product-btn ${pending ? 'pending-animation' : ''}`}
-                onClick={saveProduct}
-              >
-                {t('product.editWish')}
-              </button>
+              <div className='btn-container'>
+                <button 
+                  type="button" 
+                  className={`btn-outline-red product-btn ${pending ? 'pending-animation' : ''}`}
+                  onClick={openLinkInNewWindow}
+                >
+                  {t('product.watchProduct')}
+                </button>
+
+                <button 
+                  type="button" 
+                  className={`btn-filled-red product-btn ${pending ? 'pending-animation' : ''}`}
+                  onClick={saveProduct}
+                >
+                  {t('product.editWish')}
+                </button>
+              </div>
             </ProductData>
           </div>
         )

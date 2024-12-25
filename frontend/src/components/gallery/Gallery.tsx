@@ -40,8 +40,8 @@ const Gallery: React.FC<GalleryProps> = ({
 
   const closeModal = () => {
     if (thumbsSwiperModal) {
-      thumbsSwiperModal.destroy(true, false); // Примусово знищити інстанс
-      setThumbsSwiperModal(undefined); // Очистити стан
+      thumbsSwiperModal.destroy(true, false); 
+      setThumbsSwiperModal(undefined); 
     }
     setOpenModal(false);
   }
@@ -73,7 +73,7 @@ const Gallery: React.FC<GalleryProps> = ({
                 {
                   images.map((img) => (
                     <SwiperSlide key={img.id}>
-                      <img src={img.src} onClick={() => setOpenModal(true)}/>
+                      <img src={img.src} loading="lazy" onClick={() => setOpenModal(true)}/>
                       
                       <div className='delete-bg'>
                         <TrashIcon 
@@ -100,7 +100,7 @@ const Gallery: React.FC<GalleryProps> = ({
                 {
                   images.map((img) => (
                     <SwiperSlide key={img.id}>
-                      <img src={img.src} />
+                      <img src={img.src} loading="lazy" className='fade-in' />
                     </SwiperSlide>
                   ))
                 }
@@ -147,7 +147,7 @@ const Gallery: React.FC<GalleryProps> = ({
               images.map((img) => (
                 <SwiperSlide key={img.id}>
                   <div className="swiper-zoom-container">
-                    <img src={img.src} onClick={() => setOpenModal(true)}/>
+                    <img src={img.src} className='fade-in' onClick={() => setOpenModal(true)}/>
                   </div>
                   
                   

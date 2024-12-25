@@ -5,14 +5,27 @@ import DropdownFilter from "@/blocks/home/dropdownFilter/DropdownFilter"
 import { useFilterContext } from "@/context/filtersContext"
 import { useI18n } from '@/i18n-context'
 import { useOutsideClick } from '@/utils/useOutsideHook';
+//import { Filter } from '@/blocks/home/filters/Filter.types'
 
 const MobileFilters: React.FC = () => {
   const { t } = useI18n()
 
-  const { filters, categoriesList, onMobileSelect } = useFilterContext()
+  const { filters, categoriesList, onMobileSelect, onResetFilters } = useFilterContext()
 
   const [isOpen, setIsOpen] = useState(false);
   const [localFilters, setLocalsFilters] = useState(filters)
+
+  // const setLocalsFilters = (newFilters?: Filter): Filter => {
+  //   if (newFilters) {
+  //     return newFilters
+  //   }
+
+  //   const result: Filter = filters 
+
+  //   return result
+  // }
+
+  // const localFilters = setLocalsFilters()
 
   const toggleFilter = () => {
     setIsOpen(!isOpen);
@@ -32,6 +45,16 @@ const MobileFilters: React.FC = () => {
       ...prev,
       [field]: values,
     }));
+    // const updatedFilters = {
+    //   ...localFilters,
+    //   [field]: values, 
+    // };
+
+    // console.log(updatedFilters, ' upd')
+
+    // setLocalsFilters(updatedFilters);
+
+    // console.log(localFilters, ' lock')
   }
 
   const applyFilters = () => {
@@ -81,14 +104,23 @@ const MobileFilters: React.FC = () => {
               />
             </div>
             
+            <div className='mobile-filter-btn-container'>
+              <button 
+                type="button" 
+                className={`btn-outline-red mobile-filter-btn mb-4 xs:mr-4 xs:mb-0`}
+                onClick={onResetFilters}
+              >
+                {t('product.resetFilters')}
+              </button>
 
-            <button 
-              type="button" 
-              className={`btn-filled-red sign-in-btn `}
-              onClick={applyFilters}
-            >
-              apply
-            </button>
+              <button 
+                type="button" 
+                className={`btn-filled-red mobile-filter-btn`}
+                onClick={applyFilters}
+              >
+                {t('product.applyFilters')}
+              </button>
+            </div>
           </div>
         </div>
       )}

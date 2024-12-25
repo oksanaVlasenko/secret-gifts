@@ -84,11 +84,20 @@ const Home = () => {
     fetchProducts(filtersObject)
   }
 
+  const handleResetFilters = () => {
+    const resetFilters = {
+      categories: []
+    };
+    setFilters(resetFilters);
+    fetchProducts(resetFilters);
+  }
+
   const filtersData: FilterProps = {
     filters: filters,
     categoriesList: categories,
     onSelectChange: handleFiltersSelect,
-    onMobileSelect: handleMobileFiltersSelect
+    onMobileSelect: handleMobileFiltersSelect,
+    onResetFilters: handleResetFilters
   }
 
   useEffect(() => {
