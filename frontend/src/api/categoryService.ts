@@ -1,10 +1,11 @@
 import axios from "axios";
 import { getToken } from '@/utils/authToken'
 
-const token = getToken()
 const API_URL = 'http://localhost:3000/category/';
 
 export const fetchCategoriesFromAPI = async () => {
+  const token = getToken()
+
   const response = await axios({
     method: 'get',
     url: API_URL,
@@ -17,6 +18,8 @@ export const fetchCategoriesFromAPI = async () => {
 };
 
 export const deleteCategoryFromAPI = async (id: string | number) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'delete',
     url: API_URL,
@@ -30,6 +33,8 @@ export const deleteCategoryFromAPI = async (id: string | number) => {
 }
 
 export const createCategoryFromAPI = async (newValue: string | number | null | undefined) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'post',
     url: `${API_URL}create`,
@@ -43,6 +48,8 @@ export const createCategoryFromAPI = async (newValue: string | number | null | u
 }
 
 export const editCategoryFromAPI = async (id: string | number, value: string | number | null | undefined) => {
+  const token = getToken()
+  
   const response = await axios({
     method: 'patch',
     url: `${API_URL}edit/${id}`,

@@ -11,11 +11,11 @@ import { handleCatch } from '@/utils/handleCatch';
 import { AxiosError } from 'axios';
 
 export const loadCategories = async (dispatch: (arg0: { payload: { categories: Category[] } }) => void) => {
+  
   try {
     const categories = await fetchCategoriesFromAPI();
 
     if (categories && categories.length > 0) {
-      console.log(categories, ' categories')
       const formattedCategories = categories.map((c: { '_id': string, 'name': string, 'productsCount': number }) => {
         return {
           id: c._id,

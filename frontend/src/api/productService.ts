@@ -2,10 +2,11 @@ import axios from "axios";
 import { getToken } from '@/utils/authToken'
 import { Product } from '@/types/product.types'
 
-const token = getToken()
 const API_URL = 'http://localhost:3000/product/';
 
 export const loadProductsFromAPI = async (filters?: object) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'get',
     url: API_URL,
@@ -19,6 +20,8 @@ export const loadProductsFromAPI = async (filters?: object) => {
 }
 
 export const deleteProductFromAPI = async (id: string) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'delete',
     url: API_URL,
@@ -32,6 +35,8 @@ export const deleteProductFromAPI = async (id: string) => {
 }
 
 export const uploadImagesFromAPI = async (formData: FormData) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'post',
     url: `${API_URL}images`,
@@ -45,6 +50,8 @@ export const uploadImagesFromAPI = async (formData: FormData) => {
 }
 
 export const createProductFromAPI = async (data: Product) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'post',
     url: `${API_URL}create`,
@@ -58,6 +65,8 @@ export const createProductFromAPI = async (data: Product) => {
 }
 
 export const fetchProductFromAPI = async (url: string | number | null | undefined) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'post',
     url: `${API_URL}map-product`,
@@ -73,6 +82,8 @@ export const fetchProductFromAPI = async (url: string | number | null | undefine
 }
 
 export const fetchProductByIdFromAPI = async (id: string | undefined) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'get',
     url: `${API_URL}${id}`,
@@ -85,6 +96,8 @@ export const fetchProductByIdFromAPI = async (id: string | undefined) => {
 }
 
 export const editProductFromAPI = async (id: string | undefined, data: Product) => {
+  const token = getToken()
+
   const response = await axios({
     method: 'patch',
     url: `${API_URL}edit/${id}`,

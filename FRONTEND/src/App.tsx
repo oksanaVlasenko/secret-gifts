@@ -24,14 +24,12 @@ function App() {
   const { isAuthenticated, loading } = useSelector(selectUser);
 
   useEffect(() => {
-    // Починаємо завантаження
     dispatch(startLoading());
 
-    // Викликаємо перевірку автентифікації
     dispatch(checkAuth());
 
     if (isAuthenticated) loadCategories(dispatch)
-  }, [dispatch]);
+  }, [dispatch, isAuthenticated]);
 
   if (loading) {
     return <Loader />
