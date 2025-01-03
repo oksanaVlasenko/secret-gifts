@@ -30,7 +30,7 @@ function App() {
     // Викликаємо перевірку автентифікації
     dispatch(checkAuth());
 
-    loadCategories(dispatch)
+    if (isAuthenticated) loadCategories(dispatch)
   }, [dispatch]);
 
   if (loading) {

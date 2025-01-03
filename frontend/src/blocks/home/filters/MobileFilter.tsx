@@ -1,11 +1,13 @@
-import { ChevronDownIcon } from '@heroicons/react/16/solid';
-import { FunnelIcon, XMarkIcon } from '@heroicons/react/20/solid';
+
 import { useState } from 'react';
-import DropdownFilter from "@/blocks/home/dropdownFilter/DropdownFilter"
 import { useFilterContext } from "@/context/filtersContext"
 import { useI18n } from '@/i18n-context'
 import { useOutsideClick } from '@/utils/useOutsideHook';
-//import { Filter } from '@/blocks/home/filters/Filter.types'
+
+import DropdownFilter from "@/blocks/home/dropdownFilter/DropdownFilter"
+import { FunnelIcon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/20/solid';
+import PriceFilter from './PriceFilter';
+import Input from '@/components/input/Input';
 
 const MobileFilters: React.FC = () => {
   const { t } = useI18n()
@@ -15,17 +17,11 @@ const MobileFilters: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [localFilters, setLocalsFilters] = useState(filters)
 
-  // const setLocalsFilters = (newFilters?: Filter): Filter => {
-  //   if (newFilters) {
-  //     return newFilters
-  //   }
+  const [openBlock, setOpenBlock] = useState<number | null>(null); 
 
-  //   const result: Filter = filters 
-
-  //   return result
-  // }
-
-  // const localFilters = setLocalsFilters()
+  const toggleBlock = (id: number) => {
+    setOpenBlock((prevOpenBlock) => (prevOpenBlock === id ? null : id));
+  };
 
   const toggleFilter = () => {
     setIsOpen(!isOpen);
@@ -40,26 +36,31 @@ const MobileFilters: React.FC = () => {
     closeMobileFilters()   
   });
 
-  const handleLocalFiltersUpdate = (field: string, values: string[]) => {
+  const handleLocalFiltersUpdate = (field: string, values: string[] | string | number | null | undefined) => {
     setLocalsFilters((prev) => ({
       ...prev,
       [field]: values,
     }));
-    // const updatedFilters = {
-    //   ...localFilters,
-    //   [field]: values, 
-    // };
-
-    // console.log(updatedFilters, ' upd')
-
-    // setLocalsFilters(updatedFilters);
-
-    // console.log(localFilters, ' lock')
   }
 
   const applyFilters = () => {
     onMobileSelect(localFilters)
     setIsOpen(false); 
+  }
+
+  const handleResetFilters = () => {
+    const resetFilters = {
+      categories: [],
+      minPrice: 0,
+      maxPrice: 0,
+      searchText: ''
+    };
+
+    setLocalsFilters(resetFilters)
+
+    onResetFilters()
+
+    setIsOpen(false);
   }
 
   return (
@@ -72,7 +73,7 @@ const MobileFilters: React.FC = () => {
           <FunnelIcon className='toggle-icon' />
 
           <span>
-            Filters
+            {t('product.filters')}
           </span>
         </div>
         
@@ -88,19 +89,43 @@ const MobileFilters: React.FC = () => {
           <div className="filters-block" ref={filtersRef}>
             <div>
               <div className='header'>
-                <h2 className="text-lg font-semibold">Фільтри</h2>
+                <h2 className="text-lg font-semibold">
+                  {t('product.filters')}
+                </h2>
                 
                 <XMarkIcon 
                   className='toggle-icon'
                   onClick={closeMobileFilters} 
                 />
               </div>
+
+              <Input 
+                value={localFilters.searchText}
+                type='search'
+                placeholder={t('system.searchPlaceholder')}
+                onChange={(e) => {
+                  handleLocalFiltersUpdate('searchText', e)
+                }}
+              />
                 
               <DropdownFilter 
+                id={1}
+                isOpen={openBlock === 1}
+                toggleBlock={toggleBlock}
                 options={[{id: 'null', label: t('product.withoutCategory')}, ...categoriesList]}
                 label={t('product.categories')}
                 selectedIds={localFilters.categories}
                 onSelectionChange={(e) => handleLocalFiltersUpdate('categories', e)}
+              />
+
+              <PriceFilter 
+                id={2}
+                isOpen={openBlock === 2}
+                toggleBlock={toggleBlock}
+                label={t('product.price')}
+                minPrice={filters.minPrice}
+                maxPrice={filters.maxPrice}
+                onPriceChange={handleLocalFiltersUpdate}
               />
             </div>
             
@@ -108,7 +133,7 @@ const MobileFilters: React.FC = () => {
               <button 
                 type="button" 
                 className={`btn-outline-red mobile-filter-btn mb-4 xs:mr-4 xs:mb-0`}
-                onClick={onResetFilters}
+                onClick={handleResetFilters}
               >
                 {t('product.resetFilters')}
               </button>

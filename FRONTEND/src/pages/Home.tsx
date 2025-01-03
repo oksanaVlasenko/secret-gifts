@@ -8,6 +8,7 @@ import { loadProductsFromAPI, deleteProductFromAPI } from '@/api/productService'
 import { useEffect, useState } from "react"
 import { useI18n } from '@/i18n-context'
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { Product } from '@/types/product.types'
 import { Filter, FilterProps } from '@/blocks/home/filters/Filter.types'
@@ -22,9 +23,11 @@ import { FilterProvider } from '@/context/filtersContext'
 
 import { RootState } from '@/store'
 import GeneralFilters from '@/blocks/home/filters/GeneralFilters'
+import EmptyState from '@/blocks/product/EmptyState'
 
 const Home = () => {
   const { t } = useI18n()
+  const navigate = useNavigate();
 
   const categories = useSelector((state: RootState) => state.categories.categories);
 
@@ -33,7 +36,10 @@ const Home = () => {
   const [products, setProducts] = useState<Product[]>([])
 
   const [filters, setFilters] = useState<Filter>({
-    categories: []
+    categories: [],
+    minPrice: 0,
+    maxPrice: 0,
+    searchText: ''
   })
 
   const fetchProducts = async (filtersObject?: Filter) => {
@@ -65,7 +71,7 @@ const Home = () => {
     }
   }
 
-  const handleFiltersSelect = (field: string, values: string[]) => {
+  const handleFiltersSelect = (field: string, values: string[] | string | number | null | undefined) => {
     setFilters(prevFilters => {
       const updatedFilters = { 
         ...prevFilters, 
@@ -86,8 +92,12 @@ const Home = () => {
 
   const handleResetFilters = () => {
     const resetFilters = {
-      categories: []
+      categories: [],
+      minPrice: 0,
+      maxPrice: 0,
+      searchText: ''
     };
+
     setFilters(resetFilters);
     fetchProducts(resetFilters);
   }
@@ -98,6 +108,10 @@ const Home = () => {
     onSelectChange: handleFiltersSelect,
     onMobileSelect: handleMobileFiltersSelect,
     onResetFilters: handleResetFilters
+  }
+
+  const handleCreateNewWish = () => {
+    navigate('/new-product')
   }
 
   useEffect(() => {
@@ -125,31 +139,29 @@ const Home = () => {
             <FilterProvider value={filtersData}>
               <GeneralFilters />
             </FilterProvider>
-            
-            {/* <MobileFilters />
-            
-            <div className='filters hidden sm:block'>
-              <DropdownFilter 
-                options={[{id: 'null', label: t('product.withoutCategory')}, ...categories]}
-                label={t('product.categories')}
-                selectedIds={filters.categories}
-                onSelectionChange={handleCategoriesSelect}
-              />
-            </div> */}
 
-            <div className="cards-container">
-              { tableLoading && <TransparentLoader />}
+            {
+              products && products.length > 0 ? (
+                <div className="cards-container">
+                  { tableLoading && <TransparentLoader />}
 
-              {
-                products.map((product) => (
-                  <Card 
-                    key={product.id}
-                    product={product}
-                    onDeleteProduct={deleteProduct}
+                  {
+                    products.map((product) => (
+                      <Card 
+                        key={product.id}
+                        product={product}
+                        onDeleteProduct={deleteProduct}
+                      />
+                    ))
+                  }
+                </div>
+                ) : (
+                  <EmptyState 
+                    onResetFilter={handleResetFilters}
+                    onCreateNewWish={handleCreateNewWish}
                   />
-                ))
-              }
-            </div>
+              )
+            }   
           </div>
         )
       }

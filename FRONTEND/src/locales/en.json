@@ -64,7 +64,15 @@
     "categories": "Categories",
     "watchProduct": "Watch product",
     "resetFilters": "Clear all",
-    "applyFilters": "Apply filters"
+    "applyFilters": "Apply filters",
+    "filters": "Filters",
+    "from": "From",
+    "to": "To",
+    "priceError": "Price from cannot be greater than price to"
+  },
+  "emptyState": {
+    "message": "There’s no wish here",
+    "suggestion": "Try changing your filters or create a new wish"
   },
   "system": {
     "invalidPhone": "Invalid phone number",

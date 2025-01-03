@@ -11,21 +11,27 @@ interface OptionWithChecked extends Option {
 }
 
 interface DropdownFilterProps {
+  id: number,
+  isOpen: boolean
   options: Option[],
   selectedIds?: string[],
   label: string,
-  onSelectionChange?: (ids: string[]) => void
+  onSelectionChange?: (ids: string[]) => void,
+  toggleBlock?: (id: number) => void
 }
 
 const DropdownFilter: React.FC<DropdownFilterProps> = ({
   options,
   selectedIds,
   label,
+  id,
+  isOpen,
+  toggleBlock,
   onSelectionChange
 }) => {
   const { t } = useI18n()
 
-  const [isOpen, setIsOpen] = useState<boolean>(false)
+  //const [isOpen, setIsOpen] = useState<boolean>(false)
   const [selectAll, setSelectAll] = useState<boolean>(options.length === selectedIds?.length ? true : false)
 
   const setUpdatedItems = (newItems?: OptionWithChecked[]) => {
@@ -91,7 +97,7 @@ const DropdownFilter: React.FC<DropdownFilterProps> = ({
     <div className='categories-filters'>
       <div 
         className='header'
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => toggleBlock?.(id)}
       >
         <span>{label}</span>
 

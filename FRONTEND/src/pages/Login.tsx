@@ -140,7 +140,7 @@ const Login: React.FC = () => {
       <p className='text-paragragh'>
         {t('login.noAccount')} 
         
-        <Link to="/signup" className='text-link ml-2'>
+        <Link to="/signup" className='text-link'>
           {t('login.signUp')}
         </Link>
       </p>

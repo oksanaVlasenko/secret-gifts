@@ -3,6 +3,9 @@ import { Product } from '@/types/product.types'
 
 import { useNavigate } from 'react-router-dom'; 
 import { useState } from "react";
+import { useSelector } from 'react-redux';
+import { RootState } from "@/store";
+import { useI18n } from '@/i18n-context'
 
 interface CardProps {
   product: Product,
@@ -28,11 +31,17 @@ const options = [
 ]
 
 const Card: React.FC<CardProps> = ({product, onDeleteProduct}) => {
+  const { t } = useI18n()
+
+  const categories = useSelector((state: RootState) => state.categories.categories);
+
   const [isLoaded, setIsLoaded] = useState(false);
   
   const navigate = useNavigate();
 
   const currencySymbol = options.find(o => o.id === product.currency)?.symbol
+
+  const categoriesName = categories.find(c => c.id === product.categoryId)?.label ?? t('product.withoutCategory')
 
   const handleCardClick = () => {
     navigate(`/product/${product.id}`); 
@@ -64,7 +73,7 @@ const Card: React.FC<CardProps> = ({product, onDeleteProduct}) => {
         
       <div className="card-body">
         <span className="category-name">
-          General Category
+          { categoriesName }
         </span>
           
         <p className="product-name" title={String(product.title)}>

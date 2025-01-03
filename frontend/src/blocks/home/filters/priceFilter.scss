@@ -1,0 +1,27 @@
+.price-filter {
+  @apply relative w-full;
+
+  .header {
+    @apply flex flex-row justify-between items-center px-4 py-4 text-[#3A412C] cursor-pointer;
+
+    span {
+      @apply text-base;
+    }
+
+    .toggle-icon {
+      @apply h-5 w-5 shrink-0 text-[#3A412C];
+
+      &.opened {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .input-block {
+    @apply flex justify-around w-full;
+
+    .input-wrapper {
+      @apply w-[calc(50%-2rem)];
+    }
+  }
+}

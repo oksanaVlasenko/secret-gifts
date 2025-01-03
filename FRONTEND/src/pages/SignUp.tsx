@@ -72,7 +72,10 @@ const SighUp = () => {
           email: res.data.email, 
           token: res.data.token, 
           isAuthenticated: true,
-          loading: true 
+          loading: true,
+          birthday: null,
+          avatarURL: null,
+          coverURL: null
         }));
 
         setLoading(false)

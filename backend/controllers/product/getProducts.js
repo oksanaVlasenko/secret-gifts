@@ -1,23 +1,17 @@
 const { Product } = require('../../models')
-const { catchAsync } = require('../../utils')
+const { catchAsync, createFilters } = require('../../utils')
+
 
 exports.getProducts = catchAsync(async (req, res) => {
   const userId = req.userId
-  let categories = req.query.categories 
+
+  let { categories, minPrice, maxPrice, searchText } = req.query;
+
   categories = categories ? categories.map(item => item === 'null' ? null : item) : [];
 
-  const productsData = await Product.find({ 
-    userId,
-    ...(categories && categories.length > 0
-      ? {
-        $or: [
-          categories.includes(null)
-            ? { $or: [{ categoryId: { $in: categories.filter(id => id !== null) } }, { categoryId: null }, { categoryId: { $exists: false } }] }
-            : { categoryId: { $in: categories } }
-          ]
-        }
-      : {})
-  });
+  const filters = createFilters({ userId, categories, minPrice, maxPrice, searchText })
+
+  const productsData = await Product.find(filters);
 
   const products = productsData.map(p => {
     return {

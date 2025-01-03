@@ -2,7 +2,7 @@
   @apply relative w-full;
 
   .header {
-    @apply flex flex-row justify-between items-center px-4 py-4 text-[#3A412C] cursor-pointer;
+    @apply flex flex-row justify-between items-center px-4 pt-4 pb-2 text-[#3A412C] cursor-pointer;
 
     span {
       @apply text-base;
