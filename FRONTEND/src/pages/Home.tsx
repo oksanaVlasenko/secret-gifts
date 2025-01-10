@@ -35,6 +35,7 @@ const Home = () => {
   const [tableLoading, setTableLoading] = useState<boolean>(false)
   const [products, setProducts] = useState<Product[]>([])
 
+  const [isFilterUse, setIsFilterUse] = useState<boolean>(false)
   const [filters, setFilters] = useState<Filter>({
     categories: [],
     minPrice: 0,
@@ -72,6 +73,8 @@ const Home = () => {
   }
 
   const handleFiltersSelect = (field: string, values: string[] | string | number | null | undefined) => {
+    setIsFilterUse(true)
+
     setFilters(prevFilters => {
       const updatedFilters = { 
         ...prevFilters, 
@@ -100,6 +103,8 @@ const Home = () => {
 
     setFilters(resetFilters);
     fetchProducts(resetFilters);
+
+    setIsFilterUse(false)
   }
 
   const filtersData: FilterProps = {
@@ -136,10 +141,14 @@ const Home = () => {
           </div>
         ) : (
           <div className='main'>
-            <FilterProvider value={filtersData}>
-              <GeneralFilters />
-            </FilterProvider>
-
+            {
+              (products.length > 0 || isFilterUse) && (
+                <FilterProvider value={filtersData}>
+                  <GeneralFilters />
+                </FilterProvider>
+              )
+            }
+            
             {
               products && products.length > 0 ? (
                 <div className="cards-container">
@@ -157,6 +166,7 @@ const Home = () => {
                 </div>
                 ) : (
                   <EmptyState 
+                    isFilterUse={isFilterUse}
                     onResetFilter={handleResetFilters}
                     onCreateNewWish={handleCreateNewWish}
                   />

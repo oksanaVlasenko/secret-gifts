@@ -3,11 +3,13 @@ import emptySearchIcon from '@/assets/emptySearch.svg'
 import { useI18n } from '@/i18n-context'
 
 interface EmptyStateProps {
+  isFilterUse: boolean,
   onResetFilter: () => void,
   onCreateNewWish: () => void
 }
 
 const EmptyState: React.FC<EmptyStateProps> = ({
+  isFilterUse,
   onResetFilter,
   onCreateNewWish
 }) => {
@@ -26,14 +28,18 @@ const EmptyState: React.FC<EmptyStateProps> = ({
       </p>
 
       <div className='mobile-filter-btn-container mt-6'>
-        <button 
-          type="button" 
-          className={`btn-outline-red mobile-filter-btn mb-4 xs:mr-4 xs:mb-0`}
-          onClick={onResetFilter}
-        >
-          {t('product.resetFilters')}
-        </button>
-
+        {
+          isFilterUse && (
+            <button 
+              type="button" 
+              className={`btn-outline-red mobile-filter-btn mb-4 xs:mr-4 xs:mb-0`}
+              onClick={onResetFilter}
+            >
+              {t('product.resetFilters')}
+            </button>
+          )
+        }
+        
         <button 
           type="button" 
           className={`btn-filled-red mobile-filter-btn`}

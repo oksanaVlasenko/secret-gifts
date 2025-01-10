@@ -17,14 +17,78 @@ body {
   height: 100vh;
 
   /* Загальний фон */
-  background: $white-smoke; /* світло-сірий */
-  color: $t-bright--dark; /* стандартний колір тексту */
+  //background: $white-smoke; /* світло-сірий */
+  //color: $t-bright--dark; /* стандартний колір тексту */
   
   /* Для забезпечення спадковості */
   display: flex;
   flex-direction: column;
+  background: linear-gradient(90deg, #FEF7FE, #FEFBF7);
   //justify-content: center;
 }
+
+// body {
+//   height: 100vh;
+//   background: linear-gradient(90deg, #FEF7FE, #FEFBF7);
+//   //background: linear-gradient(120deg, #6B8063 0%, #A5B49A 50%, #FEF7FE 100%);
+//   //overflow: hidden; 
+//   position: relative;
+// }
+
+/* Перша форма */
+// body::before,
+// body::after {
+//   position: absolute;
+//   content: "";
+//   width: 250px;
+//   height: 250px;
+//   background: #D49A7A;
+//   border-radius: 62% 47% 82% 35% / 45% 45% 80% 66%;
+//   will-change: border-radius, transform, opacity;
+//   animation: sliderShape 5s linear infinite;
+//   display: block;
+//   z-index: -1;
+//   -webkit-animation: sliderShape 5s linear infinite;
+//   opacity: 0.7;
+// }
+
+// /* Друга форма */
+// body::after {
+//   width: 400px;
+//   height: 400px;
+//   background: #9B0D0F;
+//   border-radius: 50% 50% 40% 60% / 60% 40% 50% 50%;
+//   animation: sliderShape2 7s linear infinite;
+//   left: 70%;
+//   top: 50%;
+// }
+
+// @keyframes sliderShape {
+//   0%, 100% {
+//     border-radius: 42% 58% 70% 30% / 45% 45% 55% 55%;
+//     transform: translate3d(0, 0, 0) rotateZ(0.01deg);
+//   }
+//   34% {
+//     border-radius: 70% 30% 46% 54% / 30% 29% 71% 70%;
+//     transform: translate3d(0, 5px, 0) rotateZ(0.01deg);
+//   }
+//   67% {
+//     border-radius: 100% 60% 60% 100% / 100% 100% 60% 60%;
+//     transform: translate3d(0, -3px, 0) rotateZ(0.01deg);
+//   }
+// }
+
+// @keyframes sliderShape2 {
+//   0%, 100% {
+//     border-radius: 60% 40% 50% 50% / 50% 60% 40% 50%;
+//     transform: translate3d(0, 0, 0) scale(1);
+//   }
+//   50% {
+//     border-radius: 80% 20% 70% 30% / 40% 60% 30% 70%;
+//     transform: translate3d(0, -5px, 0) scale(1.1);
+//   }
+// }
+
 
 body, html {
   @apply overflow-x-hidden;
@@ -52,7 +116,7 @@ body, html {
 }
 
 .btn-filled-red {
-  @apply text-[$white-smoke] bg-[#9B0D0F] hover:bg-[#7A0B0D] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
+  @apply text-[#FEF7FE] bg-[#9B0D0F] hover:bg-[#7A0B0D] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
 
   &.disabled {
     @apply cursor-not-allowed opacity-50;
@@ -100,7 +164,7 @@ body, html {
 }
 
 .btn-outline-red {
-  @apply text-[$white-smoke] border-2 border-[#9B0D0F] hover:border-[#7A0B0D] text-[#9B0D0F] focus:outline-none font-medium rounded-lg text-sm px-5 py-2.5 text-center;
+  @apply text-[$white-smoke] border-2 border-[#9B0D0F] hover:border-[#7A0B0D] text-[#9B0D0F] focus:outline-none font-medium rounded-lg text-sm px-5 py-2 text-center;
 
   &.with-icon {
     @apply flex flex-row items-center justify-center;

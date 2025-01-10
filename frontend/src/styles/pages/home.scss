@@ -77,7 +77,7 @@
     }
 
     .empty-card {
-      @apply w-full h-20 sm:h-[472px] mt-10 mb-5 mr-10 bg-white shadow-md rounded-xl hover:shadow-xl cursor-pointer flex flex-col items-center justify-center;
+      @apply w-full h-20 sm:h-[472px] mt-10 mb-5 mx-10 bg-white shadow-md rounded-xl hover:shadow-xl cursor-pointer flex flex-col items-center justify-center;
 
       img {
         @apply w-32 h-32 mb-4;
